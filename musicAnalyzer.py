@@ -42,6 +42,12 @@ def getAlbumByYear(year):
       results.append(i.album)
   for i in results:
     print(i)
+    
+def getTopSongs():
+  resultBox.delete(0, Tkinter.END)
+  sortedList = sorted(songList, key = lambda x: x.plays, reverse = True)
+  for i in range(0, 24):
+    print(sortedList[i].songName + "\t" + str(sortedList[i].plays))
       
 mainWindow = Tkinter.Tk()
 mainWindow.title("Music DB")
@@ -60,6 +66,9 @@ submitButton3.pack()
 
 submitButton4 = Tkinter.Button(mainWindow, text = "Get Albums By Year", command = lambda: getAlbumByYear(int(numField.get())))
 submitButton4.pack()
+
+submitButton5 = Tkinter.Button(mainWindow, text = "Get Top Songs", command = getTopSongs)
+submitButton5.pack()
 
 resultBox = Tkinter.Listbox(mainWindow)
 resultBox.pack()
