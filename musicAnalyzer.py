@@ -2,6 +2,8 @@ import pandas as pd
 from song import song
 import random
 import Tkinter
+import matplotlib.pyplot as plt
+import numpy as np
 
 dataframe = pd.read_csv("data.csv")
 
@@ -20,9 +22,10 @@ def getRandomAlbums(num):
     resultBox.insert(Tkinter.END, y.album)
   
 def getTopAlbums(num):
-  resultBox.delete(0, Tkinter.END)
-  avgPlays = dataframe.groupby("albumTitle").mean().sort_values(by = "plays", ascending=False)[:num]
-  print(avgPlays)
+  avgPlays = dataframe.groupby("albumTitle")
+  abc = avgPlays["plays"].agg(np.mean).nlargest(num)
+  abc.plot.barh(y = "albumTitle")
+  plt.show()
   
 def getTopArtistsByCount(num):
   resultBox.delete(0, Tkinter.END)
