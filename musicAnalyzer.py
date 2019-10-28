@@ -22,15 +22,16 @@ def getRandomAlbums(num):
     resultBox.insert(Tkinter.END, y.album)
   
 def getTopAlbums(num):
-  avgPlays = dataframe.groupby("albumTitle")
-  abc = avgPlays["plays"].agg(np.mean).nlargest(num)
-  abc.plot.barh(y = "albumTitle")
-  plt.show()
-  
-def getTopArtistsByCount(num):
   resultBox.delete(0, Tkinter.END)
-  numArtists = dataframe.groupby("artist")["songName"].nunique().sort_values(ascending=False)[:num]
-  print(numArtists)
+  avgPlays = dataframe.groupby("albumTitle")["plays"].mean().sort_values(ascending=False)[:num]
+  for key, value in avgPlays.iteritems():
+    resultBox.insert(Tkinter.END, key)
+  
+def getTopArtists(num):
+  resultBox.delete(0, Tkinter.END)
+  numArtists = dataframe.groupby("artist")["plays"].sum().sort_values(ascending=False)[:num]
+  for key, value in numArtists.iteritems():
+    resultBox.insert(Tkinter.END, key)
   
 def exportTXT():
   statsList = open("stats.txt", "w")
@@ -44,13 +45,13 @@ def getAlbumByYear(year):
     if i.album not in results and i.yearReleased == year:
       results.append(i.album)
   for i in results:
-    print(i)
+    resultBox.insert(Tkinter.END, i)
     
-def getTopSongs():
+def getTopSongs(num):
   resultBox.delete(0, Tkinter.END)
   sortedList = sorted(songList, key = lambda x: x.plays, reverse = True)
-  for i in range(0, 24):
-    print(sortedList[i].songName + "\t" + str(sortedList[i].plays))
+  for i in range(0, num):
+    resultBox.insert(Tkinter.END, sortedList[i].songName)
       
 mainWindow = Tkinter.Tk()
 mainWindow.title("Music DB")
@@ -58,19 +59,19 @@ mainWindow.title("Music DB")
 numField = Tkinter.Entry(mainWindow)
 numField.pack()
 
-submitButton = Tkinter.Button(mainWindow, text = "Get Random Albums", command = lambda: getRandomAlbums(int(numField.get())))
+submitButton = Tkinter.Button(mainWindow, text = "Random Albums", command = lambda: getRandomAlbums(int(numField.get())))
 submitButton.pack()
 
-submitButton2 = Tkinter.Button(mainWindow, text = "Get Top Albums", command = lambda: getTopAlbums(int(numField.get())))
+submitButton2 = Tkinter.Button(mainWindow, text = "Top Albums", command = lambda: getTopAlbums(int(numField.get())))
 submitButton2.pack()
 
-submitButton3 = Tkinter.Button(mainWindow, text = "Get Top Artists", command = lambda: getTopArtistsByCount(int(numField.get())))
+submitButton3 = Tkinter.Button(mainWindow, text = "Top Artists", command = lambda: getTopArtists(int(numField.get())))
 submitButton3.pack()
 
-submitButton4 = Tkinter.Button(mainWindow, text = "Get Albums By Year", command = lambda: getAlbumByYear(int(numField.get())))
+submitButton4 = Tkinter.Button(mainWindow, text = "Albums By Year", command = lambda: getAlbumByYear(int(numField.get())))
 submitButton4.pack()
 
-submitButton5 = Tkinter.Button(mainWindow, text = "Get Top Songs", command = getTopSongs)
+submitButton5 = Tkinter.Button(mainWindow, text = "Top Songs", command = lambda: getTopSongs(int(numField.get())))
 submitButton5.pack()
 
 resultBox = Tkinter.Listbox(mainWindow)
