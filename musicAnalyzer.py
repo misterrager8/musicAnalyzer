@@ -34,9 +34,11 @@ def getTopArtists(num):
     resultBox.insert(Tkinter.END, key)
   
 def exportTXT():
-  statsList = open("stats.txt", "w")
-  statsList.write(avgPlays.to_string())
-  statsList.close
+  avgPlays2 = dataframe.groupby("albumTitle")["plays"].mean().sort_values(ascending=False)
+  avgPlays2.to_csv("albums.csv", header=False)
+#  statsList = open("albums.txt", "w")
+#  statsList.write(avgPlays2.encode("utf-8"))
+#  statsList.close
   
 def getAlbumByYear(year):
   resultBox.delete(0, Tkinter.END)
@@ -73,6 +75,9 @@ submitButton4.pack()
 
 submitButton5 = Tkinter.Button(mainWindow, text = "Top Songs", command = lambda: getTopSongs(int(numField.get())))
 submitButton5.pack()
+
+submitButton6 = Tkinter.Button(mainWindow, text = "Export Ranked Albums", command = exportTXT)
+submitButton6.pack()
 
 resultBox = Tkinter.Listbox(mainWindow)
 resultBox.pack()
