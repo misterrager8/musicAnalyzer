@@ -1,5 +1,6 @@
 from model import *
 import MySQLdb
+import csv
 
 class ctrla():
   def __init__(self):
@@ -53,14 +54,35 @@ class ctrla():
       cursor.execute(sql)
       results = cursor.fetchall()
       for row in results:
-        n = album(row[1],
-                  row[2],
-                  row[3],
-                  row[4],
-                  str(row[5]),
-                  row[6])
-        n.toString()
+        print(row[0],
+              row[1],
+              row[2],
+              row[3],
+              row[4],
+              str(row[5]),
+              row[6])
+        
     except MySQLdb.Error, e:
       print(e)
       
     db.close()
+    
+  def exportAlbums(self):
+    db = MySQLdb.connect("localhost","root","bre9ase4","TESTDB")
+    cursor = db.cursor()
+    sql = "SELECT * FROM albums"
+    
+    try:
+      cursor.execute(sql)
+      results = cursor.fetchall()
+      
+      with open("albums.csv", "w") as f:
+          a = csv.writer(f, delimiter = ",")
+          a.writerow(["Album ID", "Title", "Artist", "Genre", "Release Date", "Rating", "Tags"])
+          a.writerows(results)
+        
+    except MySQLdb.Error, e:
+      print(e)
+      
+    db.close()
+    print("Exported.")
