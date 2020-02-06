@@ -67,6 +67,28 @@ class ctrla():
       
     db.close()
     
+  def searchAlbums(self, c):
+    db = MySQLdb.connect("localhost","root","bre9ase4","TESTDB")
+    cursor = db.cursor()
+    sql = "SELECT * FROM albums WHERE title LIKE %s", ("%{}%".format(c),)
+    
+    try:
+      cursor.execute(sql)
+      results = cursor.fetchall()
+      for row in results:
+        print(row[0],
+              row[1],
+              row[2],
+              row[3],
+              row[4],
+              str(row[5]),
+              row[6])
+        
+    except MySQLdb.Error, e:
+      print(e)
+      
+    db.close()
+    
   def exportAlbums(self):
     db = MySQLdb.connect("localhost","root","bre9ase4","TESTDB")
     cursor = db.cursor()

@@ -6,6 +6,7 @@ albumCtrla = ctrla()
 
 if __name__ == "__main__":
   while True:
+    print("---")
     albumCtrla.viewAlbums()
 
     answer = input(
@@ -14,7 +15,8 @@ if __name__ == "__main__":
 2 - Delete Album
 3 - Delete All
 4 - Export
-5 - Exit
+5 - Search
+6 - Exit
 """)
 
     if answer == 1:
@@ -37,4 +39,7 @@ if __name__ == "__main__":
     elif answer == 4:
       albumCtrla.exportAlbums()
     elif answer == 5:
+      j = raw_input("Search query: ")
+      albumCtrla.searchAlbums(j)
+    elif answer == 6:
       sys.exit()
