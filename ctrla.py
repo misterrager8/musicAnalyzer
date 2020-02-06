@@ -67,14 +67,14 @@ class ctrla():
       
     db.close()
     
-  def searchAlbums(self, c):
+  def searchAlbums(self, term):
     db = MySQLdb.connect("localhost","root","bre9ase4","TESTDB")
     cursor = db.cursor()
-    sql = "SELECT * FROM albums WHERE title LIKE %s", ("%{}%".format(c),)
     
     try:
-      cursor.execute(sql)
+      cursor.execute("SELECT * FROM albums WHERE title LIKE %s", ("%" + term + "%",))
       results = cursor.fetchall()
+      print(str(len(results)) + " results found.")
       for row in results:
         print(row[0],
               row[1],
