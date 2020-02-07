@@ -127,7 +127,7 @@ class ctrla():
       cursor.execute(sql)
       results = cursor.fetchall()
       
-      with open("albums.csv", "w") as f:
+      with open("output.csv", "w") as f:
           a = csv.writer(f, delimiter = ",")
           a.writerow(["Album ID", "Title", "Artist", "Genre", "Release Date", "Rating", "Tags"])
           a.writerows(results)
@@ -137,3 +137,19 @@ class ctrla():
       
     db.close()
     print("Exported.")
+  
+  def importAlbums(self):
+    db = MySQLdb.connect("localhost","root","bre9ase4","TESTDB")
+    cursor = db.cursor()
+    
+    csv_data = csv.reader(file("input.csv"))
+    for row in csv_data:
+      cursor.execute("INSERT INTO albums (title, artist, genre, releaseDate, rating, tags) VALUES (%s, %s, %s, %s, %s, %s)", row)
+    
+#    try:
+#      cursor.execute(sql)
+#      db.commit()
+#    except MySQLdb.Error, e:
+#      print(e)
+    db.commit()  
+    db.close()

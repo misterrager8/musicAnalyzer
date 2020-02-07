@@ -20,8 +20,9 @@ if __name__ == "__main__":
 3 - Delete All
 4 - Edit Album
 5 - Export
-6 - Search
-7 - Exit
+6 - Import
+7 - Search
+8 - Exit
 --------------------
 """)
 
@@ -63,8 +64,10 @@ if __name__ == "__main__":
     elif answer == 5:
       albumCtrla.exportAlbums()
     elif answer == 6:
+      albumCtrla.importAlbums()
+    elif answer == 7:
       searchType = input("0 - By title | 1 - By artist | 2 - By tags | 3 - By year\n")
       searchTerm = raw_input("Search query: ")
       albumCtrla.searchAlbums(searchTerm, searchType)
-    elif answer == 7:
+    elif answer == 8:
       sys.exit()
