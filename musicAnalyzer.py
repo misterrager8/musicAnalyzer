@@ -18,9 +18,11 @@ if __name__ == "__main__":
 1 - Add Album
 2 - Delete Album
 3 - Delete All
-4 - Export
-5 - Search
-6 - Exit
+4 - Edit Album
+5 - Export
+6 - Search
+7 - Exit
+--------------------
 """)
 
     if answer == 0:
@@ -31,7 +33,7 @@ if __name__ == "__main__":
       
       for idx, item in enumerate(genres):
         print(str(idx) + " - " + item)
-      genre = input("Genre? ")
+      genre = input("------------\nGenre? ")
       
       releaseDate = raw_input("Release Date? (m/d/yyyy) ")
       try:
@@ -54,9 +56,15 @@ if __name__ == "__main__":
         albumCtrla.deleteAllAlbums()
         albumCtrla.viewAlbums()
     elif answer == 4:
-      albumCtrla.exportAlbums()
+      whichAlbum = input("Which Album? ")
+      searchType = input("0 - Change title | 1 - Change artist | 2 - Change release date | 3 - Change rating\n")
+      change = raw_input("Change? ")
+      albumCtrla.editAlbum(whichAlbum, searchType, change)
     elif answer == 5:
-      j = raw_input("Search query: ")
-      albumCtrla.searchAlbums(j)
+      albumCtrla.exportAlbums()
     elif answer == 6:
+      searchType = input("0 - By title | 1 - By artist | 2 - By tags | 3 - By year\n")
+      searchTerm = raw_input("Search query: ")
+      albumCtrla.searchAlbums(searchTerm, searchType)
+    elif answer == 7:
       sys.exit()

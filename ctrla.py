@@ -32,6 +32,26 @@ class ctrla():
       
     db.close()
   
+  def editAlbum(self, albumID, searchType, change):
+    db = MySQLdb.connect("localhost","root","bre9ase4","TESTDB")
+    cursor = db.cursor()
+    
+    try:
+      if searchType == 0:
+        cursor.execute("UPDATE albums SET title = '%s' WHERE albumID = '%d'" % (change, albumID))
+      elif searchType == 1:
+        cursor.execute("UPDATE albums SET artist = '%s' WHERE albumID = '%d'" % (change, albumID))
+      elif searchType == 2:
+        cursor.execute("UPDATE albums SET releaseDate = '%s' WHERE albumID = '%d'" % (change, albumID))
+      elif searchType == 3:
+        cursor.execute("UPDATE albums SET rating = '%s' WHERE albumID = '%d'" % (change, albumID))
+      db.commit()
+    except MySQLdb.Error, e:
+      print(e)
+     
+    db.close()
+    print("Album edited.")
+  
   def deleteAllAlbums(self):
     db = MySQLdb.connect("localhost","root","bre9ase4","TESTDB")
     cursor = db.cursor()
@@ -61,18 +81,27 @@ class ctrla():
               row[4],
               str(row[5]),
               row[6])
+
+      print(str(len(results)) + " albums in total.")
         
     except MySQLdb.Error, e:
       print(e)
       
     db.close()
     
-  def searchAlbums(self, term):
+  def searchAlbums(self, term, searchType):
     db = MySQLdb.connect("localhost","root","bre9ase4","TESTDB")
     cursor = db.cursor()
     
     try:
-      cursor.execute("SELECT * FROM albums WHERE title LIKE %s", ("%" + term + "%",))
+      if searchType == 0:
+        cursor.execute("SELECT * FROM albums WHERE title LIKE %s", ("%" + term + "%",))
+      elif searchType == 1:
+        cursor.execute("SELECT * FROM albums WHERE artist LIKE %s", ("%" + term + "%",))
+      elif searchType == 2:
+        cursor.execute("SELECT * FROM albums WHERE tags LIKE %s", ("%" + term + "%",))
+      elif searchType == 3:
+        cursor.execute("SELECT * FROM albums WHERE releaseDate LIKE %s", ("%" + term + "%",))
       results = cursor.fetchall()
       print(str(len(results)) + " results found.")
       for row in results:
