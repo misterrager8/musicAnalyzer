@@ -58,7 +58,7 @@ if __name__ == "__main__":
         albumCtrla.viewAlbums()
     elif answer == 4:
       whichAlbum = input("Which Album? ")
-      searchType = input("0 - Change title | 1 - Change artist | 2 - Change release date | 3 - Change rating\n")
+      searchType = input("0 - Change title | 1 - Change artist | 2 - Change release date | 3 - Change rating | 4 - Change tags\n")
       change = raw_input("Change? ")
       albumCtrla.editAlbum(whichAlbum, searchType, change)
     elif answer == 5:

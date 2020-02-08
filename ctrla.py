@@ -45,6 +45,8 @@ class ctrla():
         cursor.execute("UPDATE albums SET releaseDate = '%s' WHERE albumID = '%d'" % (change, albumID))
       elif searchType == 3:
         cursor.execute("UPDATE albums SET rating = '%s' WHERE albumID = '%d'" % (change, albumID))
+      elif searchType == 4:
+        cursor.execute("UPDATE albums SET tags = '%s' WHERE albumID = '%d'" % (change, albumID))
       db.commit()
     except MySQLdb.Error, e:
       print(e)
@@ -145,11 +147,6 @@ class ctrla():
     csv_data = csv.reader(file("input.csv"))
     for row in csv_data:
       cursor.execute("INSERT INTO albums (title, artist, genre, releaseDate, rating, tags) VALUES (%s, %s, %s, %s, %s, %s)", row)
-    
-#    try:
-#      cursor.execute(sql)
-#      db.commit()
-#    except MySQLdb.Error, e:
-#      print(e)
+      
     db.commit()  
     db.close()
