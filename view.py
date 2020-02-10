@@ -13,29 +13,67 @@ class mainWindow(JFrame):
   def initComponents(self):
     self.bgPanel = JPanel()
     self.exitButton = JLabel(mouseClicked = self.exitButtonMouseClicked)
+    self.jScrollPane1 = JScrollPane()
+    self.albumTable = JTable()
+    self.termField = JTextField()
+#    self.filterBox = JComboBox<>()
+    self.searchButton = JLabel()
 
     self.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE)
     self.setUndecorated(True)
 
-    self.bgPanel.setBackground(Color(153, 153, 255))
+    self.bgPanel.setBackground(Color(102, 102, 255))
 
     self.exitButton.setText("X")
     self.exitButton.setCursor(Cursor(Cursor.HAND_CURSOR))
+
+    self.albumTable.setModel(table.DefaultTableModel(
+      [],
+      ["ID", "Title", "Artist", "Genre", "Release Date", "Rating", "Tags"]))
+    
+    self.jScrollPane1.setViewportView(self.albumTable)
+
+    self.termField.setOpaque(True)
+
+#    self.filterBox.setModel(DefaultComboBoxModel<>(["Search Filter", "By Title", "By Artist", "By Date", "By Tags"]))
+
+    self.searchButton.setBackground(Color(255, 255, 255))
+    self.searchButton.setHorizontalAlignment(SwingConstants.CENTER)
+    self.searchButton.setText("Search")
+    self.searchButton.setCursor(Cursor(Cursor.HAND_CURSOR))
+    self.searchButton.setOpaque(True)
 
     bgPanelLayout = GroupLayout(self.bgPanel)
     self.bgPanel.setLayout(bgPanelLayout)
     bgPanelLayout.setHorizontalGroup(
       bgPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
-      .addGroup(GroupLayout.Alignment.TRAILING, bgPanelLayout.createSequentialGroup()
-        .addContainerGap(703, sys.maxint)
-        .addComponent(self.exitButton)
+      .addGroup(bgPanelLayout.createSequentialGroup()
+        .addContainerGap()
+        .addGroup(bgPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+          .addComponent(self.jScrollPane1, GroupLayout.DEFAULT_SIZE, 705, sys.maxint)
+          .addGroup(GroupLayout.Alignment.TRAILING, bgPanelLayout.createSequentialGroup()
+            .addGap(0, 0, sys.maxint)
+            .addGroup(bgPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+              .addComponent(self.exitButton, GroupLayout.Alignment.TRAILING)
+              .addGroup(GroupLayout.Alignment.TRAILING, bgPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING, False)
+                .addComponent(self.searchButton, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, sys.maxint)
+#                .addComponent(self.filterBox, 0, GroupLayout.DEFAULT_SIZE, sys.maxint)
+                .addComponent(self.termField, GroupLayout.PREFERRED_SIZE, 199, GroupLayout.PREFERRED_SIZE)))))
         .addContainerGap()))
     bgPanelLayout.setVerticalGroup(
       bgPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
       .addGroup(bgPanelLayout.createSequentialGroup()
         .addContainerGap()
         .addComponent(self.exitButton)
-        .addContainerGap(519, sys.maxint)))
+        .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, 164, sys.maxint)
+#        .addComponent(self.filterBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+        .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+        .addComponent(self.termField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+        .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+        .addComponent(self.searchButton, GroupLayout.PREFERRED_SIZE, 42, GroupLayout.PREFERRED_SIZE)
+        .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+        .addComponent(self.jScrollPane1, GroupLayout.PREFERRED_SIZE, 240, GroupLayout.PREFERRED_SIZE)
+        .addContainerGap()))
 
     layout = GroupLayout(self.getContentPane())
     self.getContentPane().setLayout(layout)
