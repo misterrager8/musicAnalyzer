@@ -1,5 +1,6 @@
 class album:
-  def __init__(self, title, artist, genre, releaseDate, rating, tags):
+  def __init__(self, albumID, title, artist, genre, releaseDate, rating, tags):
+    self.albumID = albumID
     self.title = title
     self.artist = artist
     self.genre = genre
@@ -44,9 +45,10 @@ class album:
     self.tags = tags
     
   def toString(self):
-    print(self.title,
+    print(self.albumID,
+          self.title,
           self.artist,
           self.genre,
           self.releaseDate,
-          self.rating,
+          str(self.rating),
           self.tags)

@@ -68,6 +68,7 @@ class ctrla():
     db.close()
     
   def viewAlbums(self):
+    albumsList = []
     db = MySQLdb.connect("localhost","root","bre9ase4","TESTDB")
     cursor = db.cursor()
     sql = "SELECT * FROM albums"
@@ -76,22 +77,23 @@ class ctrla():
       cursor.execute(sql)
       results = cursor.fetchall()
       for row in results:
-        print(row[0],
+        x = album(row[0],
               row[1],
               row[2],
               row[3],
               row[4],
-              str(row[5]),
+              row[5],
               row[6])
-
-      print(str(len(results)) + " albums in total.")
+        albumsList.append(x)
         
     except MySQLdb.Error, e:
       print(e)
       
     db.close()
+    return albumsList
     
   def searchAlbums(self, term, searchType):
+    albumsList = []
     db = MySQLdb.connect("localhost","root","bre9ase4","TESTDB")
     cursor = db.cursor()
     
@@ -105,20 +107,21 @@ class ctrla():
       elif searchType == 3:
         cursor.execute("SELECT * FROM albums WHERE releaseDate LIKE %s", ("%" + term + "%",))
       results = cursor.fetchall()
-      print(str(len(results)) + " results found.")
       for row in results:
-        print(row[0],
+        x = album(row[0],
               row[1],
               row[2],
               row[3],
               row[4],
-              str(row[5]),
+              row[5],
               row[6])
+        albumsList.append(x)
         
     except MySQLdb.Error, e:
       print(e)
       
     db.close()
+    return albumsList
     
   def exportAlbums(self):
     db = MySQLdb.connect("localhost","root","bre9ase4","TESTDB")

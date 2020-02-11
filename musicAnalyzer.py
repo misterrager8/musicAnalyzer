@@ -9,6 +9,13 @@ genres = ["Hip-Hop",
           "Rock",
           "Soundtrack"]
 
+def printAlbums():
+  r = albumCtrla.viewAlbums()
+  for obj in r:
+    obj.toString()
+    
+  print(str(len(r)) + " albums in total.")
+
 if __name__ == "__main__":
   while True:
 
@@ -27,7 +34,7 @@ if __name__ == "__main__":
 """)
 
     if answer == 0:
-      albumCtrla.viewAlbums()
+      printAlbums()
     elif answer == 1:
       title = raw_input("Title? ")
       artist = raw_input("Artist? ")
@@ -44,18 +51,18 @@ if __name__ == "__main__":
         
       tags = raw_input("Tags? ")
 
-      x = album(title, artist, genres[genre], releaseDate, rating, tags)
+      x = album(None, title, artist, genres[genre], releaseDate, rating, tags)
       albumCtrla.addAlbum(x)
-      albumCtrla.viewAlbums()
+      printAlbums()
     elif answer == 2:
       whichAlbum = input("Which Album? ")
       albumCtrla.deleteAlbum(whichAlbum)
-      albumCtrla.viewAlbums()
+      printAlbums()
     elif answer == 3:
       m = raw_input("Are you sure? ")
       if m == "Y" or m == "y":
         albumCtrla.deleteAllAlbums()
-        albumCtrla.viewAlbums()
+        printAlbums()
     elif answer == 4:
       whichAlbum = input("Which Album? ")
       searchType = input("0 - Change title | 1 - Change artist | 2 - Change release date | 3 - Change rating | 4 - Change tags\n")
@@ -68,6 +75,9 @@ if __name__ == "__main__":
     elif answer == 7:
       searchType = input("0 - By title | 1 - By artist | 2 - By tags | 3 - By year\n")
       searchTerm = raw_input("Search query: ")
-      albumCtrla.searchAlbums(searchTerm, searchType)
+      r = albumCtrla.searchAlbums(searchTerm, searchType)
+      print(str(len(r)) + " result(s) found.")
+      for i in r:
+        i.toString()
     elif answer == 8:
       sys.exit()

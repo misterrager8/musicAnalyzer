@@ -1,8 +1,12 @@
 from java.awt import *
 from javax.swing import *
 import sys
+import csv
+import subprocess
+from model import *
 
 mouseLoc = []
+postList = []
 
 class mainWindow(JFrame):
   
@@ -86,9 +90,41 @@ class mainWindow(JFrame):
 
     self.pack()
     self.setLocationRelativeTo(None)
+    self.viewTable()
     
   def exitButtonMouseClicked(self, evt):
     sys.exit()
+    
+  def viewTable(self):
+    print("Collecting albums...")
+    subprocess.call("python getAlbums.py", shell = True)
+    print("Done!")
+
+    with open("albumsList.csv", "r") as f:
+      reader = csv.reader(f)
+      tempList = list(reader)
+
+    del postList[:]
+
+    for item in tempList:
+      postList.append(album(item[0],
+                            item[1],
+                            item[2],
+                            item[3],
+                            item[4],
+                            item[5],
+                            item[6]))
+
+    self.albumTable.getModel().setRowCount(0)
+
+    for idx, item in enumerate(postList):
+      self.albumTable.getModel().addRow([item.albumID,
+                                        item.title,
+                                        item.artist,
+                                        item.genre,
+                                        item.releaseDate,
+                                        item.rating,
+                                        item.tags])
     
 if __name__ == "__main__":
   mainWindow().setVisible(True)
