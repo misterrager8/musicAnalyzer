@@ -1,22 +1,42 @@
 import csv
 from ctrla import *
 from model import *
+import sys
 
 albumCtrla = ctrla()
-r = albumCtrla.viewAlbums()
-results = []
 
-for submission in r:
-  results.append([submission.albumID,
-                 submission.title,
-                 submission.artist,
-                 submission.genre,
-                 submission.releaseDate,
-                 submission.rating,
-                 submission.tags])
+def allAlbums():
+  results = []
+  for submission in albumCtrla.viewAlbums():
+    results.append([submission.albumID,
+                   submission.title,
+                   submission.artist,
+                   submission.genre,
+                   submission.releaseDate,
+                   submission.rating,
+                   submission.tags])
 
-with open("albumsList.csv", "wb") as f:
-  writer = csv.writer(f)
-  writer.writerows(results)
+  with open("albumsList.csv", "wb") as f:
+    writer = csv.writer(f)
+    writer.writerows(results)
 
-del results[:]
+def searchedAlbums(term):
+  results = []
+  for submission in albumCtrla.searchAlbums(term, 0):
+    results.append([submission.albumID,
+                   submission.title,
+                   submission.artist,
+                   submission.genre,
+                   submission.releaseDate,
+                   submission.rating,
+                   submission.tags])
+
+  with open("albumsList.csv", "wb") as f:
+    writer = csv.writer(f)
+    writer.writerows(results)
+    
+if __name__ == "__main__":
+  if len(sys.argv) < 2:
+    allAlbums()
+  else:
+    searchedAlbums(sys.argv[1])

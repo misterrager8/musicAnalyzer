@@ -15,13 +15,16 @@ class mainWindow(JFrame):
     self.initComponents()
     
   def initComponents(self):
-    self.bgPanel = JPanel()
+    self.bgPanel = JPanel(mousePressed = self.bgPanelMousePressed,
+                          mouseDragged = self.bgPanelMouseDragged)
     self.exitButton = JLabel(mouseClicked = self.exitButtonMouseClicked)
     self.jScrollPane1 = JScrollPane()
     self.albumTable = JTable()
-    self.termField = JTextField()
+    self.termField = JTextField(focusGained = self.termFieldFocusGained)
 #    self.filterBox = JComboBox<>()
-    self.searchButton = JLabel()
+    self.searchButton = JLabel(mouseEntered = self.searchButtonMouseEntered,
+                               mouseExited = self.searchButtonMouseExited,
+                               mouseClicked = self.searchButtonMouseClicked)
 
     self.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE)
     self.setUndecorated(True)
@@ -31,6 +34,7 @@ class mainWindow(JFrame):
     self.exitButton.setText("X")
     self.exitButton.setCursor(Cursor(Cursor.HAND_CURSOR))
 
+    self.albumTable.setAutoCreateRowSorter(True)
     self.albumTable.setModel(table.DefaultTableModel(
       [],
       ["ID", "Title", "Artist", "Genre", "Release Date", "Rating", "Tags"]))
@@ -41,7 +45,7 @@ class mainWindow(JFrame):
 
 #    self.filterBox.setModel(DefaultComboBoxModel<>(["Search Filter", "By Title", "By Artist", "By Date", "By Tags"]))
 
-    self.searchButton.setBackground(Color(255, 255, 255))
+    self.searchButton.setBackground(self.bgPanel.getBackground().brighter())
     self.searchButton.setHorizontalAlignment(SwingConstants.CENTER)
     self.searchButton.setText("Search")
     self.searchButton.setCursor(Cursor(Cursor.HAND_CURSOR))
@@ -90,16 +94,40 @@ class mainWindow(JFrame):
 
     self.pack()
     self.setLocationRelativeTo(None)
+    
+    print("Initializing...")
+    subprocess.call("python getAlbums.py", shell = True)
+    print("Done!")
     self.viewTable()
     
   def exitButtonMouseClicked(self, evt):
     sys.exit()
     
-  def viewTable(self):
-    print("Collecting albums...")
-    subprocess.call("python getAlbums.py", shell = True)
-    print("Done!")
+  def termFieldFocusGained(self, evt):
+    self.termField.selectAll()
+    
+  def searchButtonMouseEntered(self, evt):
+    self.searchButton.setBorder(border.LineBorder(Color.black))
+    
+  def searchButtonMouseExited(self, evt):
+    self.searchButton.setBorder(None)
+    
+  def searchButtonMouseClicked(self, evt):
+    subprocess.call("python getAlbums.py " + self.termField.getText(), shell = True)
+    self.viewTable()
+    
+  def bgPanelMousePressed(self, evt):
+    del mouseLoc[:]
+    mouseLoc.append(evt.getX())
+    mouseLoc.append(evt.getY())
+    
+  def bgPanelMouseDragged(self, evt):
+    x = evt.getXOnScreen()
+    y = evt.getYOnScreen()
 
+    self.setLocation(x - mouseLoc[0], y - mouseLoc[1])
+    
+  def viewTable(self):
     with open("albumsList.csv", "r") as f:
       reader = csv.reader(f)
       tempList = list(reader)
