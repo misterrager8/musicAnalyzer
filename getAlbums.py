@@ -20,9 +20,9 @@ def allAlbums():
     writer = csv.writer(f)
     writer.writerows(results)
 
-def searchedAlbums(term):
+def searchedAlbums(term, searchType):
   results = []
-  for submission in albumCtrla.searchAlbums(term, 0):
+  for submission in albumCtrla.searchAlbums(term, searchType):
     results.append([submission.albumID,
                    submission.title,
                    submission.artist,
@@ -39,4 +39,4 @@ if __name__ == "__main__":
   if len(sys.argv) < 2:
     allAlbums()
   else:
-    searchedAlbums(sys.argv[1])
+    searchedAlbums(sys.argv[1], sys.argv[2])

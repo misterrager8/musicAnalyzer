@@ -21,10 +21,13 @@ class mainWindow(JFrame):
     self.jScrollPane1 = JScrollPane()
     self.albumTable = JTable()
     self.termField = JTextField(focusGained = self.termFieldFocusGained)
-#    self.filterBox = JComboBox<>()
+    self.filterBox = JComboBox()
     self.searchButton = JLabel(mouseEntered = self.searchButtonMouseEntered,
                                mouseExited = self.searchButtonMouseExited,
                                mouseClicked = self.searchButtonMouseClicked)
+    self.delButton = JLabel(mouseEntered = self.delButtonMouseEntered,
+                            mouseExited = self.delButtonMouseExited,
+                            mouseClicked = self.delButtonMouseClicked)
 
     self.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE)
     self.setUndecorated(True)
@@ -43,13 +46,19 @@ class mainWindow(JFrame):
 
     self.termField.setOpaque(True)
 
-#    self.filterBox.setModel(DefaultComboBoxModel<>(["Search Filter", "By Title", "By Artist", "By Date", "By Tags"]))
+    self.filterBox.setModel(DefaultComboBoxModel(["By Title", "By Artist", "By Tags", "By Date"]))
 
     self.searchButton.setBackground(self.bgPanel.getBackground().brighter())
     self.searchButton.setHorizontalAlignment(SwingConstants.CENTER)
     self.searchButton.setText("Search")
     self.searchButton.setCursor(Cursor(Cursor.HAND_CURSOR))
     self.searchButton.setOpaque(True)
+    
+    self.delButton.setBackground(Color(255, 51, 51))
+    self.delButton.setHorizontalAlignment(SwingConstants.CENTER)
+    self.delButton.setText("Delete")
+    self.delButton.setCursor(Cursor(Cursor.HAND_CURSOR))
+    self.delButton.setOpaque(True)
 
     bgPanelLayout = GroupLayout(self.bgPanel)
     self.bgPanel.setLayout(bgPanelLayout)
@@ -61,12 +70,14 @@ class mainWindow(JFrame):
           .addComponent(self.jScrollPane1, GroupLayout.DEFAULT_SIZE, 705, sys.maxint)
           .addGroup(GroupLayout.Alignment.TRAILING, bgPanelLayout.createSequentialGroup()
             .addGap(0, 0, sys.maxint)
-            .addGroup(bgPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
-              .addComponent(self.exitButton, GroupLayout.Alignment.TRAILING)
-              .addGroup(GroupLayout.Alignment.TRAILING, bgPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING, False)
-                .addComponent(self.searchButton, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, sys.maxint)
-#                .addComponent(self.filterBox, 0, GroupLayout.DEFAULT_SIZE, sys.maxint)
-                .addComponent(self.termField, GroupLayout.PREFERRED_SIZE, 199, GroupLayout.PREFERRED_SIZE)))))
+            .addComponent(self.exitButton))
+          .addGroup(GroupLayout.Alignment.TRAILING, bgPanelLayout.createSequentialGroup()
+            .addComponent(self.delButton, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, sys.maxint)
+            .addGap(307, 307, 307)
+            .addGroup(bgPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING, False)
+              .addComponent(self.searchButton, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, sys.maxint)
+              .addComponent(self.filterBox, 0, GroupLayout.DEFAULT_SIZE, sys.maxint)
+              .addComponent(self.termField, GroupLayout.PREFERRED_SIZE, 199, GroupLayout.PREFERRED_SIZE))))
         .addContainerGap()))
     bgPanelLayout.setVerticalGroup(
       bgPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
@@ -74,11 +85,13 @@ class mainWindow(JFrame):
         .addContainerGap()
         .addComponent(self.exitButton)
         .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, 164, sys.maxint)
-#        .addComponent(self.filterBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+        .addComponent(self.filterBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
         .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
         .addComponent(self.termField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
         .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-        .addComponent(self.searchButton, GroupLayout.PREFERRED_SIZE, 42, GroupLayout.PREFERRED_SIZE)
+        .addGroup(bgPanelLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+          .addComponent(self.searchButton, GroupLayout.PREFERRED_SIZE, 42, GroupLayout.PREFERRED_SIZE)
+          .addComponent(self.delButton, GroupLayout.PREFERRED_SIZE, 42, GroupLayout.PREFERRED_SIZE))
         .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
         .addComponent(self.jScrollPane1, GroupLayout.PREFERRED_SIZE, 240, GroupLayout.PREFERRED_SIZE)
         .addContainerGap()))
@@ -113,8 +126,20 @@ class mainWindow(JFrame):
     self.searchButton.setBorder(None)
     
   def searchButtonMouseClicked(self, evt):
-    subprocess.call("python getAlbums.py " + self.termField.getText(), shell = True)
+    params = self.termField.getText() + " " + str(self.filterBox.getSelectedIndex())
+    subprocess.call("python getAlbums.py " + params, shell = True)
     self.viewTable()
+    
+  def delButtonMouseEntered(self, evt):
+    self.delButton.setBorder(border.LineBorder(Color.black))
+    
+  def delButtonMouseExited(self, evt):
+    self.delButton.setBorder(None)
+    
+  def delButtonMouseClicked(self, evt):
+    selectedID = int(self.albumTable.getValueAt(self.albumTable.getSelectedRow(), 0))
+    if JOptionPane.showConfirmDialog(None, "Delete?") == JOptionPane.YES_OPTION:
+      print("deleted " + str(selectedID))
     
   def bgPanelMousePressed(self, evt):
     del mouseLoc[:]

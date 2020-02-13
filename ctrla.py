@@ -98,13 +98,13 @@ class ctrla():
     cursor = db.cursor()
     
     try:
-      if searchType == 0:
+      if int(searchType) == 0:
         cursor.execute("SELECT * FROM albums WHERE title LIKE %s", ("%" + term + "%",))
-      elif searchType == 1:
+      elif int(searchType) == 1:
         cursor.execute("SELECT * FROM albums WHERE artist LIKE %s", ("%" + term + "%",))
-      elif searchType == 2:
+      elif int(searchType) == 2:
         cursor.execute("SELECT * FROM albums WHERE tags LIKE %s", ("%" + term + "%",))
-      elif searchType == 3:
+      elif int(searchType) == 3:
         cursor.execute("SELECT * FROM albums WHERE releaseDate LIKE %s", ("%" + term + "%",))
       results = cursor.fetchall()
       for row in results:
