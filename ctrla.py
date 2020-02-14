@@ -1,6 +1,7 @@
 from model import *
 import MySQLdb
 import csv
+import sys
 
 class ctrla():
   def __init__(self):
@@ -153,3 +154,40 @@ class ctrla():
       
     db.commit()  
     db.close()
+    
+  def GUIviewAlbums(self):
+    results = []
+    for submission in self.viewAlbums():
+      results.append([submission.albumID,
+                     submission.title,
+                     submission.artist,
+                     submission.genre,
+                     submission.releaseDate,
+                     submission.rating,
+                     submission.tags])
+
+    with open("albumsList.csv", "wb") as f:
+      writer = csv.writer(f)
+      writer.writerows(results)
+  
+  def GUIsearchAlbums(self, term, searchType):
+    results = []
+    for submission in self.searchAlbums(term, searchType):
+      results.append([submission.albumID,
+                     submission.title,
+                     submission.artist,
+                     submission.genre,
+                     submission.releaseDate,
+                     submission.rating,
+                     submission.tags])
+
+    with open("albumsList.csv", "wb") as f:
+      writer = csv.writer(f)
+      writer.writerows(results)
+    
+if __name__ == "__main__":
+  albumCtrla = ctrla()
+  if len(sys.argv) == 1:
+    albumCtrla.GUIviewAlbums()
+  elif sys.argv[1] == "search":
+    albumCtrla.GUIsearchAlbums(sys.argv[2], int(sys.argv[3]))

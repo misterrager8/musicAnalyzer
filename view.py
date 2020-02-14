@@ -109,7 +109,7 @@ class mainWindow(JFrame):
     self.setLocationRelativeTo(None)
     
     print("Initializing...")
-    subprocess.call("python getAlbums.py", shell = True)
+    subprocess.call("python ctrla.py", shell = True)
     print("Done!")
     self.viewTable()
     
@@ -127,7 +127,7 @@ class mainWindow(JFrame):
     
   def searchButtonMouseClicked(self, evt):
     params = self.termField.getText() + " " + str(self.filterBox.getSelectedIndex())
-    subprocess.call("python getAlbums.py " + params, shell = True)
+    subprocess.call("python ctrla.py search " + params, shell = True)
     self.viewTable()
     
   def delButtonMouseEntered(self, evt):
