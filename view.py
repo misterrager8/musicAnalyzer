@@ -126,9 +126,13 @@ class mainWindow(JFrame):
     self.searchButton.setBorder(None)
     
   def searchButtonMouseClicked(self, evt):
-    params = self.termField.getText() + " " + str(self.filterBox.getSelectedIndex())
-    subprocess.call("python ctrla.py search " + params, shell = True)
-    self.viewTable()
+    if self.termField.getText() == "":
+      subprocess.call("python ctrla.py", shell = True)
+      self.viewTable()
+    else:
+      params = self.termField.getText() + " " + str(self.filterBox.getSelectedIndex())
+      subprocess.call("python ctrla.py search " + params, shell = True)
+      self.viewTable()
     
   def delButtonMouseEntered(self, evt):
     self.delButton.setBorder(border.LineBorder(Color.black))
