@@ -28,6 +28,20 @@ class mainWindow(JFrame):
     self.delButton = JLabel(mouseEntered = self.delButtonMouseEntered,
                             mouseExited = self.delButtonMouseExited,
                             mouseClicked = self.delButtonMouseClicked)
+    self.titleField = JTextField(focusGained = self.titleFieldFocusGained)
+    self.artistField = JTextField(focusGained = self.artistFieldFocusGained)
+    self.dateField = JTextField(focusGained = self.dateFieldFocusGained)
+    self.ratingSpinner = JSpinner()
+    self.genreBox = JComboBox()
+    self.tagsField = JTextField(focusGained = self.tagsFieldFocusGained)
+    self.titleLabel = JLabel()
+    self.artistLabel = JLabel()
+    self.dateLabel = JLabel()
+    self.ratingLabel = JLabel()
+    self.tagsLabel = JLabel()
+    self.submitButton = JLabel(mouseEntered = self.submitButtonMouseEntered,
+                               mouseExited = self.submitButtonMouseExited,
+                               mouseClicked = self.submitButtonMouseClicked)
 
     self.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE)
     self.setUndecorated(True)
@@ -60,6 +74,26 @@ class mainWindow(JFrame):
     self.delButton.setCursor(Cursor(Cursor.HAND_CURSOR))
     self.delButton.setOpaque(True)
 
+#    self.ratingSpinner.setModel(SpinnerNumberModel(0.0d, 0.0d, 5.0d, 0.5d))
+
+    self.genreBox.setModel(DefaultComboBoxModel(["Select Genre", "Hip-Hop", "Soul / R&B", "Alternative", "Rock", "Soundtrack"]))
+
+    self.titleLabel.setText("Title")
+
+    self.artistLabel.setText("Artist")
+
+    self.dateLabel.setText("Date")
+
+    self.ratingLabel.setText("Rating")
+
+    self.tagsLabel.setText("Tags")
+
+    self.submitButton.setBackground(Color(0, 204, 0))
+    self.submitButton.setHorizontalAlignment(SwingConstants.CENTER)
+    self.submitButton.setText("Add / Edit")
+    self.submitButton.setCursor(Cursor(Cursor.HAND_CURSOR))
+    self.submitButton.setOpaque(True)
+
     bgPanelLayout = GroupLayout(self.bgPanel)
     self.bgPanel.setLayout(bgPanelLayout)
     bgPanelLayout.setHorizontalGroup(
@@ -67,32 +101,90 @@ class mainWindow(JFrame):
       .addGroup(bgPanelLayout.createSequentialGroup()
         .addContainerGap()
         .addGroup(bgPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
-          .addComponent(self.jScrollPane1, GroupLayout.DEFAULT_SIZE, 705, sys.maxint)
+          .addComponent(self.jScrollPane1)
           .addGroup(GroupLayout.Alignment.TRAILING, bgPanelLayout.createSequentialGroup()
-            .addGap(0, 0, sys.maxint)
+            .addGroup(bgPanelLayout.createParallelGroup(GroupLayout.Alignment.TRAILING, False)
+              .addGroup(bgPanelLayout.createSequentialGroup()
+                .addComponent(self.tagsLabel)
+                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(self.tagsField, GroupLayout.PREFERRED_SIZE, 172, GroupLayout.PREFERRED_SIZE))
+              .addGroup(bgPanelLayout.createSequentialGroup()
+                .addGroup(bgPanelLayout.createParallelGroup(GroupLayout.Alignment.TRAILING)
+                  .addComponent(self.titleLabel)
+                  .addComponent(self.artistLabel)
+                  .addComponent(self.dateLabel)
+                  .addComponent(self.ratingLabel))
+                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(bgPanelLayout.createParallelGroup(GroupLayout.Alignment.TRAILING, False)
+                  .addComponent(self.dateField, GroupLayout.Alignment.LEADING)
+                  .addComponent(self.genreBox, GroupLayout.Alignment.LEADING, 0, GroupLayout.DEFAULT_SIZE, sys.maxint)
+                  .addComponent(self.artistField, GroupLayout.Alignment.LEADING)
+                  .addComponent(self.titleField, GroupLayout.Alignment.LEADING)
+                  .addComponent(self.ratingSpinner, GroupLayout.PREFERRED_SIZE, 172, GroupLayout.PREFERRED_SIZE))))
+            .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, sys.maxint)
             .addComponent(self.exitButton))
           .addGroup(GroupLayout.Alignment.TRAILING, bgPanelLayout.createSequentialGroup()
-            .addComponent(self.delButton, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, sys.maxint)
-            .addGap(307, 307, 307)
-            .addGroup(bgPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING, False)
-              .addComponent(self.searchButton, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, sys.maxint)
+            .addComponent(self.submitButton, GroupLayout.PREFERRED_SIZE, 234, GroupLayout.PREFERRED_SIZE)
+            .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+            .addComponent(self.delButton, GroupLayout.PREFERRED_SIZE, 237, GroupLayout.PREFERRED_SIZE)
+            .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+            .addGroup(bgPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
               .addComponent(self.filterBox, 0, GroupLayout.DEFAULT_SIZE, sys.maxint)
-              .addComponent(self.termField, GroupLayout.PREFERRED_SIZE, 199, GroupLayout.PREFERRED_SIZE))))
+              .addGroup(GroupLayout.Alignment.TRAILING, bgPanelLayout.createSequentialGroup()
+                .addGap(0, 0, sys.maxint)
+                .addComponent(self.searchButton, GroupLayout.PREFERRED_SIZE, 222, GroupLayout.PREFERRED_SIZE))
+              .addComponent(self.termField))))
         .addContainerGap()))
+
+    bgPanelLayout.linkSize(SwingConstants.HORIZONTAL, [self.delButton, self.searchButton, self.submitButton])
+
     bgPanelLayout.setVerticalGroup(
       bgPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
       .addGroup(bgPanelLayout.createSequentialGroup()
-        .addContainerGap()
-        .addComponent(self.exitButton)
-        .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, 164, sys.maxint)
-        .addComponent(self.filterBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-        .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-        .addComponent(self.termField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-        .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-        .addGroup(bgPanelLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-          .addComponent(self.searchButton, GroupLayout.PREFERRED_SIZE, 42, GroupLayout.PREFERRED_SIZE)
-          .addComponent(self.delButton, GroupLayout.PREFERRED_SIZE, 42, GroupLayout.PREFERRED_SIZE))
-        .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+        .addGroup(bgPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+          .addGroup(bgPanelLayout.createSequentialGroup()
+            .addContainerGap()
+            .addGroup(bgPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+              .addGroup(bgPanelLayout.createSequentialGroup()
+                .addComponent(self.exitButton)
+                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, sys.maxint)
+                .addComponent(self.filterBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+                .addGap(82, 82, 82))
+              .addGroup(bgPanelLayout.createSequentialGroup()
+                .addGroup(bgPanelLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                  .addComponent(self.titleField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+                  .addComponent(self.titleLabel))
+                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(bgPanelLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                  .addComponent(self.artistField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+                  .addComponent(self.artistLabel))
+                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(self.genreBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(bgPanelLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                  .addComponent(self.dateField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+                  .addComponent(self.dateLabel))
+                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(bgPanelLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                  .addComponent(self.ratingSpinner, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+                  .addComponent(self.ratingLabel))
+                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(bgPanelLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                  .addComponent(self.tagsField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+                  .addComponent(self.tagsLabel))
+                .addGap(109, 109, 109))
+              .addGroup(GroupLayout.Alignment.TRAILING, bgPanelLayout.createSequentialGroup()
+                .addGap(0, 0, sys.maxint)
+                .addComponent(self.termField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(self.searchButton, GroupLayout.PREFERRED_SIZE, 42, GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED))))
+          .addGroup(GroupLayout.Alignment.TRAILING, bgPanelLayout.createSequentialGroup()
+            .addContainerGap(GroupLayout.DEFAULT_SIZE, sys.maxint)
+            .addGroup(bgPanelLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+              .addComponent(self.submitButton, GroupLayout.PREFERRED_SIZE, 42, GroupLayout.PREFERRED_SIZE)
+              .addComponent(self.delButton, GroupLayout.PREFERRED_SIZE, 42, GroupLayout.PREFERRED_SIZE))
+            .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)))
         .addComponent(self.jScrollPane1, GroupLayout.PREFERRED_SIZE, 240, GroupLayout.PREFERRED_SIZE)
         .addContainerGap()))
 
@@ -118,6 +210,18 @@ class mainWindow(JFrame):
     
   def termFieldFocusGained(self, evt):
     self.termField.selectAll()
+    
+  def titleFieldFocusGained(self, evt):
+    self.titleField.selectAll()
+    
+  def artistFieldFocusGained(self, evt):
+    self.artistField.selectAll()
+    
+  def dateFieldFocusGained(self, evt):
+    self.dateField.selectAll()
+    
+  def tagsFieldFocusGained(self, evt):
+    self.tagsField.selectAll()
     
   def searchButtonMouseEntered(self, evt):
     self.searchButton.setBorder(border.LineBorder(Color.black))
@@ -146,6 +250,15 @@ class mainWindow(JFrame):
       subprocess.call("python ctrla.py del " + str(selectedID), shell = True)
       self.viewTable()
     
+  def submitButtonMouseEntered(self, evt):
+    self.submitButton.setBorder(border.LineBorder(Color.black))
+    
+  def submitButtonMouseExited(self, evt):
+    self.submitButton.setBorder(None)
+    
+  def submitButtonMouseClicked(self, evt):
+    print("submit")
+    
   def bgPanelMousePressed(self, evt):
     del mouseLoc[:]
     mouseLoc.append(evt.getX())
@@ -165,24 +278,12 @@ class mainWindow(JFrame):
     del postList[:]
 
     for item in tempList:
-      postList.append(album(item[0],
-                            item[1],
-                            item[2],
-                            item[3],
-                            item[4],
-                            item[5],
-                            item[6]))
+      postList.append(album(item[0], item[1], item[2], item[3], item[4], item[5], item[6]))
 
     self.albumTable.getModel().setRowCount(0)
 
     for idx, item in enumerate(postList):
-      self.albumTable.getModel().addRow([item.albumID,
-                                        item.title,
-                                        item.artist,
-                                        item.genre,
-                                        item.releaseDate,
-                                        item.rating,
-                                        item.tags])
+      self.albumTable.getModel().addRow([item.albumID, item.title, item.artist, item.genre, item.releaseDate, item.rating, item.tags])
     
 if __name__ == "__main__":
   mainWindow().setVisible(True)
