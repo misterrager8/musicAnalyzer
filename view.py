@@ -143,7 +143,8 @@ class mainWindow(JFrame):
   def delButtonMouseClicked(self, evt):
     selectedID = int(self.albumTable.getValueAt(self.albumTable.getSelectedRow(), 0))
     if JOptionPane.showConfirmDialog(None, "Delete?") == JOptionPane.YES_OPTION:
-      print("deleted " + str(selectedID))
+      subprocess.call("python ctrla.py del " + str(selectedID), shell = True)
+      self.viewTable()
     
   def bgPanelMousePressed(self, evt):
     del mouseLoc[:]

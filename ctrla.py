@@ -184,6 +184,10 @@ class ctrla():
     with open("albumsList.csv", "wb") as f:
       writer = csv.writer(f)
       writer.writerows(results)
+  
+  def GUIdeleteAlbum(self, albumID):
+    self.deleteAlbum(albumID)
+    self.GUIviewAlbums()
     
 if __name__ == "__main__":
   albumCtrla = ctrla()
@@ -191,3 +195,5 @@ if __name__ == "__main__":
     albumCtrla.GUIviewAlbums()
   elif sys.argv[1] == "search":
     albumCtrla.GUIsearchAlbums(sys.argv[2], int(sys.argv[3]))
+  elif sys.argv[1] == "del":
+    albumCtrla.GUIdeleteAlbum(int(sys.argv[2]))
