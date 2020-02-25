@@ -46,9 +46,9 @@ class album:
     
   def toString(self):
     print(self.albumID,
-          self.title,
-          self.artist,
-          self.genre,
-          self.releaseDate,
+          str(self.title),
+          str(self.artist),
+          str(self.genre),
+          str(self.releaseDate),
           str(self.rating),
-          self.tags)
+          str(self.tags))

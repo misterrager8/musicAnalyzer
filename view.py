@@ -74,7 +74,7 @@ class mainWindow(JFrame):
     self.delButton.setCursor(Cursor(Cursor.HAND_CURSOR))
     self.delButton.setOpaque(True)
 
-#    self.ratingSpinner.setModel(SpinnerNumberModel(0.0d, 0.0d, 5.0d, 0.5d))
+    self.ratingSpinner.setModel(SpinnerNumberModel(0.0, 0.0, 5.0, 0.5))
 
     self.genreBox.setModel(DefaultComboBoxModel(["Select Genre", "Hip-Hop", "Soul / R&B", "Alternative", "Rock", "Soundtrack"]))
 
@@ -257,7 +257,26 @@ class mainWindow(JFrame):
     self.submitButton.setBorder(None)
     
   def submitButtonMouseClicked(self, evt):
-    print("submit")
+    x = album(None,
+              self.titleField.getText(),
+              self.artistField.getText(),
+              str(self.genreBox.getSelectedItem()),
+              self.dateField.getText(),
+              self.ratingSpinner.getValue(),
+              self.tagsField.getText())
+    
+    with open("temp.csv", "wb") as f:
+      writer = csv.writer(f)
+      writer.writerow([x.albumID,
+                       x.title,
+                       x.artist,
+                       x.genre,
+                       x.releaseDate,
+                       x.rating,
+                       x.tags])
+      
+    subprocess.call("python ctrla.py add", shell = True)
+    self.viewTable()
     
   def bgPanelMousePressed(self, evt):
     del mouseLoc[:]

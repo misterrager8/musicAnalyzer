@@ -2,6 +2,7 @@ from model import *
 import MySQLdb
 import csv
 import sys
+import os
 
 class ctrla():
   def __init__(self):
@@ -188,6 +189,21 @@ class ctrla():
   def GUIdeleteAlbum(self, albumID):
     self.deleteAlbum(albumID)
     self.GUIviewAlbums()
+  
+  def GUIaddAlbum(self):
+    db = MySQLdb.connect("localhost","root","bre9ase4","TESTDB")
+    cursor = db.cursor()
+    
+    csv_data = csv.reader(file("temp.csv"))
+    for row in csv_data:
+      params = [row[1], row[2], row[3], row[4], row[5], row[6]]
+      cursor.execute("INSERT INTO albums (title, artist, genre, releaseDate, rating, tags) VALUES (%s, %s, %s, %s, %s, %s)", params)
+      
+    db.commit()  
+    db.close()
+    
+    os.remove("temp.csv")
+    self.GUIviewAlbums()
     
 if __name__ == "__main__":
   albumCtrla = ctrla()
@@ -197,3 +213,5 @@ if __name__ == "__main__":
     albumCtrla.GUIsearchAlbums(sys.argv[2], int(sys.argv[3]))
   elif sys.argv[1] == "del":
     albumCtrla.GUIdeleteAlbum(int(sys.argv[2]))
+  elif sys.argv[1] == "add":
+    albumCtrla.GUIaddAlbum()
