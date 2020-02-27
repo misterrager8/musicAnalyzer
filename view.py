@@ -39,9 +39,12 @@ class mainWindow(JFrame):
     self.dateLabel = JLabel()
     self.ratingLabel = JLabel()
     self.tagsLabel = JLabel()
-    self.submitButton = JLabel(mouseEntered = self.submitButtonMouseEntered,
-                               mouseExited = self.submitButtonMouseExited,
-                               mouseClicked = self.submitButtonMouseClicked)
+    self.editButton = JLabel(mouseEntered = self.editButtonMouseEntered,
+                             mouseExited = self.editButtonMouseExited,
+                             mouseClicked = self.editButtonMouseClicked)
+    self.addButton = JLabel(mouseEntered = self.addButtonMouseEntered,
+                            mouseExited = self.addButtonMouseExited,
+                            mouseClicked = self.addButtonMouseClicked)
 
     self.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE)
     self.setUndecorated(True)
@@ -88,11 +91,17 @@ class mainWindow(JFrame):
 
     self.tagsLabel.setText("Tags")
 
-    self.submitButton.setBackground(Color(0, 204, 0))
-    self.submitButton.setHorizontalAlignment(SwingConstants.CENTER)
-    self.submitButton.setText("Add / Edit")
-    self.submitButton.setCursor(Cursor(Cursor.HAND_CURSOR))
-    self.submitButton.setOpaque(True)
+    self.editButton.setBackground(Color(255, 153, 51))
+    self.editButton.setHorizontalAlignment(SwingConstants.CENTER)
+    self.editButton.setText("Edit")
+    self.editButton.setCursor(Cursor(Cursor.HAND_CURSOR))
+    self.editButton.setOpaque(True)
+
+    self.addButton.setBackground(Color(0, 204, 0))
+    self.addButton.setHorizontalAlignment(SwingConstants.CENTER)
+    self.addButton.setText("Add")
+    self.addButton.setCursor(Cursor(Cursor.HAND_CURSOR))
+    self.addButton.setOpaque(True)
 
     bgPanelLayout = GroupLayout(self.bgPanel)
     self.bgPanel.setLayout(bgPanelLayout)
@@ -124,7 +133,9 @@ class mainWindow(JFrame):
             .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, sys.maxint)
             .addComponent(self.exitButton))
           .addGroup(GroupLayout.Alignment.TRAILING, bgPanelLayout.createSequentialGroup()
-            .addComponent(self.submitButton, GroupLayout.PREFERRED_SIZE, 234, GroupLayout.PREFERRED_SIZE)
+            .addGroup(bgPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING, False)
+              .addComponent(self.editButton, GroupLayout.DEFAULT_SIZE, 234, sys.maxint)
+              .addComponent(self.addButton, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, sys.maxint))
             .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
             .addComponent(self.delButton, GroupLayout.PREFERRED_SIZE, 237, GroupLayout.PREFERRED_SIZE)
             .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
@@ -136,20 +147,20 @@ class mainWindow(JFrame):
               .addComponent(self.termField))))
         .addContainerGap()))
 
-    bgPanelLayout.linkSize(SwingConstants.HORIZONTAL, [self.delButton, self.searchButton, self.submitButton])
+    bgPanelLayout.linkSize(SwingConstants.HORIZONTAL, [self.delButton, self.editButton, self.searchButton])
 
     bgPanelLayout.setVerticalGroup(
       bgPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
       .addGroup(bgPanelLayout.createSequentialGroup()
+        .addContainerGap()
         .addGroup(bgPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
           .addGroup(bgPanelLayout.createSequentialGroup()
-            .addContainerGap()
-            .addGroup(bgPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
-              .addGroup(bgPanelLayout.createSequentialGroup()
-                .addComponent(self.exitButton)
-                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, sys.maxint)
-                .addComponent(self.filterBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                .addGap(82, 82, 82))
+            .addComponent(self.exitButton)
+            .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, sys.maxint)
+            .addComponent(self.filterBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+            .addGap(82, 82, 82))
+          .addGroup(GroupLayout.Alignment.TRAILING, bgPanelLayout.createSequentialGroup()
+            .addGroup(bgPanelLayout.createParallelGroup(GroupLayout.Alignment.TRAILING)
               .addGroup(bgPanelLayout.createSequentialGroup()
                 .addGroup(bgPanelLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                   .addComponent(self.titleField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
@@ -172,18 +183,17 @@ class mainWindow(JFrame):
                 .addGroup(bgPanelLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                   .addComponent(self.tagsField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
                   .addComponent(self.tagsLabel))
-                .addGap(109, 109, 109))
-              .addGroup(GroupLayout.Alignment.TRAILING, bgPanelLayout.createSequentialGroup()
+                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, 13, sys.maxint)
+                .addComponent(self.addButton, GroupLayout.PREFERRED_SIZE, 42, GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(bgPanelLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                  .addComponent(self.editButton, GroupLayout.PREFERRED_SIZE, 42, GroupLayout.PREFERRED_SIZE)
+                  .addComponent(self.delButton, GroupLayout.PREFERRED_SIZE, 42, GroupLayout.PREFERRED_SIZE)))
+              .addGroup(bgPanelLayout.createSequentialGroup()
                 .addGap(0, 0, sys.maxint)
                 .addComponent(self.termField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(self.searchButton, GroupLayout.PREFERRED_SIZE, 42, GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED))))
-          .addGroup(GroupLayout.Alignment.TRAILING, bgPanelLayout.createSequentialGroup()
-            .addContainerGap(GroupLayout.DEFAULT_SIZE, sys.maxint)
-            .addGroup(bgPanelLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-              .addComponent(self.submitButton, GroupLayout.PREFERRED_SIZE, 42, GroupLayout.PREFERRED_SIZE)
-              .addComponent(self.delButton, GroupLayout.PREFERRED_SIZE, 42, GroupLayout.PREFERRED_SIZE))
+                .addComponent(self.searchButton, GroupLayout.PREFERRED_SIZE, 42, GroupLayout.PREFERRED_SIZE)))
             .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)))
         .addComponent(self.jScrollPane1, GroupLayout.PREFERRED_SIZE, 240, GroupLayout.PREFERRED_SIZE)
         .addContainerGap()))
@@ -250,13 +260,13 @@ class mainWindow(JFrame):
       subprocess.call("python ctrla.py del " + str(selectedID), shell = True)
       self.viewTable()
     
-  def submitButtonMouseEntered(self, evt):
-    self.submitButton.setBorder(border.LineBorder(Color.black))
+  def addButtonMouseEntered(self, evt):
+    self.addButton.setBorder(border.LineBorder(Color.black))
     
-  def submitButtonMouseExited(self, evt):
-    self.submitButton.setBorder(None)
+  def addButtonMouseExited(self, evt):
+    self.addButton.setBorder(None)
     
-  def submitButtonMouseClicked(self, evt):
+  def addButtonMouseClicked(self, evt):
     x = album(None,
               self.titleField.getText(),
               self.artistField.getText(),
@@ -277,6 +287,28 @@ class mainWindow(JFrame):
       
     subprocess.call("python ctrla.py add", shell = True)
     self.viewTable()
+    
+  def editButtonMouseEntered(self, evt):
+    self.editButton.setBorder(border.LineBorder(Color.black))
+    
+  def editButtonMouseExited(self, evt):
+    self.editButton.setBorder(None)
+    
+  def editButtonMouseClicked(self, evt):
+    selected = self.albumTable.getSelectedRow()
+    rowData = [self.albumTable.getValueAt(selected, 0),
+               self.albumTable.getValueAt(selected, 1),
+               self.albumTable.getValueAt(selected, 2),
+               self.albumTable.getValueAt(selected, 3),
+               self.albumTable.getValueAt(selected, 4),
+               self.albumTable.getValueAt(selected, 5),
+               self.albumTable.getValueAt(selected, 6)]
+    
+    with open("temp.csv", "wb") as f:
+      writer = csv.writer(f)
+      writer.writerow(rowData)
+      
+    subprocess.call("python ctrla.py edit", shell = True)
     
   def bgPanelMousePressed(self, evt):
     del mouseLoc[:]

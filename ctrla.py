@@ -204,6 +204,21 @@ class ctrla():
     
     os.remove("temp.csv")
     self.GUIviewAlbums()
+  
+  def GUIeditAlbum(self):
+    db = MySQLdb.connect("localhost","root","bre9ase4","TESTDB")
+    cursor = db.cursor()
+    
+    csv_data = csv.reader(file("temp.csv"))
+    for row in csv_data:
+      params = [row[1], row[2], row[3], row[4], row[5], row[6], row[0]]
+      cursor.execute("UPDATE albums SET title = %s, artist = %s, genre = %s, releaseDate = %s, rating = %s, tags = %s WHERE albumID = %s", params)
+      
+    db.commit()  
+    db.close()
+    
+    os.remove("temp.csv")
+    self.GUIviewAlbums()
     
 if __name__ == "__main__":
   albumCtrla = ctrla()
@@ -215,3 +230,5 @@ if __name__ == "__main__":
     albumCtrla.GUIdeleteAlbum(int(sys.argv[2]))
   elif sys.argv[1] == "add":
     albumCtrla.GUIaddAlbum()
+  elif sys.argv[1] == "edit":
+    albumCtrla.GUIeditAlbum()
