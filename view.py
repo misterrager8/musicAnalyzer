@@ -1,12 +1,28 @@
 from java.awt import *
 from javax.swing import *
+from java.lang import *
 import sys
 import csv
 import subprocess
 from model import *
+from javax.swing.table import *
 
 mouseLoc = []
 postList = []
+
+class dtm(DefaultTableModel):
+  def __init__(self):
+    head = "ID,Title,Artist,Genre,Release Date,Rating,Tags".split(",")
+    self.data = []
+    DefaultTableModel.__init__(self, self.data, head)
+    
+  def getColumnClass(self, col):
+    types = [int, str, str, str, str, Object, str]
+    return types[col]
+    
+  def isCellEditable(self, row, col):
+    canEdit = [False, True, True, True, True, True, True]
+    return canEdit[col]
 
 class mainWindow(JFrame):
   
@@ -19,7 +35,7 @@ class mainWindow(JFrame):
                           mouseDragged = self.bgPanelMouseDragged)
     self.exitButton = JLabel(mouseClicked = self.exitButtonMouseClicked)
     self.jScrollPane1 = JScrollPane()
-    self.albumTable = JTable()
+    self.albumTable = JTable(mouseClicked = self.albumTableMouseClicked)
     self.termField = JTextField(focusGained = self.termFieldFocusGained)
     self.filterBox = JComboBox()
     self.searchButton = JLabel(mouseEntered = self.searchButtonMouseEntered,
@@ -54,10 +70,7 @@ class mainWindow(JFrame):
     self.exitButton.setText("X")
     self.exitButton.setCursor(Cursor(Cursor.HAND_CURSOR))
 
-    self.albumTable.setAutoCreateRowSorter(True)
-    self.albumTable.setModel(table.DefaultTableModel(
-      [],
-      ["ID", "Title", "Artist", "Genre", "Release Date", "Rating", "Tags"]))
+    self.albumTable.setModel(dtm())
     
     self.jScrollPane1.setViewportView(self.albumTable)
 
@@ -320,6 +333,10 @@ class mainWindow(JFrame):
     y = evt.getYOnScreen()
 
     self.setLocation(x - mouseLoc[0], y - mouseLoc[1])
+    
+  def albumTableMouseClicked(self, evt):
+    if evt.getClickCount() == 3:
+      self.editButtonMouseClicked(evt)
     
   def viewTable(self):
     with open("albumsList.csv", "r") as f:
