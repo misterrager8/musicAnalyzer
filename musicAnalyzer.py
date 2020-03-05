@@ -1,8 +1,7 @@
 import sys
-from model import *
-from ctrla import *
+from modules import model, ctrla
 
-albumCtrla = ctrla()
+albumCtrla = ctrla.ctrla()
 genres = ["Hip-Hop",
           "Soul / R&B",
           "Alternative",
@@ -51,7 +50,7 @@ if __name__ == "__main__":
         
       tags = raw_input("Tags? ")
 
-      x = album(None, title, artist, genres[genre], releaseDate, rating, tags)
+      x = model.album(None, title, artist, genres[genre], releaseDate, rating, tags)
       albumCtrla.addAlbum(x)
       printAlbums()
     elif answer == 2:

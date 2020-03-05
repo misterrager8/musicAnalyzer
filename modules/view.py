@@ -92,7 +92,7 @@ class mainWindow(JFrame):
 
     self.ratingSpinner.setModel(SpinnerNumberModel(0.0, 0.0, 5.0, 0.5))
 
-    self.genreBox.setModel(DefaultComboBoxModel(["Select Genre", "Hip-Hop", "Soul / R&B", "Alternative", "Rock", "Soundtrack"]))
+    self.genreBox.setModel(DefaultComboBoxModel(["Select Genre", "Hip-Hop/Rap", "R&B/Soul", "Alternative", "Rock", "Soundtrack"]))
 
     self.titleLabel.setText("Title")
 
