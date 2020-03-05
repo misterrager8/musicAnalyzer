@@ -1,85 +1,82 @@
-import pandas as pd
-from song import song
-import random
-import Tkinter
-import matplotlib.pyplot as plt
-import numpy as np
+import sys
+from modules import model, ctrla
 
-dataframe = pd.read_csv("data.csv")
+albumCtrla = ctrla.ctrla()
+genres = ["Hip-Hop",
+          "Soul / R&B",
+          "Alternative",
+          "Rock",
+          "Soundtrack"]
 
-songList = [song(row["songName"],
-                 row["artist"],
-                 row["albumTitle"],
-                 row["genre"],
-                 row["yearReleased"],
-                 row["plays"])
-            for index, row in dataframe.iterrows()]
-
-def getRandomAlbums(num):
-  resultBox.delete(0, Tkinter.END)
-  for i in range(1, num + 1):
-    y = random.choice(songList)
-    resultBox.insert(Tkinter.END, y.album)
-  
-def getTopAlbums(num):
-  resultBox.delete(0, Tkinter.END)
-  avgPlays = dataframe.groupby("albumTitle")["plays"].mean().sort_values(ascending=False)[:num]
-  for key, value in avgPlays.iteritems():
-    resultBox.insert(Tkinter.END, key)
-  
-def getTopArtists(num):
-  resultBox.delete(0, Tkinter.END)
-  numArtists = dataframe.groupby("artist")["plays"].sum().sort_values(ascending=False)[:num]
-  for key, value in numArtists.iteritems():
-    resultBox.insert(Tkinter.END, key)
-  
-def exportTXT():
-  avgPlays2 = dataframe.groupby("albumTitle")["plays"].mean().sort_values(ascending=False)
-  avgPlays2.to_csv("albums.csv", header=False)
-#  statsList = open("albums.txt", "w")
-#  statsList.write(avgPlays2.encode("utf-8"))
-#  statsList.close
-  
-def getAlbumByYear(year):
-  resultBox.delete(0, Tkinter.END)
-  results = []
-  for i in songList:
-    if i.album not in results and i.yearReleased == year:
-      results.append(i.album)
-  for i in results:
-    resultBox.insert(Tkinter.END, i)
+def printAlbums():
+  r = albumCtrla.viewAlbums()
+  for obj in r:
+    obj.toString()
     
-def getTopSongs(num):
-  resultBox.delete(0, Tkinter.END)
-  sortedList = sorted(songList, key = lambda x: x.plays, reverse = True)
-  for i in range(0, num):
-    resultBox.insert(Tkinter.END, sortedList[i].songName)
+  print(str(len(r)) + " albums in total.")
+
+if __name__ == "__main__":
+  while True:
+
+    answer = input(
+"""
+0 - View All Albums
+1 - Add Album
+2 - Delete Album
+3 - Delete All
+4 - Edit Album
+5 - Export
+6 - Import
+7 - Search
+8 - Exit
+--------------------
+""")
+
+    if answer == 0:
+      printAlbums()
+    elif answer == 1:
+      title = raw_input("Title? ")
+      artist = raw_input("Artist? ")
       
-mainWindow = Tkinter.Tk()
-mainWindow.title("Music DB")
+      for idx, item in enumerate(genres):
+        print(str(idx) + " - " + item)
+      genre = input("------------\nGenre? ")
+      
+      releaseDate = raw_input("Release Date? (m/d/yyyy) ")
+      try:
+        rating = input("Rating? (1-5) ")
+      except SyntaxError:
+        rating = 0
+        
+      tags = raw_input("Tags? ")
 
-numField = Tkinter.Entry(mainWindow)
-numField.pack()
-
-submitButton = Tkinter.Button(mainWindow, text = "Random Albums", command = lambda: getRandomAlbums(int(numField.get())))
-submitButton.pack()
-
-submitButton2 = Tkinter.Button(mainWindow, text = "Top Albums", command = lambda: getTopAlbums(int(numField.get())))
-submitButton2.pack()
-
-submitButton3 = Tkinter.Button(mainWindow, text = "Top Artists", command = lambda: getTopArtists(int(numField.get())))
-submitButton3.pack()
-
-submitButton4 = Tkinter.Button(mainWindow, text = "Albums By Year", command = lambda: getAlbumByYear(int(numField.get())))
-submitButton4.pack()
-
-submitButton5 = Tkinter.Button(mainWindow, text = "Top Songs", command = lambda: getTopSongs(int(numField.get())))
-submitButton5.pack()
-
-submitButton6 = Tkinter.Button(mainWindow, text = "Export Ranked Albums", command = exportTXT)
-submitButton6.pack()
-
-resultBox = Tkinter.Listbox(mainWindow)
-resultBox.pack()
-
-mainWindow.mainloop()
+      x = model.album(None, title, artist, genres[genre], releaseDate, rating, tags)
+      albumCtrla.addAlbum(x)
+      printAlbums()
+    elif answer == 2:
+      whichAlbum = input("Which Album? ")
+      albumCtrla.deleteAlbum(whichAlbum)
+      printAlbums()
+    elif answer == 3:
+      m = raw_input("Are you sure? ")
+      if m == "Y" or m == "y":
+        albumCtrla.deleteAllAlbums()
+        printAlbums()
+    elif answer == 4:
+      whichAlbum = input("Which Album? ")
+      searchType = input("0 - Change title | 1 - Change artist | 2 - Change release date | 3 - Change rating | 4 - Change tags\n")
+      change = raw_input("Change? ")
+      albumCtrla.editAlbum(whichAlbum, searchType, change)
+    elif answer == 5:
+      albumCtrla.exportAlbums()
+    elif answer == 6:
+      albumCtrla.importAlbums()
+    elif answer == 7:
+      searchType = input("0 - By title | 1 - By artist | 2 - By tags | 3 - By year\n")
+      searchTerm = raw_input("Search query: ")
+      r = albumCtrla.searchAlbums(searchTerm, searchType)
+      print(str(len(r)) + " result(s) found.")
+      for i in r:
+        i.toString()
+    elif answer == 8:
+      sys.exit()
