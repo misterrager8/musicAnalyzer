@@ -8,10 +8,9 @@ class ctrla():
   def __init__(self):
     pass
   
-  def addAlbum(self, newAlbum):
+  def runQuery(self, query):
     db = MySQLdb.connect("localhost","root","bre9ase4","TESTDB")
     cursor = db.cursor()
-    sql = "INSERT INTO albums (title, artist, genre, releaseDate, rating, tags) VALUES ('%s', '%s', '%s', '%s', '%d', '%s')" % (newAlbum.title, newAlbum.artist, newAlbum.genre, newAlbum.releaseDate, newAlbum.rating, newAlbum.tags)
     
     try:
       cursor.execute(sql)
@@ -20,54 +19,38 @@ class ctrla():
       print(e)
       
     db.close()
+  
+  def addAlbum(self, newAlbum):
+    sql = "INSERT INTO albums (title, artist, genre, releaseDate, rating, tags) VALUES ('%s', '%s', '%s', '%s', '%d', '%s')" % (newAlbum.title, newAlbum.artist, newAlbum.genre, newAlbum.releaseDate, newAlbum.rating, newAlbum.tags)
+    self.runQuery(sql)
   
   def deleteAlbum(self, albumID):
-    db = MySQLdb.connect("localhost","root","bre9ase4","TESTDB")
-    cursor = db.cursor()
     sql = "DELETE FROM albums WHERE albumID = '%d'" % (albumID)
-    
-    try:
-      cursor.execute(sql)
-      db.commit()
-    except MySQLdb.Error, e:
-      print(e)
-      
-    db.close()
+    self.runQuery(sql)
   
   def editAlbum(self, albumID, searchType, change):
-    db = MySQLdb.connect("localhost","root","bre9ase4","TESTDB")
-    cursor = db.cursor()
+    sql0 = "UPDATE albums SET title = '%s' WHERE albumID = '%d'" % (change, albumID)
+    sql1 = "UPDATE albums SET artist = '%s' WHERE albumID = '%d'" % (change, albumID)
+    sql2 = "UPDATE albums SET releaseDate = '%s' WHERE albumID = '%d'" % (change, albumID)
+    sql3 = "UPDATE albums SET rating = '%s' WHERE albumID = '%d'" % (change, albumID)
+    sql4 = "UPDATE albums SET tags = '%s' WHERE albumID = '%d'" % (change, albumID)
     
-    try:
-      if searchType == 0:
-        cursor.execute("UPDATE albums SET title = '%s' WHERE albumID = '%d'" % (change, albumID))
-      elif searchType == 1:
-        cursor.execute("UPDATE albums SET artist = '%s' WHERE albumID = '%d'" % (change, albumID))
-      elif searchType == 2:
-        cursor.execute("UPDATE albums SET releaseDate = '%s' WHERE albumID = '%d'" % (change, albumID))
-      elif searchType == 3:
-        cursor.execute("UPDATE albums SET rating = '%s' WHERE albumID = '%d'" % (change, albumID))
-      elif searchType == 4:
-        cursor.execute("UPDATE albums SET tags = '%s' WHERE albumID = '%d'" % (change, albumID))
-      db.commit()
-    except MySQLdb.Error, e:
-      print(e)
-     
-    db.close()
+    if searchType == 0:
+      self.runQuery(sql0)
+    elif searchType == 1:
+      self.runQuery(sql1)
+    elif searchType == 2:
+      self.runQuery(sql2)
+    elif searchType == 3:
+      self.runQuery(sql3)
+    elif searchType == 4:
+      self.runQuery(sql4)
+
     print("Album edited.")
   
   def deleteAllAlbums(self):
-    db = MySQLdb.connect("localhost","root","bre9ase4","TESTDB")
-    cursor = db.cursor()
     sql = "TRUNCATE TABLE albums"
-    
-    try:
-      cursor.execute(sql)
-      db.commit()
-    except MySQLdb.Error, e:
-      print(e)
-      
-    db.close()
+    self.runQuery(sql)
     
   def viewAlbums(self):
     albumsList = []

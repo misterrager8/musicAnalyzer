@@ -2,8 +2,8 @@ import sys
 from modules import model, ctrla
 
 albumCtrla = ctrla.ctrla()
-genres = ["Hip-Hop",
-          "Soul / R&B",
+genres = ["Hip-Hop/Rap",
+          "R&B/Soul",
           "Alternative",
           "Rock",
           "Soundtrack"]
