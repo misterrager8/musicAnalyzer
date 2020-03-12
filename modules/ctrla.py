@@ -13,12 +13,22 @@ class ctrla():
     cursor = db.cursor()
     
     try:
-      cursor.execute(sql)
+      cursor.execute(query)
       db.commit()
     except MySQLdb.Error, e:
       print(e)
       
     db.close()
+  
+  def runReadQuery(self, query):
+    db = MySQLdb.connect("localhost","root","bre9ase4","TESTDB")
+    cursor = db.cursor()
+    
+    try:
+      cursor.execute(query)
+      return cursor.fetchall()
+    except MySQLdb.Error, e:
+      print(e)
   
   def addAlbum(self, newAlbum):
     sql = "INSERT INTO albums (title, artist, genre, releaseDate, rating, tags) VALUES ('%s', '%s', '%s', '%s', '%d', '%s')" % (newAlbum.title, newAlbum.artist, newAlbum.genre, newAlbum.releaseDate, newAlbum.rating, newAlbum.tags)
@@ -54,101 +64,75 @@ class ctrla():
     
   def viewAlbums(self):
     albumsList = []
-    db = MySQLdb.connect("localhost","root","bre9ase4","TESTDB")
-    cursor = db.cursor()
     sql = "SELECT * FROM albums"
     
-    try:
-      cursor.execute(sql)
-      results = cursor.fetchall()
-      for row in results:
-        x = album(row[0],
-              row[1],
-              row[2],
-              row[3],
-              row[4],
-              row[5],
-              row[6])
-        albumsList.append(x)
-        
-    except MySQLdb.Error, e:
-      print(e)
+    for row in self.runReadQuery(sql):
+      x = album(row[0],
+                row[1],
+                row[2],
+                row[3],
+                row[4],
+                row[5],
+                row[6])
+      albumsList.append(x)
       
-    db.close()
     return albumsList
     
   def searchAlbums(self, term, searchType):
     albumsList = []
-    db = MySQLdb.connect("localhost","root","bre9ase4","TESTDB")
-    cursor = db.cursor()
+    b = {}
+    sql0 = "SELECT * FROM albums WHERE title LIKE %s" % ("%" + term + "%",)
+    sql1 = "SELECT * FROM albums WHERE artist LIKE %s" % ("%" + term + "%",)
+    sql2 = "SELECT * FROM albums WHERE tags LIKE %s" % ("%" + term + "%",)
+    sql3 = "SELECT * FROM albums WHERE releaseDate LIKE %s" % ("%" + term + "%",)
     
-    try:
-      if int(searchType) == 0:
-        cursor.execute("SELECT * FROM albums WHERE title LIKE %s", ("%" + term + "%",))
-      elif int(searchType) == 1:
-        cursor.execute("SELECT * FROM albums WHERE artist LIKE %s", ("%" + term + "%",))
-      elif int(searchType) == 2:
-        cursor.execute("SELECT * FROM albums WHERE tags LIKE %s", ("%" + term + "%",))
-      elif int(searchType) == 3:
-        cursor.execute("SELECT * FROM albums WHERE releaseDate LIKE %s", ("%" + term + "%",))
-      results = cursor.fetchall()
-      for row in results:
-        x = album(row[0],
-              row[1],
-              row[2],
-              row[3],
-              row[4],
-              row[5],
-              row[6])
-        albumsList.append(x)
-        
-    except MySQLdb.Error, e:
-      print(e)
+    if int(searchType) == 0:
+      b = self.runReadQuery(sql0)
+    elif int(searchType) == 1:
+      b = self.runReadQuery(sql1)
+    elif int(searchType) == 2:
+      b = self.runReadQuery(sql2)
+    elif int(searchType) == 3:
+      b = self.runReadQuery(sql3)
       
-    db.close()
+    for row in b:
+      x = album(row[0],
+                row[1],
+                row[2],
+                row[3],
+                row[4],
+                row[5],
+                row[6])
+      albumsList.append(x)
+      
     return albumsList
     
   def exportAlbums(self):
-    db = MySQLdb.connect("localhost","root","bre9ase4","TESTDB")
-    cursor = db.cursor()
     sql = "SELECT * FROM albums"
-    
-    try:
-      cursor.execute(sql)
-      results = cursor.fetchall()
-      
-      with open("output.csv", "w") as f:
-          a = csv.writer(f, delimiter = ",")
-          a.writerow(["Album ID", "Title", "Artist", "Genre", "Release Date", "Rating", "Tags"])
-          a.writerows(results)
+    results = self.runReadQuery(sql)
+
+    with open("output.csv", "w") as f:
+        a = csv.writer(f, delimiter = ",")
+        a.writerow(["Album ID", "Title", "Artist", "Genre", "Release Date", "Rating", "Tags"])
+        a.writerows(results)
         
-    except MySQLdb.Error, e:
-      print(e)
-      
-    db.close()
     print("Exported.")
   
   def importAlbums(self):
-    db = MySQLdb.connect("localhost","root","bre9ase4","TESTDB")
-    cursor = db.cursor()
-    
     csv_data = csv.reader(file("input.csv"))
     for row in csv_data:
-      cursor.execute("INSERT INTO albums (title, artist, genre, releaseDate, rating, tags) VALUES (%s, %s, %s, %s, %s, %s)", row)
+      sql = "INSERT INTO albums (title, artist, genre, releaseDate, rating, tags) VALUES (%s, %s, %s, %s, %s, %s)" % (row)
       
-    db.commit()  
-    db.close()
-    
   def GUIviewAlbums(self):
     results = []
     for submission in self.viewAlbums():
       results.append([submission.albumID,
-                     submission.title,
-                     submission.artist,
-                     submission.genre,
-                     submission.releaseDate,
-                     submission.rating,
-                     submission.tags])
+                      submission.title,
+                      submission.artist,
+                      submission.genre,
+                      submission.releaseDate,
+                      submission.rating,
+                      submission.tags])
 
     with open("albumsList.csv", "wb") as f:
       writer = csv.writer(f)
@@ -158,12 +142,12 @@ class ctrla():
     results = []
     for submission in self.searchAlbums(term, searchType):
       results.append([submission.albumID,
-                     submission.title,
-                     submission.artist,
-                     submission.genre,
-                     submission.releaseDate,
-                     submission.rating,
-                     submission.tags])
+                      submission.title,
+                      submission.artist,
+                      submission.genre,
+                      submission.releaseDate,
+                      submission.rating,
+                      submission.tags])
 
     with open("albumsList.csv", "wb") as f:
       writer = csv.writer(f)
@@ -174,31 +158,21 @@ class ctrla():
     self.GUIviewAlbums()
   
   def GUIaddAlbum(self):
-    db = MySQLdb.connect("localhost","root","bre9ase4","TESTDB")
-    cursor = db.cursor()
-    
     csv_data = csv.reader(file("temp.csv"))
     for row in csv_data:
       params = [row[1], row[2], row[3], row[4], row[5], row[6]]
-      cursor.execute("INSERT INTO albums (title, artist, genre, releaseDate, rating, tags) VALUES (%s, %s, %s, %s, %s, %s)", params)
-      
-    db.commit()  
-    db.close()
+      sql = "INSERT INTO albums (title, artist, genre, releaseDate, rating, tags) VALUES (%s, %s, %s, %s, %s, %s)" % (params)
+      self.runQuery(sql)
     
     os.remove("temp.csv")
     self.GUIviewAlbums()
   
   def GUIeditAlbum(self):
-    db = MySQLdb.connect("localhost","root","bre9ase4","TESTDB")
-    cursor = db.cursor()
-    
     csv_data = csv.reader(file("temp.csv"))
     for row in csv_data:
       params = [row[1], row[2], row[3], row[4], row[5], row[6], row[0]]
-      cursor.execute("UPDATE albums SET title = %s, artist = %s, genre = %s, releaseDate = %s, rating = %s, tags = %s WHERE albumID = %s", params)
-      
-    db.commit()  
-    db.close()
+      sql = "UPDATE albums SET title = %s, artist = %s, genre = %s, releaseDate = %s, rating = %s, tags = %s WHERE albumID = %s" % (params)
+      self.runQuery(sql)
     
     os.remove("temp.csv")
     self.GUIviewAlbums()

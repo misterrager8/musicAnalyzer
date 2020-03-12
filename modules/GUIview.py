@@ -10,7 +10,7 @@ from javax.swing.table import *
 mouseLoc = []
 postList = []
 
-class dtm(DefaultTableModel):
+class tableModelWrapper(DefaultTableModel):
   def __init__(self):
     head = "ID,Title,Artist,Genre,Release Date,Rating,Tags".split(",")
     self.data = []
@@ -25,10 +25,10 @@ class dtm(DefaultTableModel):
     return canEdit[col]
 
 class mainWindow(JFrame):
-  
   def __init__(self):
     super(mainWindow, self).__init__()
     self.initComponents()
+    self.setVisible(True)
     
   def initComponents(self):
     self.bgPanel = JPanel(mousePressed = self.bgPanelMousePressed,
@@ -70,7 +70,7 @@ class mainWindow(JFrame):
     self.exitButton.setText("X")
     self.exitButton.setCursor(Cursor(Cursor.HAND_CURSOR))
 
-    self.albumTable.setModel(dtm())
+    self.albumTable.setModel(tableModelWrapper())
     
     self.jScrollPane1.setViewportView(self.albumTable)
 
