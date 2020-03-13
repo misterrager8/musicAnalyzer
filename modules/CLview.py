@@ -11,7 +11,7 @@ genres = ["Hip-Hop/Rap",
 class homePrompts():
   def __init__(self):
     while True:
-
+      self.printAlbums()
       answer = input(
 """
 0 - View All Albums
@@ -46,16 +46,13 @@ class homePrompts():
 
         x = album(None, title, artist, genres[genre], releaseDate, rating, tags)
         albumCtrla.addAlbum(x)
-        self.printAlbums()
       elif answer == 2:
         whichAlbum = input("Which Album? ")
         albumCtrla.deleteAlbum(whichAlbum)
-        self.printAlbums()
       elif answer == 3:
         m = raw_input("Are you sure? ")
         if m == "Y" or m == "y":
           albumCtrla.deleteAllAlbums()
-          self.printAlbums()
       elif answer == 4:
         whichAlbum = input("Which Album? ")
         searchType = input("0 - Change title | 1 - Change artist | 2 - Change release date | 3 - Change rating | 4 - Change tags\n")

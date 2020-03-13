@@ -78,6 +78,7 @@ class ctrla():
       
     return albumsList
     
+#TODO: dict b comes back empty as NoneType, needs fix
   def searchAlbums(self, term, searchType):
     albumsList = []
     b = {}
@@ -160,8 +161,7 @@ class ctrla():
   def GUIaddAlbum(self):
     csv_data = csv.reader(file("temp.csv"))
     for row in csv_data:
-      params = [row[1], row[2], row[3], row[4], row[5], row[6]]
-      sql = "INSERT INTO albums (title, artist, genre, releaseDate, rating, tags) VALUES (%s, %s, %s, %s, %s, %s)" % (params)
+      sql = "INSERT INTO albums (title, artist, genre, releaseDate, rating, tags) VALUES ('%s', '%s', '%s', '%s', '%s', '%s')" % (row[1], row[2], row[3], row[4], row[5], row[6])
       self.runQuery(sql)
     
     os.remove("temp.csv")
@@ -170,8 +170,7 @@ class ctrla():
   def GUIeditAlbum(self):
     csv_data = csv.reader(file("temp.csv"))
     for row in csv_data:
-      params = [row[1], row[2], row[3], row[4], row[5], row[6], row[0]]
-      sql = "UPDATE albums SET title = %s, artist = %s, genre = %s, releaseDate = %s, rating = %s, tags = %s WHERE albumID = %s" % (params)
+      sql = "UPDATE albums SET title = '%s', artist = '%s', genre = '%s', releaseDate = '%s', rating = '%s', tags = '%s' WHERE albumID = '%d'" % (row[1], row[2], row[3], row[4], row[5], row[6], int(row[0]))
       self.runQuery(sql)
     
     os.remove("temp.csv")

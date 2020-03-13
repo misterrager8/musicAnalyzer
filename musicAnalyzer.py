@@ -1,5 +1,5 @@
 import sys
-from modules import model, CLview
+from modules import CLview
 import subprocess
 import os
       
