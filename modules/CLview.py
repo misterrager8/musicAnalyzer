@@ -11,7 +11,6 @@ genres = ["Hip-Hop/Rap",
 class homePrompts():
   def __init__(self):
     while True:
-      self.printAlbums()
       answer = input(
 """
 0 - View All Albums
@@ -38,6 +37,7 @@ class homePrompts():
 
         releaseDate = raw_input("Release Date? (m/d/yyyy) ")
         try:
+          #TODO: rating is rounding up/down on input, needs fix
           rating = input("Rating? (1-5) ")
         except SyntaxError:
           rating = 0
@@ -46,18 +46,23 @@ class homePrompts():
 
         x = album(None, title, artist, genres[genre], releaseDate, rating, tags)
         albumCtrla.addAlbum(x)
+        self.printAlbums()
       elif answer == 2:
+        self.printAlbums()
         whichAlbum = input("Which Album? ")
         albumCtrla.deleteAlbum(whichAlbum)
+        self.printAlbums()
       elif answer == 3:
         m = raw_input("Are you sure? ")
         if m == "Y" or m == "y":
           albumCtrla.deleteAllAlbums()
       elif answer == 4:
+        self.printAlbums()
         whichAlbum = input("Which Album? ")
         searchType = input("0 - Change title | 1 - Change artist | 2 - Change release date | 3 - Change rating | 4 - Change tags\n")
         change = raw_input("Change? ")
         albumCtrla.editAlbum(whichAlbum, searchType, change)
+        self.printAlbums()
       elif answer == 5:
         albumCtrla.exportAlbums()
       elif answer == 6:

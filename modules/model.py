@@ -1,4 +1,16 @@
 class album:
+  """
+  Class for album object.
+
+  Attributes:
+  albumID -- Unique identifier for album
+  title -- Album title
+  artist -- Album artist
+  genre -- Genre the album belongs to
+  releaseDate -- Release date for the album. Can be year or specific date
+  rating -- Numerical rating of album from 0.0 to 5.0
+  tags -- User-defined identifiers for album to make searching, organizing easier
+  """
   def __init__(self, albumID, title, artist, genre, releaseDate, rating, tags):
     self.albumID = albumID
     self.title = title

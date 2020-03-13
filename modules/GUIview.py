@@ -8,9 +8,10 @@ from model import *
 from javax.swing.table import *
 
 mouseLoc = []
-postList = []
+albumList = []
 
 class tableModelWrapper(DefaultTableModel):
+  """Wrapper class for TableModel. Makes it easier to modify table properties"""
   def __init__(self):
     head = "ID,Title,Artist,Genre,Release Date,Rating,Tags".split(",")
     self.data = []
@@ -25,6 +26,7 @@ class tableModelWrapper(DefaultTableModel):
     return canEdit[col]
 
 class mainWindow(JFrame):
+  """Class for main JFrame components/actions"""
   def __init__(self):
     super(mainWindow, self).__init__()
     self.initComponents()
@@ -339,18 +341,19 @@ class mainWindow(JFrame):
       self.editButtonMouseClicked(evt)
     
   def viewTable(self):
+    """Takes album data from DB for display on JTable"""
     with open("albumsList.csv", "r") as f:
       reader = csv.reader(f)
       tempList = list(reader)
 
-    del postList[:]
+    del albumList[:]
 
     for item in tempList:
-      postList.append(album(item[0], item[1], item[2], item[3], item[4], item[5], item[6]))
+      albumList.append(album(item[0], item[1], item[2], item[3], item[4], item[5], item[6]))
 
     self.albumTable.getModel().setRowCount(0)
 
-    for idx, item in enumerate(postList):
+    for idx, item in enumerate(albumList):
       self.albumTable.getModel().addRow([item.albumID, item.title, item.artist, item.genre, item.releaseDate, item.rating, item.tags])
     
 if __name__ == "__main__":
