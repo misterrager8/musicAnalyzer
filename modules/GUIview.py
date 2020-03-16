@@ -302,6 +302,7 @@ class mainWindow(JFrame):
       
     subprocess.call("python ctrla.py add", shell = True)
     self.viewTable()
+    self.clearAllFields()
     
   def editButtonMouseEntered(self, evt):
     self.editButton.setBorder(border.LineBorder(Color.black))
@@ -355,6 +356,14 @@ class mainWindow(JFrame):
 
     for idx, item in enumerate(albumList):
       self.albumTable.getModel().addRow([item.albumID, item.title, item.artist, item.genre, item.releaseDate, item.rating, item.tags])
+      
+  def clearAllFields(self):
+    self.titleField.setText(None)
+    self.artistField.setText(None)
+    self.genreBox.setSelectedIndex(0)
+    self.dateField.setText(None)
+    self.ratingSpinner.setValue(0.0)
+    self.tagsField.setText(None)
     
 if __name__ == "__main__":
   mainWindow().setVisible(True)
