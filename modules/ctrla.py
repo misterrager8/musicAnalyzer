@@ -140,9 +140,19 @@ class ctrla():
   
   def importAlbums(self):
     """Takes all info from CSV, stores in DB"""
+    imported = []
     csv_data = csv.reader(file("input.csv"))
     for row in csv_data:
-      sql = "INSERT INTO albums (title, artist, genre, releaseDate, rating, tags) VALUES (%s, %s, %s, %s, %s, %s)" % (row)
+      qAlbum = album(None, row[0], row[1], row[2], row[3], float(row[4]), row[5])
+      imported.append(qAlbum)
+      
+    for item in imported:
+      item.toString()
+      
+    answer = raw_input("Add these albums? ")
+    if answer == "Y" or answer == "y":
+      for item in imported:
+        self.addAlbum(item)
       
   def GUIviewAlbums(self):
     """Gets all albums in DB, writes to CSV for display on a JTable"""
