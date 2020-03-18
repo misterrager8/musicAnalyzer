@@ -37,7 +37,7 @@ class mainWindow(JFrame):
                           mouseDragged = self.bgPanelMouseDragged)
     self.exitButton = JLabel(mouseClicked = self.exitButtonMouseClicked)
     self.jScrollPane1 = JScrollPane()
-    self.albumTable = JTable(mouseClicked = self.albumTableMouseClicked)
+    self.albumTable = JTable()
     self.termField = JTextField(focusGained = self.termFieldFocusGained)
     self.filterBox = JComboBox()
     self.searchButton = JLabel(mouseEntered = self.searchButtonMouseEntered,
@@ -63,6 +63,8 @@ class mainWindow(JFrame):
     self.addButton = JLabel(mouseEntered = self.addButtonMouseEntered,
                             mouseExited = self.addButtonMouseExited,
                             mouseClicked = self.addButtonMouseClicked)
+    self.countLabel = JLabel()
+    self.statusLabel = JLabel()
 
     self.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE)
     self.setUndecorated(True)
@@ -117,6 +119,11 @@ class mainWindow(JFrame):
     self.addButton.setText("Add")
     self.addButton.setCursor(Cursor(Cursor.HAND_CURSOR))
     self.addButton.setOpaque(True)
+    
+    self.countLabel.setText(" ")
+    
+    self.statusLabel.setHorizontalAlignment(SwingConstants.TRAILING);
+    self.statusLabel.setText(" ");
 
     bgPanelLayout = GroupLayout(self.bgPanel)
     self.bgPanel.setLayout(bgPanelLayout)
@@ -125,13 +132,9 @@ class mainWindow(JFrame):
       .addGroup(bgPanelLayout.createSequentialGroup()
         .addContainerGap()
         .addGroup(bgPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
-          .addComponent(self.jScrollPane1)
+          .addComponent(self.jScrollPane1, GroupLayout.DEFAULT_SIZE, 723, sys.maxint)
           .addGroup(GroupLayout.Alignment.TRAILING, bgPanelLayout.createSequentialGroup()
             .addGroup(bgPanelLayout.createParallelGroup(GroupLayout.Alignment.TRAILING, False)
-              .addGroup(bgPanelLayout.createSequentialGroup()
-                .addComponent(self.tagsLabel)
-                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(self.tagsField, GroupLayout.PREFERRED_SIZE, 172, GroupLayout.PREFERRED_SIZE))
               .addGroup(bgPanelLayout.createSequentialGroup()
                 .addGroup(bgPanelLayout.createParallelGroup(GroupLayout.Alignment.TRAILING)
                   .addComponent(self.titleLabel)
@@ -144,73 +147,78 @@ class mainWindow(JFrame):
                   .addComponent(self.genreBox, GroupLayout.Alignment.LEADING, 0, GroupLayout.DEFAULT_SIZE, sys.maxint)
                   .addComponent(self.artistField, GroupLayout.Alignment.LEADING)
                   .addComponent(self.titleField, GroupLayout.Alignment.LEADING)
-                  .addComponent(self.ratingSpinner, GroupLayout.PREFERRED_SIZE, 172, GroupLayout.PREFERRED_SIZE))))
-            .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, sys.maxint)
-            .addComponent(self.exitButton))
-          .addGroup(GroupLayout.Alignment.TRAILING, bgPanelLayout.createSequentialGroup()
+                  .addComponent(self.ratingSpinner, GroupLayout.PREFERRED_SIZE, 172, GroupLayout.PREFERRED_SIZE)))
+              .addGroup(bgPanelLayout.createSequentialGroup()
+                .addComponent(self.tagsLabel)
+                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(bgPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                  .addComponent(self.addButton, GroupLayout.PREFERRED_SIZE, 113, GroupLayout.PREFERRED_SIZE)
+                  .addComponent(self.editButton, GroupLayout.PREFERRED_SIZE, 113, GroupLayout.PREFERRED_SIZE)
+                  .addComponent(self.delButton, GroupLayout.PREFERRED_SIZE, 113, GroupLayout.PREFERRED_SIZE)
+                  .addComponent(self.tagsField, GroupLayout.PREFERRED_SIZE, 172, GroupLayout.PREFERRED_SIZE))))
+            .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, 286, sys.maxint)
             .addGroup(bgPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING, False)
-              .addComponent(self.editButton, GroupLayout.DEFAULT_SIZE, 234, sys.maxint)
-              .addComponent(self.addButton, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, sys.maxint))
-            .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-            .addComponent(self.delButton, GroupLayout.PREFERRED_SIZE, 237, GroupLayout.PREFERRED_SIZE)
-            .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-            .addGroup(bgPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
-              .addComponent(self.filterBox, 0, GroupLayout.DEFAULT_SIZE, sys.maxint)
-              .addGroup(GroupLayout.Alignment.TRAILING, bgPanelLayout.createSequentialGroup()
-                .addGap(0, 0, sys.maxint)
-                .addComponent(self.searchButton, GroupLayout.PREFERRED_SIZE, 222, GroupLayout.PREFERRED_SIZE))
-              .addComponent(self.termField))))
+              .addComponent(self.exitButton, GroupLayout.Alignment.TRAILING)
+              .addComponent(self.searchButton, GroupLayout.Alignment.TRAILING, GroupLayout.PREFERRED_SIZE, 113, GroupLayout.PREFERRED_SIZE)
+              .addComponent(self.termField)
+              .addComponent(self.filterBox, 0, 219, sys.maxint)))
+          .addGroup(bgPanelLayout.createSequentialGroup()
+            .addComponent(self.countLabel, GroupLayout.PREFERRED_SIZE, 207, GroupLayout.PREFERRED_SIZE)
+            .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, sys.maxint)
+            .addComponent(self.statusLabel, GroupLayout.PREFERRED_SIZE, 207, GroupLayout.PREFERRED_SIZE)))
         .addContainerGap()))
-
-    bgPanelLayout.linkSize(SwingConstants.HORIZONTAL, [self.delButton, self.editButton, self.searchButton])
-
+    
     bgPanelLayout.setVerticalGroup(
       bgPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
       .addGroup(bgPanelLayout.createSequentialGroup()
         .addContainerGap()
-        .addGroup(bgPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+        .addGroup(bgPanelLayout.createParallelGroup(GroupLayout.Alignment.TRAILING)
           .addGroup(bgPanelLayout.createSequentialGroup()
-            .addComponent(self.exitButton)
-            .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, sys.maxint)
-            .addComponent(self.filterBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-            .addGap(82, 82, 82))
-          .addGroup(GroupLayout.Alignment.TRAILING, bgPanelLayout.createSequentialGroup()
+            .addGroup(bgPanelLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+              .addComponent(self.titleField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+              .addComponent(self.titleLabel))
+            .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+            .addGroup(bgPanelLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+              .addComponent(self.artistField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+              .addComponent(self.artistLabel))
+            .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+            .addComponent(self.genreBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+            .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+            .addGroup(bgPanelLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+              .addComponent(self.dateField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+              .addComponent(self.dateLabel))
+            .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+            .addGroup(bgPanelLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+              .addComponent(self.ratingSpinner, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+              .addComponent(self.ratingLabel))
+            .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+            .addGroup(bgPanelLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+              .addComponent(self.tagsField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+              .addComponent(self.tagsLabel))
+            .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
             .addGroup(bgPanelLayout.createParallelGroup(GroupLayout.Alignment.TRAILING)
               .addGroup(bgPanelLayout.createSequentialGroup()
-                .addGroup(bgPanelLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                  .addComponent(self.titleField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                  .addComponent(self.titleLabel))
+                .addComponent(self.addButton, GroupLayout.PREFERRED_SIZE, 30, GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(bgPanelLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                  .addComponent(self.artistField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                  .addComponent(self.artistLabel))
-                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(self.genreBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(bgPanelLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                  .addComponent(self.dateField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                  .addComponent(self.dateLabel))
-                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(bgPanelLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                  .addComponent(self.ratingSpinner, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                  .addComponent(self.ratingLabel))
-                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(bgPanelLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                  .addComponent(self.tagsField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                  .addComponent(self.tagsLabel))
-                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, 13, sys.maxint)
-                .addComponent(self.addButton, GroupLayout.PREFERRED_SIZE, 42, GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(bgPanelLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                  .addComponent(self.editButton, GroupLayout.PREFERRED_SIZE, 42, GroupLayout.PREFERRED_SIZE)
-                  .addComponent(self.delButton, GroupLayout.PREFERRED_SIZE, 42, GroupLayout.PREFERRED_SIZE)))
+                .addComponent(self.editButton, GroupLayout.PREFERRED_SIZE, 30, GroupLayout.PREFERRED_SIZE)
+                .addGap(36, 36, 36))
               .addGroup(bgPanelLayout.createSequentialGroup()
-                .addGap(0, 0, sys.maxint)
-                .addComponent(self.termField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(self.searchButton, GroupLayout.PREFERRED_SIZE, 42, GroupLayout.PREFERRED_SIZE)))
-            .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)))
-        .addComponent(self.jScrollPane1, GroupLayout.PREFERRED_SIZE, 240, GroupLayout.PREFERRED_SIZE)
+                .addGap(72, 72, 72)
+                .addComponent(self.delButton, GroupLayout.PREFERRED_SIZE, 30, GroupLayout.PREFERRED_SIZE))))
+          .addGroup(bgPanelLayout.createSequentialGroup()
+            .addComponent(self.exitButton)
+            .addGap(188, 188, 188)
+            .addComponent(self.filterBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+            .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+            .addComponent(self.termField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+            .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+            .addComponent(self.searchButton, GroupLayout.PREFERRED_SIZE, 30, GroupLayout.PREFERRED_SIZE)))
+        .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, 23, sys.maxint)
+        .addComponent(self.jScrollPane1, GroupLayout.PREFERRED_SIZE, 221, GroupLayout.PREFERRED_SIZE)
+        .addGap(3, 3, 3)
+        .addGroup(bgPanelLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+          .addComponent(self.countLabel)
+          .addComponent(self.statusLabel))
         .addContainerGap()))
 
     layout = GroupLayout(self.getContentPane())
@@ -218,6 +226,7 @@ class mainWindow(JFrame):
     layout.setHorizontalGroup(
       layout.createParallelGroup(GroupLayout.Alignment.LEADING)
       .addComponent(self.bgPanel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, sys.maxint))
+    
     layout.setVerticalGroup(
       layout.createParallelGroup(GroupLayout.Alignment.LEADING)
       .addComponent(self.bgPanel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, sys.maxint))
@@ -274,6 +283,7 @@ class mainWindow(JFrame):
     if JOptionPane.showConfirmDialog(None, "Delete?") == JOptionPane.YES_OPTION:
       subprocess.call("python ctrla.py del " + str(selectedID), shell = True)
       self.viewTable()
+      self.statusLabel.setText(str(selectedID) + " deleted.")
     
   def addButtonMouseEntered(self, evt):
     self.addButton.setBorder(border.LineBorder(Color.black))
@@ -303,6 +313,7 @@ class mainWindow(JFrame):
     subprocess.call("python ctrla.py add", shell = True)
     self.viewTable()
     self.clearAllFields()
+    self.statusLabel.setText(x.title + " added.")
     
   def editButtonMouseEntered(self, evt):
     self.editButton.setBorder(border.LineBorder(Color.black))
@@ -325,6 +336,7 @@ class mainWindow(JFrame):
       writer.writerow(rowData)
       
     subprocess.call("python ctrla.py edit", shell = True)
+    self.statusLabel.setText(str(self.albumTable.getValueAt(selected, 1)) + " edited.")
     
   def bgPanelMousePressed(self, evt):
     del mouseLoc[:]
@@ -336,10 +348,6 @@ class mainWindow(JFrame):
     y = evt.getYOnScreen()
 
     self.setLocation(x - mouseLoc[0], y - mouseLoc[1])
-    
-  def albumTableMouseClicked(self, evt):
-    if evt.getClickCount() == 3:
-      self.editButtonMouseClicked(evt)
     
   def viewTable(self):
     """Takes album data from DB for display on JTable"""
@@ -356,6 +364,8 @@ class mainWindow(JFrame):
 
     for idx, item in enumerate(albumList):
       self.albumTable.getModel().addRow([item.albumID, item.title, item.artist, item.genre, item.releaseDate, item.rating, item.tags])
+      
+    self.countLabel.setText(str(len(albumList)) + " album(s) found.")
       
   def clearAllFields(self):
     self.titleField.setText(None)

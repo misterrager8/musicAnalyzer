@@ -42,6 +42,19 @@ class ctrla():
       return cursor.fetchall()
     except MySQLdb.Error, e:
       print(e)
+      
+  def getAlbumByID(self, ID):
+    sql = "SELECT * FROM albums WHERE albumID = %d", (ID)
+    v = None
+    for row in self.runReadQuery(sql):
+      v = album(row[0],
+                row[1],
+                row[2],
+                row[3],
+                row[4],
+                row[5],
+                row[6])
+    return v
   
   def addAlbum(self, newAlbum):
     """Adds album to DB"""
@@ -146,6 +159,7 @@ class ctrla():
       qAlbum = album(None, row[0], row[1], row[2], row[3], float(row[4]), row[5])
       imported.append(qAlbum)
       
+    print(str(len(imported)) + " album(s) found.")
     for item in imported:
       item.toString()
       
