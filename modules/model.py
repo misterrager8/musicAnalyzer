@@ -1,66 +1,67 @@
-class album:
-  """
-  Class for album object.
+class Album:
+    """
+    Class for Album object.
 
-  Attributes:
-  albumID -- Unique identifier for album
-  title -- Album title
-  artist -- Album artist
-  genre -- Genre the album belongs to
-  releaseDate -- Release date for the album. Can be year or specific date
-  rating -- Numerical rating of album from 0.0 to 5.0
-  tags -- User-defined identifiers for album to make searching, organizing easier
-  """
-  def __init__(self, albumID, title, artist, genre, releaseDate, rating, tags):
-    self.albumID = albumID
-    self.title = title
-    self.artist = artist
-    self.genre = genre
-    self.releaseDate = releaseDate
-    self.rating = rating
-    self.tags = tags
-    
-  def getTitle(self):
-    return self.title
-    
-  def getArtist(self):
-    return self.artist
-    
-  def getGenre(self):
-    return self.genre
-    
-  def getReleaseDate(self):
-    return self.releaseDate
-    
-  def getRating(self):
-    return self.rating
-    
-  def getTags(self):
-    return self.tags
-    
-  def setTitle(self, title):
-    self.title = title
-    
-  def setArtist(self, artist):
-    self.artist = artist
-    
-  def setGenre(self, genre):
-    self.genre = genre
-    
-  def setReleaseDate(self, releaseDate):
-    self.releaseDate = releaseDate
-    
-  def setRating(self, rating):
-    self.rating = rating
-    
-  def setTags(self, tags):
-    self.tags = tags
-    
-  def toString(self):
-    print(self.albumID,
-          str(self.title),
-          str(self.artist),
-          str(self.genre),
-          str(self.releaseDate),
-          str(self.rating),
-          str(self.tags))
+    Attributes:
+    albumID -- Unique identifier for Album
+    title -- Album title
+    artist -- Album artist
+    genre -- Genre the Album belongs to
+    release_date -- Release date for the Album. Can be year or specific date
+    rating -- Numerical rating of Album from 0.0 to 5.0
+    tags -- User-defined identifiers for Album to make searching, organizing easier
+    """
+
+    def __init__(self, album_id, title, artist, genre, release_date, rating, tags):
+        self.album_id = album_id
+        self.title = title
+        self.artist = artist
+        self.genre = genre
+        self.release_date = release_date
+        self.rating = rating
+        self.tags = tags
+
+    def get_title(self):
+        return self.title
+
+    def get_artist(self):
+        return self.artist
+
+    def get_genre(self):
+        return self.genre
+
+    def get_release_date(self):
+        return self.release_date
+
+    def get_rating(self):
+        return self.rating
+
+    def get_tags(self):
+        return self.tags
+
+    def set_title(self, title):
+        self.title = title
+
+    def set_artist(self, artist):
+        self.artist = artist
+
+    def set_genre(self, genre):
+        self.genre = genre
+
+    def set_release_date(self, release_date):
+        self.release_date = release_date
+
+    def set_rating(self, rating):
+        self.rating = rating
+
+    def set_tags(self, tags):
+        self.tags = tags
+
+    def to_string(self):
+        print(self.album_id,
+              str(self.title),
+              str(self.artist),
+              str(self.genre),
+              str(self.release_date),
+              str(self.rating),
+              str(self.tags))

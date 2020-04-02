@@ -1,239 +1,253 @@
-from model import *
-import MySQLdb
 import csv
-import sys
 import os
+import sys
 
-class ctrla():
-  def __init__(self):
-    pass
-  
-  def runQuery(self, query):
-    """Executes general SQL command"""
-    db = MySQLdb.connect("localhost","root","bre9ase4","TESTDB")
-    cursor = db.cursor()
-    
-    try:
-      cursor.execute(query)
-      db.commit()
-    except MySQLdb.Error, e:
-      print(e)
-      
-    db.close()
-  
-  def runReadQuery(self, query):
-    """Executes SQL SELECT command"""
-    db = MySQLdb.connect("localhost","root","bre9ase4","TESTDB")
-    cursor = db.cursor()
-    
-    try:
-      cursor.execute(query)
-      return cursor.fetchall()
-    except MySQLdb.Error, e:
-      print(e)
-  
-  def runSearchQuery(self, query, term):
-    """Executes SQL WHERE/LIKE command"""
-    db = MySQLdb.connect("localhost","root","bre9ase4","TESTDB")
-    cursor = db.cursor()
-    
-    try:
-      cursor.execute(query, ("%" + term + "%",))
-      return cursor.fetchall()
-    except MySQLdb.Error, e:
-      print(e)
-      
-  def getAlbumByID(self, ID):
-    sql = "SELECT * FROM albums WHERE albumID = %d", (ID)
-    v = None
-    for row in self.runReadQuery(sql):
-      v = album(row[0],
-                row[1],
-                row[2],
-                row[3],
-                row[4],
-                row[5],
-                row[6])
-    return v
-  
-  def addAlbum(self, newAlbum):
-    """Adds album to DB"""
-    sql = "INSERT INTO albums (title, artist, genre, releaseDate, rating, tags) VALUES ('%s', '%s', '%s', '%s', '%d', '%s')" % (newAlbum.title, newAlbum.artist, newAlbum.genre, newAlbum.releaseDate, newAlbum.rating, newAlbum.tags)
-    self.runQuery(sql)
-  
-  def deleteAlbum(self, albumID):
-    """Deletes album from DB"""
-    sql = "DELETE FROM albums WHERE albumID = '%d'" % (albumID)
-    self.runQuery(sql)
-  
-  def editAlbum(self, albumID, searchType, change):
-    """Edits info of selected album according to user's choice"""
-    sql0 = "UPDATE albums SET title = '%s' WHERE albumID = '%d'" % (change, albumID)
-    sql1 = "UPDATE albums SET artist = '%s' WHERE albumID = '%d'" % (change, albumID)
-    sql2 = "UPDATE albums SET releaseDate = '%s' WHERE albumID = '%d'" % (change, albumID)
-    sql3 = "UPDATE albums SET rating = '%s' WHERE albumID = '%d'" % (change, albumID)
-    sql4 = "UPDATE albums SET tags = '%s' WHERE albumID = '%d'" % (change, albumID)
-    
-    if searchType == 0:
-      self.runQuery(sql0)
-    elif searchType == 1:
-      self.runQuery(sql1)
-    elif searchType == 2:
-      self.runQuery(sql2)
-    elif searchType == 3:
-      self.runQuery(sql3)
-    elif searchType == 4:
-      self.runQuery(sql4)
+import MySQLdb
 
-    print("Album edited.")
-  
-  def deleteAllAlbums(self):
-    """Deletes all albums in the DB, and also resets albumID's to 0"""
-    sql = "TRUNCATE TABLE albums"
-    self.runQuery(sql)
-    
-  def viewAlbums(self):
-    """Gets all albums in DB, and stores them in a list"""
-    albumsList = []
-    sql = "SELECT * FROM albums"
-    
-    for row in self.runReadQuery(sql):
-      x = album(row[0],
-                row[1],
-                row[2],
-                row[3],
-                row[4],
-                row[5],
-                row[6])
-      albumsList.append(x)
-      
-    return albumsList
-    
-  def searchAlbums(self, term, searchType):
-    """Search albums by specified column"""
-    albumsList = []
-    b = {}
-    sql0 = "SELECT * FROM albums WHERE title LIKE %s"
-    sql1 = "SELECT * FROM albums WHERE artist LIKE %s"
-    sql2 = "SELECT * FROM albums WHERE tags LIKE %s"
-    sql3 = "SELECT * FROM albums WHERE releaseDate LIKE %s"
-    
-    if int(searchType) == 0:
-      b = self.runSearchQuery(sql0, term)
-    elif int(searchType) == 1:
-      b = self.runSearchQuery(sql1, term)
-    elif int(searchType) == 2:
-      b = self.runSearchQuery(sql2, term)
-    elif int(searchType) == 3:
-      b = self.runSearchQuery(sql3, term)
-      
-    for row in b:
-      x = album(row[0],
-                row[1],
-                row[2],
-                row[3],
-                row[4],
-                row[5],
-                row[6])
-      albumsList.append(x)
-      
-    return albumsList
-    
-  def exportAlbums(self):
-    """Exports all albums to csv file"""
-    sql = "SELECT * FROM albums"
-    results = self.runReadQuery(sql)
+from model import *
 
-    with open("output.csv", "w") as f:
-        a = csv.writer(f, delimiter = ",")
-        a.writerow(["Album ID", "Title", "Artist", "Genre", "Release Date", "Rating", "Tags"])
-        a.writerows(results)
-        
-    print("Exported.")
-  
-  def importAlbums(self):
-    """Takes all info from CSV, stores in DB"""
-    imported = []
-    csv_data = csv.reader(file("input.csv"))
-    for row in csv_data:
-      qAlbum = album(None, row[0], row[1], row[2], row[3], float(row[4]), row[5])
-      imported.append(qAlbum)
-      
-    print(str(len(imported)) + " album(s) found.")
-    for item in imported:
-      item.toString()
-      
-    answer = raw_input("Add these albums? ")
-    if answer == "Y" or answer == "y":
-      for item in imported:
-        self.addAlbum(item)
-      
-  def GUIviewAlbums(self):
-    """Gets all albums in DB, writes to CSV for display on a JTable"""
-    results = []
-    for submission in self.viewAlbums():
-      results.append([submission.albumID,
-                      submission.title,
-                      submission.artist,
-                      submission.genre,
-                      submission.releaseDate,
-                      submission.rating,
-                      submission.tags])
 
-    with open("albumsList.csv", "wb") as f:
-      writer = csv.writer(f)
-      writer.writerows(results)
-  
-  def GUIsearchAlbums(self, term, searchType):
-    """Search albums by specified column, writes to CSV for display on a JTable"""
-    results = []
-    for submission in self.searchAlbums(term, searchType):
-      results.append([submission.albumID,
-                      submission.title,
-                      submission.artist,
-                      submission.genre,
-                      submission.releaseDate,
-                      submission.rating,
-                      submission.tags])
+class Ctrla:
+    def __init__(self):
+        pass
 
-    with open("albumsList.csv", "wb") as f:
-      writer = csv.writer(f)
-      writer.writerows(results)
-  
-  def GUIdeleteAlbum(self, albumID):
-    """Deletes album in DB straight from JTable"""
-    self.deleteAlbum(albumID)
-    self.GUIviewAlbums()
-  
-  def GUIaddAlbum(self):
-    """Adds album to DB from Desktop GUI"""
-    csv_data = csv.reader(file("temp.csv"))
-    for row in csv_data:
-      sql = "INSERT INTO albums (title, artist, genre, releaseDate, rating, tags) VALUES ('%s', '%s', '%s', '%s', '%s', '%s')" % (row[1], row[2], row[3], row[4], row[5], row[6])
-      self.runQuery(sql)
-    
-    os.remove("temp.csv")
-    self.GUIviewAlbums()
-  
-  def GUIeditAlbum(self):
-    """Edits info of selected album according to user's choice, straight from JTable"""
-    csv_data = csv.reader(file("temp.csv"))
-    for row in csv_data:
-      sql = "UPDATE albums SET title = '%s', artist = '%s', genre = '%s', releaseDate = '%s', rating = '%s', tags = '%s' WHERE albumID = '%d'" % (row[1], row[2], row[3], row[4], row[5], row[6], int(row[0]))
-      self.runQuery(sql)
-    
-    os.remove("temp.csv")
-    self.GUIviewAlbums()
-    
+    @classmethod
+    def run_query(cls, query):
+        """Executes general SQL command"""
+        db = MySQLdb.connect("localhost", "root", "bre9ase4", "TESTDB")
+        cursor = db.cursor()
+
+        try:
+            cursor.execute(query)
+            db.commit()
+        except MySQLdb.Error, e:
+            print(e)
+
+        db.close()
+
+    @classmethod
+    def run_read_query(cls, query):
+        """Executes SQL SELECT command"""
+        db = MySQLdb.connect("localhost", "root", "bre9ase4", "TESTDB")
+        cursor = db.cursor()
+
+        try:
+            cursor.execute(query)
+            return cursor.fetchall()
+        except MySQLdb.Error, e:
+            print(e)
+
+    @classmethod
+    def run_search_query(cls, query, term):
+        """Executes SQL WHERE/LIKE command"""
+        db = MySQLdb.connect("localhost", "root", "bre9ase4", "TESTDB")
+        cursor = db.cursor()
+
+        try:
+            cursor.execute(query, ("%" + term + "%",))
+            return cursor.fetchall()
+        except MySQLdb.Error, e:
+            print(e)
+
+    def get_album_by_id(self, album_id):
+        sql = "SELECT * FROM albums WHERE albumID = %d", album_id
+        v = None
+        for row in self.run_read_query(sql):
+            v = Album(row[0],
+                      row[1],
+                      row[2],
+                      row[3],
+                      row[4],
+                      row[5],
+                      row[6])
+        return v
+
+    def add_album(self, new_album):
+        """Adds Album to DB"""
+        sql = "INSERT INTO albums (title, artist, genre, releaseDate, rating, tags) VALUES ('%s', '%s', '%s', '%s', " \
+              "'%d', '%s')" % (
+                  new_album.title, new_album.artist, new_album.genre, new_album.releaseDate, new_album.rating,
+                  new_album.tags)
+        self.run_query(sql)
+
+    def delete_album(self, album_id):
+        """Deletes Album from DB"""
+        sql = "DELETE FROM albums WHERE albumID = '%d'" % album_id
+        self.run_query(sql)
+
+    def edit_album(self, album_id, search_type, change):
+        """Edits info of selected Album according to user's choice"""
+        sql0 = "UPDATE albums SET title = '%s' WHERE albumID = '%d'" % (change, album_id)
+        sql1 = "UPDATE albums SET artist = '%s' WHERE albumID = '%d'" % (change, album_id)
+        sql2 = "UPDATE albums SET releaseDate = '%s' WHERE albumID = '%d'" % (change, album_id)
+        sql3 = "UPDATE albums SET rating = '%s' WHERE albumID = '%d'" % (change, album_id)
+        sql4 = "UPDATE albums SET tags = '%s' WHERE albumID = '%d'" % (change, album_id)
+
+        if search_type == 0:
+            self.run_query(sql0)
+        elif search_type == 1:
+            self.run_query(sql1)
+        elif search_type == 2:
+            self.run_query(sql2)
+        elif search_type == 3:
+            self.run_query(sql3)
+        elif search_type == 4:
+            self.run_query(sql4)
+
+        print("Album edited.")
+
+    def delete_all_albums(self):
+        """Deletes all albums in the DB, and also resets albumID's to 0"""
+        sql = "TRUNCATE TABLE albums"
+        self.run_query(sql)
+
+    def view_albums(self):
+        """Gets all albums in DB, and stores them in a list"""
+        albums_list = []
+        sql = "SELECT * FROM albums"
+
+        for row in self.run_read_query(sql):
+            x = Album(row[0],
+                      row[1],
+                      row[2],
+                      row[3],
+                      row[4],
+                      row[5],
+                      row[6])
+            albums_list.append(x)
+
+        return albums_list
+
+    def search_albums(self, term, search_type):
+        """Search albums by specified column"""
+        albums_list = []
+        b = {}
+        sql0 = "SELECT * FROM albums WHERE title LIKE %s"
+        sql1 = "SELECT * FROM albums WHERE artist LIKE %s"
+        sql2 = "SELECT * FROM albums WHERE tags LIKE %s"
+        sql3 = "SELECT * FROM albums WHERE releaseDate LIKE %s"
+
+        if int(search_type) == 0:
+            b = self.run_search_query(sql0, term)
+        elif int(search_type) == 1:
+            b = self.run_search_query(sql1, term)
+        elif int(search_type) == 2:
+            b = self.run_search_query(sql2, term)
+        elif int(search_type) == 3:
+            b = self.run_search_query(sql3, term)
+
+        for row in b:
+            x = Album(row[0],
+                      row[1],
+                      row[2],
+                      row[3],
+                      row[4],
+                      row[5],
+                      row[6])
+            albums_list.append(x)
+
+        return albums_list
+
+    def export_albums(self):
+        """Exports all albums to csv file"""
+        sql = "SELECT * FROM albums"
+        results = self.run_read_query(sql)
+
+        with open("output.csv", "w") as f:
+            a = csv.writer(f, delimiter=",")
+            a.writerow(["Album ID", "Title", "Artist", "Genre", "Release Date", "Rating", "Tags"])
+            a.writerows(results)
+
+        print("Exported.")
+
+    def import_albums(self):
+        """Takes all info from CSV, stores in DB"""
+        imported = []
+        csv_data = csv.reader(file("input.csv"))
+        for row in csv_data:
+            q_album = Album(None, row[0], row[1], row[2], row[3], float(row[4]), row[5])
+            imported.append(q_album)
+
+        print(str(len(imported)) + " Album(s) found.")
+        for item in imported:
+            item.to_string()
+
+        answer = raw_input("Add these albums? ")
+        if answer == "Y" or answer == "y":
+            for item in imported:
+                self.add_album(item)
+
+    def gui_view_albums(self):
+        """Gets all albums in DB, writes to CSV for display on a JTable"""
+        results = []
+        for submission in self.view_albums():
+            results.append([submission.album_id,
+                            submission.title,
+                            submission.artist,
+                            submission.genre,
+                            submission.release_date,
+                            submission.rating,
+                            submission.tags])
+
+        with open("albumsList.csv", "wb") as f:
+            writer = csv.writer(f)
+            writer.writerows(results)
+
+    def gui_search_albums(self, term, search_type):
+        """Search albums by specified column, writes to CSV for display on a JTable"""
+        results = []
+        for submission in self.search_albums(term, search_type):
+            results.append([submission.album_id,
+                            submission.title,
+                            submission.artist,
+                            submission.genre,
+                            submission.release_date,
+                            submission.rating,
+                            submission.tags])
+
+        with open("albumsList.csv", "wb") as f:
+            writer = csv.writer(f)
+            writer.writerows(results)
+
+    def gui_delete_album(self, album_id):
+        """Deletes Album in DB straight from JTable"""
+        self.delete_album(album_id)
+        self.gui_view_albums()
+
+    def gui_add_album(self):
+        """Adds Album to DB from Desktop GUI"""
+        csv_data = csv.reader(file("temp.csv"))
+        for row in csv_data:
+            sql = "INSERT INTO albums (title, artist, genre, releaseDate, rating, tags) VALUES ('%s', '%s', '%s', " \
+                  "'%s', '%s', '%s')" % (
+                      row[1], row[2], row[3], row[4], row[5], row[6])
+            self.run_query(sql)
+
+        os.remove("temp.csv")
+        self.gui_view_albums()
+
+    def gui_edit_album(self):
+        """Edits info of selected Album according to user's choice, straight from JTable"""
+        csv_data = csv.reader(file("temp.csv"))
+        for row in csv_data:
+            sql = "UPDATE albums SET title = '%s', artist = '%s', genre = '%s', releaseDate = '%s', rating = '%s', " \
+                  "tags = '%s' WHERE albumID = '%d'" % (
+                      row[1], row[2], row[3], row[4], row[5], row[6], int(row[0]))
+            self.run_query(sql)
+
+        os.remove("temp.csv")
+        self.gui_view_albums()
+
+
 if __name__ == "__main__":
-  albumCtrla = ctrla()
-  if len(sys.argv) == 1:
-    albumCtrla.GUIviewAlbums()
-  elif sys.argv[1] == "search":
-    albumCtrla.GUIsearchAlbums(sys.argv[2], int(sys.argv[3]))
-  elif sys.argv[1] == "del":
-    albumCtrla.GUIdeleteAlbum(int(sys.argv[2]))
-  elif sys.argv[1] == "add":
-    albumCtrla.GUIaddAlbum()
-  elif sys.argv[1] == "edit":
-    albumCtrla.GUIeditAlbum()
+    albumCtrla = Ctrla()
+    if len(sys.argv) == 1:
+        albumCtrla.gui_view_albums()
+    elif sys.argv[1] == "search":
+        albumCtrla.gui_search_albums(sys.argv[2], int(sys.argv[3]))
+    elif sys.argv[1] == "del":
+        albumCtrla.gui_delete_album(int(sys.argv[2]))
+    elif sys.argv[1] == "add":
+        albumCtrla.gui_add_album()
+    elif sys.argv[1] == "edit":
+        albumCtrla.gui_edit_album()
