@@ -44,7 +44,7 @@ class Mainwindow(JFrame):
                               mouseDragged=self.bgPanelMouseDragged)
         self.exitButton = JLabel(mouseClicked=self.exitButtonMouseClicked)
         self.jScrollPane1 = JScrollPane()
-        self.album_table = JTable()
+        self.album_table = JTable(mouseClicked=self.albumTableMouseClicked)
         self.termField = JTextField(focusGained=self.termFieldFocusGained)
         self.filterBox = JComboBox()
         self.searchButton = JLabel(mouseEntered=self.searchButtonMouseEntered,
@@ -80,7 +80,7 @@ class Mainwindow(JFrame):
         self.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE)
         self.setUndecorated(True)
 
-        self.bgPanel.setBackground(Color(102, 102, 255))
+        self.bgPanel.setBackground(Color(83, 83, 83))
 
         self.exitButton.setText("X")
         self.exitButton.setCursor(Cursor(Cursor.HAND_CURSOR))
@@ -390,6 +390,11 @@ class Mainwindow(JFrame):
         y = evt.getYOnScreen()
 
         self.setLocation(x - mouseLoc[0], y - mouseLoc[1])
+
+    def albumTableMouseClicked(self, evt):
+        if evt.getClickCount() == 3:
+            album_id = str(self.album_table.getValueAt(self.album_table.getSelectedRow(), 0))
+            subprocess.call("python Ctrla.py genius " + album_id, shell=True)
 
     def view_table(self):
         """Takes Album data from DB for display on JTable"""

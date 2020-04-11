@@ -15,6 +15,7 @@ mainOptions = ["View All",
                "Export",
                "Import",
                "Search",
+               "Search in Genius",
                "Exit"]
 
 
@@ -72,6 +73,9 @@ class HomePrompts:
                 print(str(len(r)) + " result(s) found.")
                 for i in r:
                     i.to_string()
+            elif mainOptions[answer] == "Search in Genius":
+                which_album = input("Which Album? ")
+                albumCtrla.search_in_genius(which_album)
             elif mainOptions[answer] == "Exit":
                 sys.exit()
 

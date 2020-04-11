@@ -1,6 +1,7 @@
 import csv
 import os
 import sys
+import webbrowser
 
 import MySQLdb
 
@@ -49,24 +50,26 @@ class Ctrla:
         except MySQLdb.Error, e:
             print(e)
 
-    def get_album_by_id(self, album_id):
-        sql = "SELECT * FROM albums WHERE albumID = %d", album_id
-        v = None
-        for row in self.run_read_query(sql):
-            v = Album(row[0],
-                      row[1],
-                      row[2],
-                      row[3],
-                      row[4],
-                      row[5],
-                      row[6])
-        return v
+    @classmethod
+    def get_album_by_id(cls, album_id):
+        """Returns album with given Album ID"""
+        sql = "SELECT * FROM albums WHERE albumID = '%d'" % album_id
+        db = MySQLdb.connect("localhost", "root", "bre9ase4", "TESTDB")
+        cursor = db.cursor()
+
+        try:
+            cursor.execute(sql)
+            result = cursor.fetchone()
+            x = Album(result[0], result[1], result[2], result[3], result[4], result[5], result[6])
+            return x
+        except MySQLdb.Error, e:
+            print(e)
 
     def add_album(self, new_album):
         """Adds Album to DB"""
         sql = "INSERT INTO albums (title, artist, genre, releaseDate, rating, tags) VALUES ('%s', '%s', '%s', '%s', " \
               "'%d', '%s')" % (
-                  new_album.title, new_album.artist, new_album.genre, new_album.releaseDate, new_album.rating,
+                  new_album.title, new_album.artist, new_album.genre, new_album.release_date, new_album.rating,
                   new_album.tags)
         self.run_query(sql)
 
@@ -238,6 +241,11 @@ class Ctrla:
         os.remove("temp.csv")
         self.gui_view_albums()
 
+    def search_in_genius(self, album_id):
+        """Allows user to search Genius.com for selected album"""
+        the_album = self.get_album_by_id(album_id)
+        webbrowser.open("https://genius.com/search?q=" + the_album.title)
+
 
 if __name__ == "__main__":
     albumCtrla = Ctrla()
@@ -251,3 +259,5 @@ if __name__ == "__main__":
         albumCtrla.gui_add_album()
     elif sys.argv[1] == "edit":
         albumCtrla.gui_edit_album()
+    elif sys.argv[1] == "genius":
+        albumCtrla.search_in_genius(int(sys.argv[2]))
