@@ -2,6 +2,7 @@
 # [ ]WebView(?)
 # [ ]Pandas implem. for data analysis
 # [ ]Testing
+# [ ]Option for user to switch between dt and cl
 
 import os
 import subprocess

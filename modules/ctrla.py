@@ -261,3 +261,5 @@ if __name__ == "__main__":
         albumCtrla.gui_edit_album()
     elif sys.argv[1] == "genius":
         albumCtrla.search_in_genius(int(sys.argv[2]))
+    elif sys.argv[1] == "export":
+        albumCtrla.export_albums()
