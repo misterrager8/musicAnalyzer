@@ -70,6 +70,9 @@ class Mainwindow(JFrame):
         self.addButton = JLabel(mouseEntered=self.addButtonMouseEntered,
                                 mouseExited=self.addButtonMouseExited,
                                 mouseClicked=self.addButtonMouseClicked)
+        self.exportButton = JLabel(mouseEntered=self.exportButtonMouseEntered,
+                                   mouseExited=self.exportButtonMouseExited,
+                                   mouseClicked=self.exportButtonMouseClicked)
         self.countLabel = JLabel()
         self.statusLabel = JLabel()
         self.init_components()
@@ -137,17 +140,35 @@ class Mainwindow(JFrame):
         self.statusLabel.setHorizontalAlignment(SwingConstants.TRAILING)
         self.statusLabel.setText(" ")
 
+        self.exportButton.setBackground(Color(153, 0, 204))
+        self.exportButton.setHorizontalAlignment(SwingConstants.CENTER)
+        self.exportButton.setText("Export All")
+        self.exportButton.setCursor(Cursor(Cursor.HAND_CURSOR))
+        self.exportButton.setOpaque(True)
+
         bgPanelLayout = GroupLayout(self.bgPanel)
         self.bgPanel.setLayout(bgPanelLayout)
         bgPanelLayout.setHorizontalGroup(
             bgPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
                 .addGroup(bgPanelLayout.createSequentialGroup()
-                          .addContainerGap()
                           .addGroup(bgPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                                    .addComponent(self.jScrollPane1, GroupLayout.DEFAULT_SIZE, 723, sys.maxint)
+                                    .addGroup(bgPanelLayout.createSequentialGroup()
+                                              .addContainerGap()
+                                              .addGroup(bgPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                                                        .addComponent(self.jScrollPane1, GroupLayout.DEFAULT_SIZE, 723,
+                                                                      sys.maxint)
+                                                        .addGroup(bgPanelLayout.createSequentialGroup()
+                                                                  .addComponent(self.countLabel,
+                                                                                GroupLayout.PREFERRED_SIZE, 207,
+                                                                                GroupLayout.PREFERRED_SIZE)
+                                                                  .addPreferredGap(
+                LayoutStyle.ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, sys.maxint)
+                                                                  .addComponent(self.statusLabel,
+                                                                                GroupLayout.PREFERRED_SIZE, 207,
+                                                                                GroupLayout.PREFERRED_SIZE))))
                                     .addGroup(GroupLayout.Alignment.TRAILING, bgPanelLayout.createSequentialGroup()
                                               .addGroup(
-                bgPanelLayout.createParallelGroup(GroupLayout.Alignment.TRAILING, False)
+                bgPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING, False)
                     .addGroup(bgPanelLayout.createSequentialGroup()
                               .addGroup(bgPanelLayout.createParallelGroup(GroupLayout.Alignment.TRAILING)
                                         .addComponent(self.titleLabel)
@@ -155,43 +176,44 @@ class Mainwindow(JFrame):
                                         .addComponent(self.dateLabel)
                                         .addComponent(self.ratingLabel))
                               .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                              .addGroup(bgPanelLayout.createParallelGroup(GroupLayout.Alignment.TRAILING, False)
-                                        .addComponent(self.dateField, GroupLayout.Alignment.LEADING)
-                                        .addComponent(self.genreBox, GroupLayout.Alignment.LEADING, 0,
-                                                      GroupLayout.DEFAULT_SIZE, sys.maxint)
-                                        .addComponent(self.artistField, GroupLayout.Alignment.LEADING)
-                                        .addComponent(self.titleField, GroupLayout.Alignment.LEADING)
-                                        .addComponent(self.ratingSpinner, GroupLayout.PREFERRED_SIZE, 172,
-                                                      GroupLayout.PREFERRED_SIZE)))
+                              .addGroup(bgPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                                        .addGroup(
+                    bgPanelLayout.createParallelGroup(GroupLayout.Alignment.TRAILING, False)
+                        .addComponent(self.artistField, GroupLayout.Alignment.LEADING,
+                                      GroupLayout.DEFAULT_SIZE, 232, sys.maxint)
+                        .addComponent(self.titleField, GroupLayout.Alignment.LEADING)
+                        .addComponent(self.genreBox, GroupLayout.Alignment.LEADING, 0,
+                                      GroupLayout.DEFAULT_SIZE, sys.maxint))
+                                        .addGroup(GroupLayout.Alignment.TRAILING, bgPanelLayout.createSequentialGroup()
+                                                  .addGap(0, 0, sys.maxint)
+                                                  .addComponent(self.ratingSpinner, GroupLayout.PREFERRED_SIZE, 232,
+                                                                GroupLayout.PREFERRED_SIZE))
+                                        .addComponent(self.dateField)))
                     .addGroup(bgPanelLayout.createSequentialGroup()
                               .addComponent(self.tagsLabel)
-                              .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                              .addGroup(bgPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                                        .addComponent(self.addButton, GroupLayout.PREFERRED_SIZE, 113,
-                                                      GroupLayout.PREFERRED_SIZE)
+                              .addGap(16, 16, 16)
+                              .addGroup(bgPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING, False)
+                                        .addGroup(bgPanelLayout.createSequentialGroup()
+                                                  .addComponent(self.addButton, GroupLayout.PREFERRED_SIZE, 113,
+                                                                GroupLayout.PREFERRED_SIZE)
+                                                  .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                                                  .addComponent(self.exportButton, GroupLayout.PREFERRED_SIZE, 113,
+                                                                GroupLayout.PREFERRED_SIZE))
                                         .addComponent(self.editButton, GroupLayout.PREFERRED_SIZE, 113,
                                                       GroupLayout.PREFERRED_SIZE)
                                         .addComponent(self.delButton, GroupLayout.PREFERRED_SIZE, 113,
                                                       GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(self.tagsField, GroupLayout.PREFERRED_SIZE, 172,
-                                                      GroupLayout.PREFERRED_SIZE))))
-                                              .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, 286, sys.maxint)
+                                        .addComponent(self.tagsField))))
+                                              .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED,
+                                                               GroupLayout.DEFAULT_SIZE, sys.maxint)
                                               .addGroup(
                 bgPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING, False)
                     .addComponent(self.exitButton, GroupLayout.Alignment.TRAILING)
                     .addComponent(self.searchButton, GroupLayout.Alignment.TRAILING, GroupLayout.PREFERRED_SIZE, 113,
                                   GroupLayout.PREFERRED_SIZE)
                     .addComponent(self.termField)
-                    .addComponent(self.filterBox, 0, 219, sys.maxint)))
-                                    .addGroup(bgPanelLayout.createSequentialGroup()
-                                              .addComponent(self.countLabel, GroupLayout.PREFERRED_SIZE, 207,
-                                                            GroupLayout.PREFERRED_SIZE)
-                                              .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED,
-                                                               GroupLayout.DEFAULT_SIZE, sys.maxint)
-                                              .addComponent(self.statusLabel, GroupLayout.PREFERRED_SIZE, 207,
-                                                            GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(self.filterBox, 0, 219, sys.maxint))))
                           .addContainerGap()))
-
         bgPanelLayout.setVerticalGroup(
             bgPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
                 .addGroup(bgPanelLayout.createSequentialGroup()
@@ -234,14 +256,15 @@ class Mainwindow(JFrame):
                 .addGroup(
                 bgPanelLayout.createParallelGroup(GroupLayout.Alignment.TRAILING)
                     .addGroup(bgPanelLayout.createSequentialGroup()
-                              .addComponent(self.addButton, GroupLayout.PREFERRED_SIZE, 30, GroupLayout.PREFERRED_SIZE)
+                              .addGroup(bgPanelLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                                        .addComponent(self.addButton, GroupLayout.PREFERRED_SIZE, 30,
+                                                      GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(self.exportButton, GroupLayout.PREFERRED_SIZE, 30,
+                                                      GroupLayout.PREFERRED_SIZE))
                               .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
                               .addComponent(self.editButton, GroupLayout.PREFERRED_SIZE, 30, GroupLayout.PREFERRED_SIZE)
                               .addGap(36, 36, 36))
-                    .addGroup(bgPanelLayout.createSequentialGroup()
-                              .addGap(72, 72, 72)
-                              .addComponent(self.delButton, GroupLayout.PREFERRED_SIZE, 30,
-                                            GroupLayout.PREFERRED_SIZE))))
+                    .addComponent(self.delButton, GroupLayout.PREFERRED_SIZE, 30, GroupLayout.PREFERRED_SIZE)))
                                     .addGroup(bgPanelLayout.createSequentialGroup()
                                               .addComponent(self.exitButton)
                                               .addGap(188, 188, 188)
@@ -253,7 +276,7 @@ class Mainwindow(JFrame):
                                               .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
                                               .addComponent(self.searchButton, GroupLayout.PREFERRED_SIZE, 30,
                                                             GroupLayout.PREFERRED_SIZE)))
-                          .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, 23, sys.maxint)
+                          .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, 17, sys.maxint)
                           .addComponent(self.jScrollPane1, GroupLayout.PREFERRED_SIZE, 221, GroupLayout.PREFERRED_SIZE)
                           .addGap(3, 3, 3)
                           .addGroup(bgPanelLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
@@ -266,7 +289,6 @@ class Mainwindow(JFrame):
         layout.setHorizontalGroup(
             layout.createParallelGroup(GroupLayout.Alignment.LEADING)
                 .addComponent(self.bgPanel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, sys.maxint))
-
         layout.setVerticalGroup(
             layout.createParallelGroup(GroupLayout.Alignment.LEADING)
                 .addComponent(self.bgPanel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, sys.maxint))
@@ -395,6 +417,16 @@ class Mainwindow(JFrame):
         if evt.getClickCount() == 3:
             album_id = str(self.album_table.getValueAt(self.album_table.getSelectedRow(), 0))
             subprocess.call("python Ctrla.py genius " + album_id, shell=True)
+
+    def exportButtonMouseEntered(self, evt):
+        self.exportButton.setBorder(border.LineBorder(Color.black))
+
+    def exportButtonMouseExited(self, evt):
+        self.exportButton.setBorder(None)
+
+    def exportButtonMouseClicked(self, evt):
+        subprocess.call("python Ctrla.py export", shell=True)
+        JOptionPane.showMessageDialog(None, "Albums exported.")
 
     def view_table(self):
         """Takes Album data from DB for display on JTable"""
