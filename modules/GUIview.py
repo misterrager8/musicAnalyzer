@@ -4,6 +4,7 @@
 import csv
 import subprocess
 import sys
+import webbrowser
 
 from java.awt import *
 from java.lang import *
@@ -20,18 +21,18 @@ class Tablemodelwrapper(DefaultTableModel):
     """Wrapper class for TableModel. Makes it easier to modify table properties"""
 
     def __init__(self):
-        head = "ID,Title,Artist,Genre,Release Date,Rating,Tags".split(",")
+        head = "ID,Title,Artist,Genre,Release Date,Rating,Tags,Genius URL".split(",")
         self.data = []
         DefaultTableModel.__init__(self, self.data, head)
 
     @classmethod
     def getColumnClass(cls, col):
-        types = [int, str, str, str, str, Object, str]
+        types = [int, str, str, str, str, Object, str, str]
         return types[col]
 
     @classmethod
     def isCellEditable(cls, row, col):
-        canEdit = [False, True, True, True, True, True, True]
+        canEdit = [False, True, True, True, True, True, True, True]
         return canEdit[col]
 
 
@@ -73,6 +74,9 @@ class Mainwindow(JFrame):
         self.exportButton = JLabel(mouseEntered=self.exportButtonMouseEntered,
                                    mouseExited=self.exportButtonMouseExited,
                                    mouseClicked=self.exportButtonMouseClicked)
+        self.geniusButton = JLabel(mouseEntered=self.geniusButtonMouseEntered,
+                                   mouseExited=self.geniusButtonMouseExited,
+                                   mouseClicked=self.geniusButtonMouseClicked)
         self.countLabel = JLabel()
         self.statusLabel = JLabel()
         self.init_components()
@@ -146,6 +150,12 @@ class Mainwindow(JFrame):
         self.exportButton.setCursor(Cursor(Cursor.HAND_CURSOR))
         self.exportButton.setOpaque(True)
 
+        self.geniusButton.setBackground(Color(6, 142, 242))
+        self.geniusButton.setHorizontalAlignment(SwingConstants.CENTER)
+        self.geniusButton.setText("Genius")
+        self.geniusButton.setCursor(Cursor(Cursor.HAND_CURSOR))
+        self.geniusButton.setOpaque(True)
+
         bgPanelLayout = GroupLayout(self.bgPanel)
         self.bgPanel.setLayout(bgPanelLayout)
         bgPanelLayout.setHorizontalGroup(
@@ -199,8 +209,12 @@ class Mainwindow(JFrame):
                                                   .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
                                                   .addComponent(self.exportButton, GroupLayout.PREFERRED_SIZE, 113,
                                                                 GroupLayout.PREFERRED_SIZE))
-                                        .addComponent(self.editButton, GroupLayout.PREFERRED_SIZE, 113,
-                                                      GroupLayout.PREFERRED_SIZE)
+                                        .addGroup(bgPanelLayout.createSequentialGroup()
+                                                  .addComponent(self.editButton, GroupLayout.PREFERRED_SIZE, 113,
+                                                                GroupLayout.PREFERRED_SIZE)
+                                                  .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                                                  .addComponent(self.geniusButton, GroupLayout.PREFERRED_SIZE, 113,
+                                                                GroupLayout.PREFERRED_SIZE))
                                         .addComponent(self.delButton, GroupLayout.PREFERRED_SIZE, 113,
                                                       GroupLayout.PREFERRED_SIZE)
                                         .addComponent(self.tagsField))))
@@ -262,7 +276,11 @@ class Mainwindow(JFrame):
                                         .addComponent(self.exportButton, GroupLayout.PREFERRED_SIZE, 30,
                                                       GroupLayout.PREFERRED_SIZE))
                               .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                              .addComponent(self.editButton, GroupLayout.PREFERRED_SIZE, 30, GroupLayout.PREFERRED_SIZE)
+                              .addGroup(bgPanelLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                                        .addComponent(self.editButton, GroupLayout.PREFERRED_SIZE, 30,
+                                                      GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(self.geniusButton, GroupLayout.PREFERRED_SIZE, 30,
+                                                      GroupLayout.PREFERRED_SIZE))
                               .addGap(36, 36, 36))
                     .addComponent(self.delButton, GroupLayout.PREFERRED_SIZE, 30, GroupLayout.PREFERRED_SIZE)))
                                     .addGroup(bgPanelLayout.createSequentialGroup()
@@ -361,7 +379,8 @@ class Mainwindow(JFrame):
                   str(self.genreBox.getSelectedItem()),
                   self.dateField.getText(),
                   self.ratingSpinner.getValue(),
-                  self.tagsField.getText())
+                  self.tagsField.getText(),
+                  None)
 
         with open("temp.csv", "wb") as f:
             writer = csv.writer(f)
@@ -392,7 +411,8 @@ class Mainwindow(JFrame):
                     self.album_table.getValueAt(selected, 3),
                     self.album_table.getValueAt(selected, 4),
                     self.album_table.getValueAt(selected, 5),
-                    self.album_table.getValueAt(selected, 6)]
+                    self.album_table.getValueAt(selected, 6),
+                    self.album_table.getValueAt(selected, 7)]
 
         with open("temp.csv", "wb") as f:
             writer = csv.writer(f)
@@ -428,6 +448,19 @@ class Mainwindow(JFrame):
         subprocess.call("python Ctrla.py export", shell=True)
         JOptionPane.showMessageDialog(None, "Albums exported.")
 
+    def geniusButtonMouseEntered(self, evt):
+        self.geniusButton.setBorder(border.LineBorder(Color.black))
+
+    def geniusButtonMouseExited(self, evt):
+        self.geniusButton.setBorder(None)
+
+    def geniusButtonMouseClicked(self, evt):
+        genius_url = str(self.album_table.getValueAt(self.album_table.getSelectedRow(), 7))
+        if genius_url == "":
+            JOptionPane.showMessageDialog(None, "No Genius URL found.")
+        else:
+            webbrowser.open(genius_url)
+
     def view_table(self):
         """Takes Album data from DB for display on JTable"""
         with open("albumsList.csv", "r") as f:
@@ -437,13 +470,13 @@ class Mainwindow(JFrame):
         del album_list[:]
 
         for item in temp_list:
-            album_list.append(Album(item[0], item[1], item[2], item[3], item[4], item[5], item[6]))
+            album_list.append(Album(item[0], item[1], item[2], item[3], item[4], item[5], item[6], item[7]))
 
         self.album_table.getModel().setRowCount(0)
 
         for idx, item in enumerate(album_list):
             self.album_table.getModel().addRow(
-                [item.album_id, item.title, item.artist, item.genre, item.release_date, item.rating, item.tags])
+                [item.album_id, item.title, item.artist, item.genre, item.release_date, item.rating, item.tags, item.get_genius_url()])
 
         self.countLabel.setText(str(len(album_list)) + " Album(s) found.")
 

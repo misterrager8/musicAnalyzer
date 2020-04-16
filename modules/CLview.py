@@ -10,7 +10,6 @@ genres = ["Hip-Hop/Rap",
 mainOptions = ["View All",
                "Add Album",
                "Delete Album",
-               "Delete All",
                "Edit Album",
                "Export",
                "Import",
@@ -44,17 +43,12 @@ class HomePrompts:
 
                 tags = raw_input("Tags? ")
 
-                x = Album(None, title, artist, genres[genre], release_date, rating, tags)
+                x = Album(None, title, artist, genres[genre], release_date, rating, tags, None)
                 albumCtrla.add_album(x)
 
             elif mainOptions[answer] == "Delete Album":
                 which_album = input("Which Album? ")
                 albumCtrla.delete_album(which_album)
-
-            elif mainOptions[answer] == "Delete All":
-                m = raw_input("Are you sure? ")
-                if m == "Y" or m == "y":
-                    albumCtrla.delete_all_albums()
             elif mainOptions[answer] == "Edit Album":
                 which_album = input("Which Album? ")
                 search_type = input(

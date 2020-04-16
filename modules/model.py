@@ -12,7 +12,7 @@ class Album:
     tags -- User-defined identifiers for Album to make searching, organizing easier
     """
 
-    def __init__(self, album_id, title, artist, genre, release_date, rating, tags):
+    def __init__(self, album_id, title, artist, genre, release_date, rating, tags, genius_url):
         self.album_id = album_id
         self.title = title
         self.artist = artist
@@ -20,6 +20,7 @@ class Album:
         self.release_date = release_date
         self.rating = rating
         self.tags = tags
+        self.genius_url = genius_url
 
     def get_title(self):
         return self.title
@@ -39,6 +40,9 @@ class Album:
     def get_tags(self):
         return self.tags
 
+    def get_genius_url(self):
+        return self.genius_url
+
     def set_title(self, title):
         self.title = title
 
@@ -57,6 +61,9 @@ class Album:
     def set_tags(self, tags):
         self.tags = tags
 
+    def set_genius_url(self, genius_url):
+        self.genius_url = genius_url
+
     def to_string(self):
         print(self.album_id,
               str(self.title),
@@ -64,4 +71,5 @@ class Album:
               str(self.genre),
               str(self.release_date),
               str(self.rating),
-              str(self.tags))
+              str(self.tags),
+              str(self.genius_url))

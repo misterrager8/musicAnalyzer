@@ -60,7 +60,7 @@ class Ctrla:
         try:
             cursor.execute(sql)
             result = cursor.fetchone()
-            x = Album(result[0], result[1], result[2], result[3], result[4], result[5], result[6])
+            x = Album(result[0], result[1], result[2], result[3], result[4], result[5], result[6], result[7])
             return x
         except MySQLdb.Error, e:
             print(e)
@@ -116,7 +116,8 @@ class Ctrla:
                       row[3],
                       row[4],
                       row[5],
-                      row[6])
+                      row[6],
+                      row[7])
             albums_list.append(x)
 
         return albums_list
@@ -146,7 +147,8 @@ class Ctrla:
                       row[3],
                       row[4],
                       row[5],
-                      row[6])
+                      row[6],
+                      row[7])
             albums_list.append(x)
 
         return albums_list
@@ -168,7 +170,7 @@ class Ctrla:
         imported = []
         csv_data = csv.reader(file("input.csv"))
         for row in csv_data:
-            q_album = Album(None, row[0], row[1], row[2], row[3], float(row[4]), row[5])
+            q_album = Album(None, row[0], row[1], row[2], row[3], float(row[4]), row[5], row[6])
             imported.append(q_album)
 
         print(str(len(imported)) + " Album(s) found.")
@@ -190,7 +192,8 @@ class Ctrla:
                             submission.genre,
                             submission.release_date,
                             submission.rating,
-                            submission.tags])
+                            submission.tags,
+                            submission.genius_url])
 
         with open("albumsList.csv", "wb") as f:
             writer = csv.writer(f)
@@ -206,7 +209,8 @@ class Ctrla:
                             submission.genre,
                             submission.release_date,
                             submission.rating,
-                            submission.tags])
+                            submission.tags,
+                            submission.genius_url])
 
         with open("albumsList.csv", "wb") as f:
             writer = csv.writer(f)
@@ -234,8 +238,8 @@ class Ctrla:
         csv_data = csv.reader(file("temp.csv"))
         for row in csv_data:
             sql = "UPDATE albums SET title = '%s', artist = '%s', genre = '%s', releaseDate = '%s', rating = '%s', " \
-                  "tags = '%s' WHERE albumID = '%d'" % (
-                      row[1], row[2], row[3], row[4], row[5], row[6], int(row[0]))
+                  "tags = '%s', genius_url = '%s' WHERE albumID = '%d'" % (
+                      row[1], row[2], row[3], row[4], row[5], row[6], row[7], int(row[0]))
             self.run_query(sql)
 
         os.remove("temp.csv")
