@@ -128,8 +128,8 @@ class Ctrla:
         b = {}
         sql0 = "SELECT * FROM albums WHERE title LIKE %s"
         sql1 = "SELECT * FROM albums WHERE artist LIKE %s"
-        sql2 = "SELECT * FROM albums WHERE tags LIKE %s"
-        sql3 = "SELECT * FROM albums WHERE releaseDate LIKE %s"
+        sql2 = "SELECT * FROM albums WHERE releaseDate LIKE %s"
+        sql3 = "SELECT * FROM albums WHERE tags LIKE %s"
 
         if int(search_type) == 0:
             b = self.run_search_query(sql0, term)

@@ -13,7 +13,7 @@ from javax.swing.table import *
 
 from model import *
 
-mouseLoc = []
+mouse_loc = []
 album_list = []
 
 
@@ -45,40 +45,46 @@ class Mainwindow(JFrame):
                               mouseDragged=self.bgPanelMouseDragged)
         self.exitButton = JLabel(mouseClicked=self.exitButtonMouseClicked)
         self.jScrollPane1 = JScrollPane()
-        self.album_table = JTable(mouseClicked=self.albumTableMouseClicked)
-        self.termField = JTextField(focusGained=self.termFieldFocusGained)
-        self.filterBox = JComboBox()
-        self.searchButton = JLabel(mouseEntered=self.searchButtonMouseEntered,
-                                   mouseExited=self.searchButtonMouseExited,
-                                   mouseClicked=self.searchButtonMouseClicked)
-        self.delButton = JLabel(mouseEntered=self.delButtonMouseEntered,
-                                mouseExited=self.delButtonMouseExited,
-                                mouseClicked=self.delButtonMouseClicked)
-        self.titleField = JTextField(focusGained=self.titleFieldFocusGained)
-        self.artistField = JTextField(focusGained=self.artistFieldFocusGained)
-        self.dateField = JTextField(focusGained=self.dateFieldFocusGained)
-        self.ratingSpinner = JSpinner()
-        self.genreBox = JComboBox()
-        self.tagsField = JTextField(focusGained=self.tagsFieldFocusGained)
-        self.titleLabel = JLabel()
-        self.artistLabel = JLabel()
-        self.dateLabel = JLabel()
-        self.ratingLabel = JLabel()
-        self.tagsLabel = JLabel()
-        self.editButton = JLabel(mouseEntered=self.editButtonMouseEntered,
-                                 mouseExited=self.editButtonMouseExited,
-                                 mouseClicked=self.editButtonMouseClicked)
+        self.albumTable = JTable(mouseClicked=self.albumTableMouseClicked)
+        self.countLabel = JLabel()
+        self.statusLabel = JLabel()
+        self.buttonPanel = JPanel()
         self.addButton = JLabel(mouseEntered=self.addButtonMouseEntered,
                                 mouseExited=self.addButtonMouseExited,
                                 mouseClicked=self.addButtonMouseClicked)
         self.exportButton = JLabel(mouseEntered=self.exportButtonMouseEntered,
                                    mouseExited=self.exportButtonMouseExited,
                                    mouseClicked=self.exportButtonMouseClicked)
+        self.editButton = JLabel(mouseEntered=self.editButtonMouseEntered,
+                                 mouseExited=self.editButtonMouseExited,
+                                 mouseClicked=self.editButtonMouseClicked)
         self.geniusButton = JLabel(mouseEntered=self.geniusButtonMouseEntered,
                                    mouseExited=self.geniusButtonMouseExited,
                                    mouseClicked=self.geniusButtonMouseClicked)
-        self.countLabel = JLabel()
-        self.statusLabel = JLabel()
+        self.delButton = JLabel(mouseEntered=self.delButtonMouseEntered,
+                                mouseExited=self.delButtonMouseExited,
+                                mouseClicked=self.delButtonMouseClicked)
+        self.importButton = JLabel(mouseEntered=self.importButtonMouseEntered,
+                                mouseExited=self.importButtonMouseExited,
+                                mouseClicked=self.importButtonMouseClicked)
+        self.formPanel = JPanel()
+        self.titleLabel = JLabel()
+        self.titleField = JTextField(focusGained=self.titleFieldFocusGained)
+        self.artistLabel = JLabel()
+        self.artistField = JTextField(focusGained=self.artistFieldFocusGained)
+        self.dateLabel = JLabel()
+        self.dateField = JTextField(focusGained=self.dateFieldFocusGained)
+        self.ratingLabel = JLabel()
+        self.ratingSpinner = JSpinner()
+        self.genreBox = JComboBox()
+        self.tagsLabel = JLabel()
+        self.tagsField = JTextField(focusGained=self.tagsFieldFocusGained)
+        self.filterBox = JComboBox()
+        self.searchButton = JLabel(mouseEntered=self.searchButtonMouseEntered,
+                                   mouseExited=self.searchButtonMouseExited,
+                                   mouseClicked=self.searchButtonMouseClicked)
+        self.termField = JTextField(focusGained=self.termFieldFocusGained)
+
         self.init_components()
         self.setVisible(True)
 
@@ -86,230 +92,134 @@ class Mainwindow(JFrame):
 
         self.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE)
         self.setUndecorated(True)
+        self.setPreferredSize(Dimension(800, 580))
+        self.getContentPane().setLayout(None)
 
-        self.bgPanel.setBackground(Color(83, 83, 83))
+        self.bgPanel.setBackground(Color(69, 126, 174))
+        self.bgPanel.setLayout(None)
 
+        self.exitButton.setHorizontalAlignment(SwingConstants.CENTER)
         self.exitButton.setText("X")
         self.exitButton.setCursor(Cursor(Cursor.HAND_CURSOR))
+        self.bgPanel.add(self.exitButton)
+        self.exitButton.setBounds(760, 0, 40, 40)
 
-        self.album_table.setModel(Tablemodelwrapper())
+        self.albumTable.setModel(Tablemodelwrapper())
+        self.albumTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION)
+        self.jScrollPane1.setViewportView(self.albumTable)
 
-        self.jScrollPane1.setViewportView(self.album_table)
+        self.albumTable.getColumnModel().getColumn(0).setPreferredWidth(3)
+        self.albumTable.getColumnModel().getColumn(1).setPreferredWidth(175)
+        self.albumTable.getColumnModel().getColumn(5).setPreferredWidth(6)
 
-        self.termField.setOpaque(True)
+        self.bgPanel.add(self.jScrollPane1)
+        self.jScrollPane1.setBounds(10, 320, 780, 221)
 
-        self.filterBox.setModel(DefaultComboBoxModel(["By Title", "By Artist", "By Tags", "By Date"]))
+        self.countLabel.setText("")
+        self.bgPanel.add(self.countLabel)
+        self.countLabel.setBounds(10, 550, 207, 16)
+
+        self.statusLabel.setHorizontalAlignment(SwingConstants.TRAILING)
+        self.statusLabel.setText("")
+        self.bgPanel.add(self.statusLabel)
+        self.statusLabel.setBounds(580, 550, 207, 16)
+
+        self.buttonPanel.setOpaque(False)
+        self.buttonPanel.setLayout(GridLayout(3, 2, 5, 5))
+
+        self.addButton.setBackground(self.bgPanel.getBackground().brighter())
+        self.addButton.setHorizontalAlignment(SwingConstants.CENTER)
+        self.addButton.setText("Add")
+        self.addButton.setCursor(Cursor(Cursor.HAND_CURSOR))
+        self.addButton.setOpaque(True)
+        self.buttonPanel.add(self.addButton)
+
+        self.exportButton.setBackground(self.bgPanel.getBackground().brighter())
+        self.exportButton.setHorizontalAlignment(SwingConstants.CENTER)
+        self.exportButton.setText("Export All")
+        self.exportButton.setCursor(Cursor(Cursor.HAND_CURSOR))
+        self.exportButton.setOpaque(True)
+        self.buttonPanel.add(self.exportButton)
+
+        self.editButton.setBackground(self.bgPanel.getBackground().brighter())
+        self.editButton.setHorizontalAlignment(SwingConstants.CENTER)
+        self.editButton.setText("Edit")
+        self.editButton.setCursor(Cursor(Cursor.HAND_CURSOR))
+        self.editButton.setOpaque(True)
+        self.buttonPanel.add(self.editButton)
+
+        self.geniusButton.setBackground(self.bgPanel.getBackground().brighter())
+        self.geniusButton.setHorizontalAlignment(SwingConstants.CENTER)
+        self.geniusButton.setText("Genius")
+        self.geniusButton.setCursor(Cursor(Cursor.HAND_CURSOR))
+        self.geniusButton.setOpaque(True)
+        self.buttonPanel.add(self.geniusButton)
+
+        self.delButton.setBackground(self.bgPanel.getBackground().brighter())
+        self.delButton.setHorizontalAlignment(SwingConstants.CENTER)
+        self.delButton.setText("Delete")
+        self.delButton.setCursor(Cursor(Cursor.HAND_CURSOR))
+        self.delButton.setOpaque(True)
+        self.buttonPanel.add(self.delButton)
+
+        self.importButton.setBackground(self.bgPanel.getBackground().brighter())
+        self.importButton.setHorizontalAlignment(SwingConstants.CENTER)
+        self.importButton.setText("Import")
+        self.importButton.setCursor(Cursor(Cursor.HAND_CURSOR))
+        self.importButton.setOpaque(True)
+        self.buttonPanel.add(self.importButton)
+
+        self.bgPanel.add(self.buttonPanel)
+        self.buttonPanel.setBounds(280, 200, 230, 110)
+
+        self.formPanel.setOpaque(False)
+        self.formPanel.setLayout(GridLayout(11, 1, 5, 5))
+
+        self.titleLabel.setText("Title")
+        self.formPanel.add(self.titleLabel)
+        self.formPanel.add(self.titleField)
+
+        self.artistLabel.setText("Artist")
+        self.formPanel.add(self.artistLabel)
+        self.formPanel.add(self.artistField)
+
+        self.dateLabel.setText("Date")
+        self.formPanel.add(self.dateLabel)
+        self.formPanel.add(self.dateField)
+
+        self.ratingLabel.setText("Rating")
+        self.formPanel.add(self.ratingLabel)
+
+        self.ratingSpinner.setModel(SpinnerNumberModel(0.0, 0.0, 5.0, 0.5))
+        self.formPanel.add(self.ratingSpinner)
+
+        self.genreBox.setModel(
+            DefaultComboBoxModel(["Select Genre", "Hip-Hop/Rap", "R&B/Soul", "Alternative", "Rock", "Soundtrack"]))
+        self.formPanel.add(self.genreBox)
+
+        self.tagsLabel.setText("Tags")
+        self.formPanel.add(self.tagsLabel)
+        self.formPanel.add(self.tagsField)
+
+        self.bgPanel.add(self.formPanel)
+        self.formPanel.setBounds(10, 10, 260, 300)
+
+        self.filterBox.setModel(DefaultComboBoxModel(["By Title", "By Artist", "By Date", "By Tags"]))
+        self.bgPanel.add(self.filterBox)
+        self.filterBox.setBounds(540, 210, 230, 33)
 
         self.searchButton.setBackground(self.bgPanel.getBackground().brighter())
         self.searchButton.setHorizontalAlignment(SwingConstants.CENTER)
         self.searchButton.setText("Search")
         self.searchButton.setCursor(Cursor(Cursor.HAND_CURSOR))
         self.searchButton.setOpaque(True)
+        self.bgPanel.add(self.searchButton)
+        self.searchButton.setBounds(660, 270, 110, 33)
+        self.bgPanel.add(self.termField)
+        self.termField.setBounds(540, 240, 230, 26)
 
-        self.delButton.setBackground(Color(255, 51, 51))
-        self.delButton.setHorizontalAlignment(SwingConstants.CENTER)
-        self.delButton.setText("Delete")
-        self.delButton.setCursor(Cursor(Cursor.HAND_CURSOR))
-        self.delButton.setOpaque(True)
-
-        self.ratingSpinner.setModel(SpinnerNumberModel(0.0, 0.0, 5.0, 0.5))
-
-        self.genreBox.setModel(
-            DefaultComboBoxModel(["Select Genre", "Hip-Hop/Rap", "R&B/Soul", "Alternative", "Rock", "Soundtrack"]))
-
-        self.titleLabel.setText("Title")
-
-        self.artistLabel.setText("Artist")
-
-        self.dateLabel.setText("Date")
-
-        self.ratingLabel.setText("Rating")
-
-        self.tagsLabel.setText("Tags")
-
-        self.editButton.setBackground(Color(255, 153, 51))
-        self.editButton.setHorizontalAlignment(SwingConstants.CENTER)
-        self.editButton.setText("Edit")
-        self.editButton.setCursor(Cursor(Cursor.HAND_CURSOR))
-        self.editButton.setOpaque(True)
-
-        self.addButton.setBackground(Color(0, 204, 0))
-        self.addButton.setHorizontalAlignment(SwingConstants.CENTER)
-        self.addButton.setText("Add")
-        self.addButton.setCursor(Cursor(Cursor.HAND_CURSOR))
-        self.addButton.setOpaque(True)
-
-        self.countLabel.setText(" ")
-
-        self.statusLabel.setHorizontalAlignment(SwingConstants.TRAILING)
-        self.statusLabel.setText(" ")
-
-        self.exportButton.setBackground(Color(153, 0, 204))
-        self.exportButton.setHorizontalAlignment(SwingConstants.CENTER)
-        self.exportButton.setText("Export All")
-        self.exportButton.setCursor(Cursor(Cursor.HAND_CURSOR))
-        self.exportButton.setOpaque(True)
-
-        self.geniusButton.setBackground(Color(6, 142, 242))
-        self.geniusButton.setHorizontalAlignment(SwingConstants.CENTER)
-        self.geniusButton.setText("Genius")
-        self.geniusButton.setCursor(Cursor(Cursor.HAND_CURSOR))
-        self.geniusButton.setOpaque(True)
-
-        bgPanelLayout = GroupLayout(self.bgPanel)
-        self.bgPanel.setLayout(bgPanelLayout)
-        bgPanelLayout.setHorizontalGroup(
-            bgPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                .addGroup(bgPanelLayout.createSequentialGroup()
-                          .addGroup(bgPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                                    .addGroup(bgPanelLayout.createSequentialGroup()
-                                              .addContainerGap()
-                                              .addGroup(bgPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                                                        .addComponent(self.jScrollPane1, GroupLayout.DEFAULT_SIZE, 723,
-                                                                      sys.maxint)
-                                                        .addGroup(bgPanelLayout.createSequentialGroup()
-                                                                  .addComponent(self.countLabel,
-                                                                                GroupLayout.PREFERRED_SIZE, 207,
-                                                                                GroupLayout.PREFERRED_SIZE)
-                                                                  .addPreferredGap(
-                LayoutStyle.ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, sys.maxint)
-                                                                  .addComponent(self.statusLabel,
-                                                                                GroupLayout.PREFERRED_SIZE, 207,
-                                                                                GroupLayout.PREFERRED_SIZE))))
-                                    .addGroup(GroupLayout.Alignment.TRAILING, bgPanelLayout.createSequentialGroup()
-                                              .addGroup(
-                bgPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING, False)
-                    .addGroup(bgPanelLayout.createSequentialGroup()
-                              .addGroup(bgPanelLayout.createParallelGroup(GroupLayout.Alignment.TRAILING)
-                                        .addComponent(self.titleLabel)
-                                        .addComponent(self.artistLabel)
-                                        .addComponent(self.dateLabel)
-                                        .addComponent(self.ratingLabel))
-                              .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                              .addGroup(bgPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                                        .addGroup(
-                    bgPanelLayout.createParallelGroup(GroupLayout.Alignment.TRAILING, False)
-                        .addComponent(self.artistField, GroupLayout.Alignment.LEADING,
-                                      GroupLayout.DEFAULT_SIZE, 232, sys.maxint)
-                        .addComponent(self.titleField, GroupLayout.Alignment.LEADING)
-                        .addComponent(self.genreBox, GroupLayout.Alignment.LEADING, 0,
-                                      GroupLayout.DEFAULT_SIZE, sys.maxint))
-                                        .addGroup(GroupLayout.Alignment.TRAILING, bgPanelLayout.createSequentialGroup()
-                                                  .addGap(0, 0, sys.maxint)
-                                                  .addComponent(self.ratingSpinner, GroupLayout.PREFERRED_SIZE, 232,
-                                                                GroupLayout.PREFERRED_SIZE))
-                                        .addComponent(self.dateField)))
-                    .addGroup(bgPanelLayout.createSequentialGroup()
-                              .addComponent(self.tagsLabel)
-                              .addGap(16, 16, 16)
-                              .addGroup(bgPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING, False)
-                                        .addGroup(bgPanelLayout.createSequentialGroup()
-                                                  .addComponent(self.addButton, GroupLayout.PREFERRED_SIZE, 113,
-                                                                GroupLayout.PREFERRED_SIZE)
-                                                  .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                                                  .addComponent(self.exportButton, GroupLayout.PREFERRED_SIZE, 113,
-                                                                GroupLayout.PREFERRED_SIZE))
-                                        .addGroup(bgPanelLayout.createSequentialGroup()
-                                                  .addComponent(self.editButton, GroupLayout.PREFERRED_SIZE, 113,
-                                                                GroupLayout.PREFERRED_SIZE)
-                                                  .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                                                  .addComponent(self.geniusButton, GroupLayout.PREFERRED_SIZE, 113,
-                                                                GroupLayout.PREFERRED_SIZE))
-                                        .addComponent(self.delButton, GroupLayout.PREFERRED_SIZE, 113,
-                                                      GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(self.tagsField))))
-                                              .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED,
-                                                               GroupLayout.DEFAULT_SIZE, sys.maxint)
-                                              .addGroup(
-                bgPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING, False)
-                    .addComponent(self.exitButton, GroupLayout.Alignment.TRAILING)
-                    .addComponent(self.searchButton, GroupLayout.Alignment.TRAILING, GroupLayout.PREFERRED_SIZE, 113,
-                                  GroupLayout.PREFERRED_SIZE)
-                    .addComponent(self.termField)
-                    .addComponent(self.filterBox, 0, 219, sys.maxint))))
-                          .addContainerGap()))
-        bgPanelLayout.setVerticalGroup(
-            bgPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                .addGroup(bgPanelLayout.createSequentialGroup()
-                          .addContainerGap()
-                          .addGroup(bgPanelLayout.createParallelGroup(GroupLayout.Alignment.TRAILING)
-                                    .addGroup(bgPanelLayout.createSequentialGroup()
-                .addGroup(
-                bgPanelLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                    .addComponent(self.titleField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
-                                  GroupLayout.PREFERRED_SIZE)
-                    .addComponent(self.titleLabel))
-                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(
-                bgPanelLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                    .addComponent(self.artistField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
-                                  GroupLayout.PREFERRED_SIZE)
-                    .addComponent(self.artistLabel))
-                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(self.genreBox, GroupLayout.PREFERRED_SIZE,
-                              GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(
-                bgPanelLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                    .addComponent(self.dateField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
-                                  GroupLayout.PREFERRED_SIZE)
-                    .addComponent(self.dateLabel))
-                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(
-                bgPanelLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                    .addComponent(self.ratingSpinner, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
-                                  GroupLayout.PREFERRED_SIZE)
-                    .addComponent(self.ratingLabel))
-                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(
-                bgPanelLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                    .addComponent(self.tagsField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
-                                  GroupLayout.PREFERRED_SIZE)
-                    .addComponent(self.tagsLabel))
-                .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(
-                bgPanelLayout.createParallelGroup(GroupLayout.Alignment.TRAILING)
-                    .addGroup(bgPanelLayout.createSequentialGroup()
-                              .addGroup(bgPanelLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                                        .addComponent(self.addButton, GroupLayout.PREFERRED_SIZE, 30,
-                                                      GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(self.exportButton, GroupLayout.PREFERRED_SIZE, 30,
-                                                      GroupLayout.PREFERRED_SIZE))
-                              .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                              .addGroup(bgPanelLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                                        .addComponent(self.editButton, GroupLayout.PREFERRED_SIZE, 30,
-                                                      GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(self.geniusButton, GroupLayout.PREFERRED_SIZE, 30,
-                                                      GroupLayout.PREFERRED_SIZE))
-                              .addGap(36, 36, 36))
-                    .addComponent(self.delButton, GroupLayout.PREFERRED_SIZE, 30, GroupLayout.PREFERRED_SIZE)))
-                                    .addGroup(bgPanelLayout.createSequentialGroup()
-                                              .addComponent(self.exitButton)
-                                              .addGap(188, 188, 188)
-                                              .addComponent(self.filterBox, GroupLayout.PREFERRED_SIZE,
-                                                            GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                                              .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                                              .addComponent(self.termField, GroupLayout.PREFERRED_SIZE,
-                                                            GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                                              .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                                              .addComponent(self.searchButton, GroupLayout.PREFERRED_SIZE, 30,
-                                                            GroupLayout.PREFERRED_SIZE)))
-                          .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, 17, sys.maxint)
-                          .addComponent(self.jScrollPane1, GroupLayout.PREFERRED_SIZE, 221, GroupLayout.PREFERRED_SIZE)
-                          .addGap(3, 3, 3)
-                          .addGroup(bgPanelLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                                    .addComponent(self.countLabel)
-                                    .addComponent(self.statusLabel))
-                          .addContainerGap()))
-
-        layout = GroupLayout(self.getContentPane())
-        self.getContentPane().setLayout(layout)
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                .addComponent(self.bgPanel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, sys.maxint))
-        layout.setVerticalGroup(
-            layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                .addComponent(self.bgPanel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, sys.maxint))
+        self.getContentPane().add(self.bgPanel)
+        self.bgPanel.setBounds(0, 0, 800, 580)
 
         self.pack()
         self.setLocationRelativeTo(None)
@@ -360,7 +270,7 @@ class Mainwindow(JFrame):
         self.delButton.setBorder(None)
 
     def delButtonMouseClicked(self, evt):
-        selected_id = int(self.album_table.getValueAt(self.album_table.getSelectedRow(), 0))
+        selected_id = int(self.albumTable.getValueAt(self.albumTable.getSelectedRow(), 0))
         if JOptionPane.showConfirmDialog(None, "Delete?") == JOptionPane.YES_OPTION:
             subprocess.call("python Ctrla.py del " + str(selected_id), shell=True)
             self.view_table()
@@ -384,13 +294,7 @@ class Mainwindow(JFrame):
 
         with open("temp.csv", "wb") as f:
             writer = csv.writer(f)
-            writer.writerow([x.album_id,
-                             x.title,
-                             x.artist,
-                             x.genre,
-                             x.release_date,
-                             x.rating,
-                             x.tags])
+            writer.writerow([x.album_id, x.title, x.artist, x.genre, x.release_date, x.rating, x.tags])
 
         subprocess.call("python Ctrla.py add", shell=True)
         self.view_table()
@@ -404,38 +308,38 @@ class Mainwindow(JFrame):
         self.editButton.setBorder(None)
 
     def editButtonMouseClicked(self, evt):
-        selected = self.album_table.getSelectedRow()
-        row_data = [self.album_table.getValueAt(selected, 0),
-                    self.album_table.getValueAt(selected, 1),
-                    self.album_table.getValueAt(selected, 2),
-                    self.album_table.getValueAt(selected, 3),
-                    self.album_table.getValueAt(selected, 4),
-                    self.album_table.getValueAt(selected, 5),
-                    self.album_table.getValueAt(selected, 6),
-                    self.album_table.getValueAt(selected, 7)]
+        selected = self.albumTable.getSelectedRow()
+        row_data = [self.albumTable.getValueAt(selected, 0),
+                    self.albumTable.getValueAt(selected, 1),
+                    self.albumTable.getValueAt(selected, 2),
+                    self.albumTable.getValueAt(selected, 3),
+                    self.albumTable.getValueAt(selected, 4),
+                    self.albumTable.getValueAt(selected, 5),
+                    self.albumTable.getValueAt(selected, 6),
+                    self.albumTable.getValueAt(selected, 7)]
 
         with open("temp.csv", "wb") as f:
             writer = csv.writer(f)
             writer.writerow(row_data)
 
         subprocess.call("python Ctrla.py edit", shell=True)
-        self.statusLabel.setText(str(self.album_table.getValueAt(selected, 1)) + " edited.")
+        self.statusLabel.setText(str(self.albumTable.getValueAt(selected, 1)) + " edited.")
 
     @classmethod
     def bgPanelMousePressed(cls, evt):
-        del mouseLoc[:]
-        mouseLoc.append(evt.getX())
-        mouseLoc.append(evt.getY())
+        del mouse_loc[:]
+        mouse_loc.append(evt.getX())
+        mouse_loc.append(evt.getY())
 
     def bgPanelMouseDragged(self, evt):
         x = evt.getXOnScreen()
         y = evt.getYOnScreen()
 
-        self.setLocation(x - mouseLoc[0], y - mouseLoc[1])
+        self.setLocation(x - mouse_loc[0], y - mouse_loc[1])
 
     def albumTableMouseClicked(self, evt):
         if evt.getClickCount() == 3:
-            album_id = str(self.album_table.getValueAt(self.album_table.getSelectedRow(), 0))
+            album_id = str(self.albumTable.getValueAt(self.albumTable.getSelectedRow(), 0))
             subprocess.call("python Ctrla.py genius " + album_id, shell=True)
 
     def exportButtonMouseEntered(self, evt):
@@ -448,6 +352,15 @@ class Mainwindow(JFrame):
         subprocess.call("python Ctrla.py export", shell=True)
         JOptionPane.showMessageDialog(None, "Albums exported.")
 
+    def importButtonMouseEntered(self, evt):
+        self.importButton.setBorder(border.LineBorder(Color.black))
+
+    def importButtonMouseExited(self, evt):
+        self.importButton.setBorder(None)
+
+    def importButtonMouseClicked(self, evt):
+        pass
+
     def geniusButtonMouseEntered(self, evt):
         self.geniusButton.setBorder(border.LineBorder(Color.black))
 
@@ -455,7 +368,7 @@ class Mainwindow(JFrame):
         self.geniusButton.setBorder(None)
 
     def geniusButtonMouseClicked(self, evt):
-        genius_url = str(self.album_table.getValueAt(self.album_table.getSelectedRow(), 7))
+        genius_url = str(self.albumTable.getValueAt(self.albumTable.getSelectedRow(), 7))
         if genius_url == "":
             JOptionPane.showMessageDialog(None, "No Genius URL found.")
         else:
@@ -472,11 +385,12 @@ class Mainwindow(JFrame):
         for item in temp_list:
             album_list.append(Album(item[0], item[1], item[2], item[3], item[4], item[5], item[6], item[7]))
 
-        self.album_table.getModel().setRowCount(0)
+        self.albumTable.getModel().setRowCount(0)
 
         for idx, item in enumerate(album_list):
-            self.album_table.getModel().addRow(
-                [item.album_id, item.title, item.artist, item.genre, item.release_date, item.rating, item.tags, item.get_genius_url()])
+            self.albumTable.getModel().addRow(
+                [item.album_id, item.title, item.artist, item.genre, item.release_date, item.rating, item.tags,
+                 item.get_genius_url()])
 
         self.countLabel.setText(str(len(album_list)) + " Album(s) found.")
 
@@ -490,4 +404,4 @@ class Mainwindow(JFrame):
 
 
 if __name__ == "__main__":
-    Mainwindow().setVisible(True)
+    Mainwindow()
