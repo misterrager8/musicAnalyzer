@@ -36,7 +36,7 @@ class HomePrompts:
                 release_date = raw_input("Release Date? (m/d/yyyy) ")
 
                 try:
-                    # TODO: rating is rounding up/down on input, needs fix
+                    # FIXME: rating is rounding up/down on input, needs fix
                     rating = input("Rating? (1-5) ")
                 except SyntaxError:
                     rating = 0

@@ -1,7 +1,9 @@
 # TODO:
-# [ ]WebView(?)
-# [ ]Pandas implem. for data analysis
-# [ ]Testing
+#  - WebView(?)
+#  - Pandas implem. for data analysis
+#  - Testing
+#  - Fn to edit/del multiple albums
+#  - Album type property (LP, EP, etc.)
 
 import os
 import subprocess

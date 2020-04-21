@@ -1,5 +1,4 @@
-# TODO:
-# [ ]KeyListener for faster editing on JTable(?)
+# TODO: KeyListener for faster editing on JTable(?)
 
 import csv
 import subprocess
@@ -65,8 +64,8 @@ class Mainwindow(JFrame):
                                 mouseExited=self.delButtonMouseExited,
                                 mouseClicked=self.delButtonMouseClicked)
         self.importButton = JLabel(mouseEntered=self.importButtonMouseEntered,
-                                mouseExited=self.importButtonMouseExited,
-                                mouseClicked=self.importButtonMouseClicked)
+                                   mouseExited=self.importButtonMouseExited,
+                                   mouseClicked=self.importButtonMouseClicked)
         self.formPanel = JPanel()
         self.titleLabel = JLabel()
         self.titleField = JTextField(focusGained=self.titleFieldFocusGained)
@@ -350,7 +349,7 @@ class Mainwindow(JFrame):
 
     def exportButtonMouseClicked(self, evt):
         subprocess.call("python Ctrla.py export", shell=True)
-        JOptionPane.showMessageDialog(None, "Albums exported.")
+        self.statusLabel.setText("Albums exported.")
 
     def importButtonMouseEntered(self, evt):
         self.importButton.setBorder(border.LineBorder(Color.black))
@@ -361,6 +360,8 @@ class Mainwindow(JFrame):
     def importButtonMouseClicked(self, evt):
         if JOptionPane.showConfirmDialog(None, "Import?") == JOptionPane.YES_OPTION:
             subprocess.call("python Ctrla.py import", shell=True)
+            self.view_table()
+            self.statusLabel.setText("Albums imported.")
 
     def geniusButtonMouseEntered(self, evt):
         self.geniusButton.setBorder(border.LineBorder(Color.black))
@@ -393,7 +394,7 @@ class Mainwindow(JFrame):
                 [item.album_id, item.title, item.artist, item.genre, item.release_date, item.rating, item.tags,
                  item.get_genius_url()])
 
-        self.countLabel.setText(str(len(album_list)) + " Album(s) found.")
+        self.countLabel.setText(str(len(album_list)) + " album(s) found.")
 
     def clear_all_fields(self):
         self.titleField.setText(None)
