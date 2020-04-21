@@ -359,7 +359,8 @@ class Mainwindow(JFrame):
         self.importButton.setBorder(None)
 
     def importButtonMouseClicked(self, evt):
-        pass
+        if JOptionPane.showConfirmDialog(None, "Import?") == JOptionPane.YES_OPTION:
+            subprocess.call("python Ctrla.py import", shell=True)
 
     def geniusButtonMouseEntered(self, evt):
         self.geniusButton.setBorder(border.LineBorder(Color.black))

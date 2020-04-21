@@ -225,9 +225,9 @@ class Ctrla:
         """Adds Album to DB from Desktop GUI"""
         csv_data = csv.reader(file("temp.csv"))
         for row in csv_data:
-            sql = "INSERT INTO albums (title, artist, genre, releaseDate, rating, tags) VALUES ('%s', '%s', '%s', " \
-                  "'%s', '%s', '%s')" % (
-                      row[1], row[2], row[3], row[4], row[5], row[6])
+            sql = "INSERT INTO albums (title, artist, genre, releaseDate, rating, tags, genius_url) VALUES ('%s', '%s', '%s', " \
+                  "'%s', '%s', '%s', '%s')" % (
+                      row[0], row[1], row[2], row[3], row[4], row[5], row[6])
             self.run_query(sql)
 
         os.remove("temp.csv")
@@ -250,6 +250,18 @@ class Ctrla:
         the_album = self.get_album_by_id(album_id)
         webbrowser.open("https://genius.com/search?q=" + the_album.title)
 
+    def gui_import_albums(self):
+        """Adds Album to DB from Desktop GUI"""
+        csv_data = csv.reader(file("input.csv"))
+        for row in csv_data:
+            sql = "INSERT INTO albums (title, artist, genre, releaseDate, rating, tags, ) VALUES ('%s', '%s', '%s', " \
+                  "'%s', '%s', '%s')" % (
+                      row[1], row[2], row[3], row[4], row[5], row[6])
+            self.run_query(sql)
+
+        # os.remove("temp.csv")
+        self.gui_view_albums()
+
 
 if __name__ == "__main__":
     albumCtrla = Ctrla()
@@ -267,3 +279,5 @@ if __name__ == "__main__":
         albumCtrla.search_in_genius(int(sys.argv[2]))
     elif sys.argv[1] == "export":
         albumCtrla.export_albums()
+    elif sys.argv[1] == "import":
+        albumCtrla.gui_import_albums()
