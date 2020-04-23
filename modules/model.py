@@ -22,6 +22,7 @@ class Album:
         self.tags = tags
         self.genius_url = genius_url
         self.tracklist = []
+        self.album_type = None
 
     def get_title(self):
         return self.title
@@ -47,6 +48,9 @@ class Album:
     def get_tracklist(self):
         return self.tracklist
 
+    def get_album_type(self):
+        return self.album_type
+
     def set_title(self, title):
         self.title = title
 
@@ -70,6 +74,9 @@ class Album:
 
     def set_tracklist(self, tracklist):
         self.tracklist = tracklist
+
+    def set_album_type(self, album_type):
+        self.album_type = album_type
 
     def to_string(self):
         print(self.album_id,
