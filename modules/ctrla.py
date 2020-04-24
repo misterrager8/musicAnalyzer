@@ -4,6 +4,8 @@ import sys
 import webbrowser
 
 import MySQLdb
+import bs4
+import requests
 
 from model import *
 
@@ -110,14 +112,7 @@ class Ctrla:
         sql = "SELECT * FROM albums"
 
         for row in self.run_read_query(sql):
-            x = Album(row[0],
-                      row[1],
-                      row[2],
-                      row[3],
-                      row[4],
-                      row[5],
-                      row[6],
-                      row[7])
+            x = Album(row[0], row[1], row[2], row[3], row[4], row[5], row[6], row[7])
             albums_list.append(x)
 
         return albums_list
@@ -141,14 +136,7 @@ class Ctrla:
             b = self.run_search_query(sql3, term)
 
         for row in b:
-            x = Album(row[0],
-                      row[1],
-                      row[2],
-                      row[3],
-                      row[4],
-                      row[5],
-                      row[6],
-                      row[7])
+            x = Album(row[0], row[1], row[2], row[3], row[4], row[5], row[6], row[7])
             albums_list.append(x)
 
         return albums_list
@@ -261,6 +249,39 @@ class Ctrla:
 
         self.gui_view_albums()
 
+    @classmethod
+    def get_lyrics(cls, genius_url):
+        global res
+        album_name = genius_url.split('/')[5]
+
+        res_a = requests.get(genius_url)
+        os.makedirs('./' + album_name, 0o777)
+
+        soup_a = bs4.BeautifulSoup(res_a.text, features='html.parser')
+        type(soup_a)
+
+        elems_a = soup_a.findAll('a', {'class': 'u-display_block', 'href': True})
+
+        for i, item in enumerate(elems_a):
+            song_name = item['href'][19:]
+            txt_name = str(i + 1) + '-' + song_name + '.txt'
+
+            try:
+                res = requests.get(item['href'])
+            except requests.ConnectionError as e:
+                print(e)
+
+            soup = bs4.BeautifulSoup(res.text, features='html.parser')
+            type(soup)
+
+            elems2 = soup.select(".lyrics")[0].getText()
+
+            file2 = open(album_name + '/' + txt_name, 'wb')
+            file2.write(elems2.encode('utf8'))
+            file2.close()
+
+            print(song_name + ' lyrics saved to folder')
+
 
 if __name__ == "__main__":
     albumCtrla = Ctrla()
@@ -280,3 +301,5 @@ if __name__ == "__main__":
         albumCtrla.export_albums()
     elif sys.argv[1] == "import":
         albumCtrla.gui_import_albums()
+    elif sys.argv[1] == "lyrics":
+        albumCtrla.get_lyrics(str(sys.argv[2]))

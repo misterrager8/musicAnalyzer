@@ -47,8 +47,13 @@ class HomePrompts:
                 albumCtrla.add_album(x)
 
             elif mainOptions[answer] == "Delete Album":
-                which_album = input("Which Album? ")
-                albumCtrla.delete_album(which_album)
+                which_album = input("Which Album? (Enter 0 to delete all)")
+
+                if which_album == 0:
+                    albumCtrla.delete_all_albums()
+                else:
+                    albumCtrla.delete_album(which_album)
+
             elif mainOptions[answer] == "Edit Album":
                 which_album = input("Which Album? ")
                 search_type = input(
