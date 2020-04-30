@@ -66,6 +66,9 @@ class Mainwindow(JFrame):
         self.importButton = JLabel(mouseEntered=self.importButtonMouseEntered,
                                    mouseExited=self.importButtonMouseExited,
                                    mouseClicked=self.importButtonMouseClicked)
+        self.lyricsButton = JLabel(mouseEntered=self.lyricsButtonMouseEntered,
+                                   mouseExited=self.lyricsButtonMouseExited,
+                                   mouseClicked=self.lyricsButtonMouseClicked)
         self.formPanel = JPanel()
         self.titleLabel = JLabel()
         self.titleField = JTextField(focusGained=self.titleFieldFocusGained)
@@ -112,19 +115,19 @@ class Mainwindow(JFrame):
         self.albumTable.getColumnModel().getColumn(5).setPreferredWidth(6)
 
         self.bgPanel.add(self.jScrollPane1)
-        self.jScrollPane1.setBounds(10, 320, 780, 221)
+        self.jScrollPane1.setBounds(6, 275, 790, 270)
 
         self.countLabel.setText("")
         self.bgPanel.add(self.countLabel)
-        self.countLabel.setBounds(10, 550, 207, 16)
+        self.countLabel.setBounds(10, 550, 250, 16)
 
         self.statusLabel.setHorizontalAlignment(SwingConstants.TRAILING)
         self.statusLabel.setText("")
         self.bgPanel.add(self.statusLabel)
-        self.statusLabel.setBounds(580, 550, 207, 16)
+        self.statusLabel.setBounds(565, 550, 220, 16)
 
         self.buttonPanel.setOpaque(False)
-        self.buttonPanel.setLayout(GridLayout(3, 2, 5, 5))
+        self.buttonPanel.setLayout(GridLayout(3, 3, 5, 5))
 
         self.addButton.setBackground(self.bgPanel.getBackground().brighter())
         self.addButton.setHorizontalAlignment(SwingConstants.CENTER)
@@ -168,8 +171,15 @@ class Mainwindow(JFrame):
         self.importButton.setOpaque(True)
         self.buttonPanel.add(self.importButton)
 
+        self.lyricsButton.setBackground(self.bgPanel.getBackground().brighter())
+        self.lyricsButton.setHorizontalAlignment(SwingConstants.CENTER)
+        self.lyricsButton.setText("Lyrics")
+        self.lyricsButton.setCursor(Cursor(Cursor.HAND_CURSOR))
+        self.lyricsButton.setOpaque(True)
+        self.buttonPanel.add(self.lyricsButton)
+
         self.bgPanel.add(self.buttonPanel)
-        self.buttonPanel.setBounds(280, 200, 230, 110)
+        self.buttonPanel.setBounds(233, 172, 280, 97)
 
         self.formPanel.setOpaque(False)
         self.formPanel.setLayout(GridLayout(11, 1, 5, 5))
@@ -201,11 +211,11 @@ class Mainwindow(JFrame):
         self.formPanel.add(self.tagsField)
 
         self.bgPanel.add(self.formPanel)
-        self.formPanel.setBounds(10, 10, 260, 300)
+        self.formPanel.setBounds(6, 6, 221, 263)
 
         self.filterBox.setModel(DefaultComboBoxModel(["By Title", "By Artist", "By Date", "By Tags"]))
         self.bgPanel.add(self.filterBox)
-        self.filterBox.setBounds(540, 210, 230, 33)
+        self.filterBox.setBounds(622, 175, 160, 27)
 
         self.searchButton.setBackground(self.bgPanel.getBackground().brighter())
         self.searchButton.setHorizontalAlignment(SwingConstants.CENTER)
@@ -213,9 +223,9 @@ class Mainwindow(JFrame):
         self.searchButton.setCursor(Cursor(Cursor.HAND_CURSOR))
         self.searchButton.setOpaque(True)
         self.bgPanel.add(self.searchButton)
-        self.searchButton.setBounds(660, 270, 110, 33)
+        self.searchButton.setBounds(622, 240, 160, 29)
         self.bgPanel.add(self.termField)
-        self.termField.setBounds(540, 240, 230, 26)
+        self.termField.setBounds(622, 208, 157, 26)
 
         self.getContentPane().add(self.bgPanel)
         self.bgPanel.setBounds(0, 0, 800, 580)
@@ -375,6 +385,16 @@ class Mainwindow(JFrame):
             JOptionPane.showMessageDialog(None, "No Genius URL found.")
         else:
             webbrowser.open(genius_url)
+
+    def lyricsButtonMouseEntered(self, evt):
+        self.lyricsButton.setBorder(border.LineBorder(Color.black))
+
+    def lyricsButtonMouseExited(self, evt):
+        self.lyricsButton.setBorder(None)
+
+    def lyricsButtonMouseClicked(self, evt):
+        genius_url = str(self.albumTable.getValueAt(self.albumTable.getSelectedRow(), 7))
+        subprocess.call("python Ctrla.py lyrics " + genius_url, shell=True)
 
     def view_table(self):
         """Takes Album data from DB for display on JTable"""

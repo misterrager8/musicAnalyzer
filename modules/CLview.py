@@ -14,7 +14,8 @@ mainOptions = ["View All",
                "Export",
                "Import",
                "Search",
-               "Search in Genius",
+               "Search In Genius",
+               "Lyrics",
                "Exit"]
 
 
@@ -72,9 +73,13 @@ class HomePrompts:
                 print(str(len(r)) + " result(s) found.")
                 for i in r:
                     i.to_string()
-            elif mainOptions[answer] == "Search in Genius":
+            elif mainOptions[answer] == "Search In Genius":
                 which_album = input("Which Album? ")
                 albumCtrla.search_in_genius(which_album)
+            elif mainOptions[answer] == "Lyrics":
+                which_album = input("Which Album? ")
+                the_album = albumCtrla.get_album_by_id(which_album)
+                albumCtrla.get_lyrics(the_album.genius_url)
             elif mainOptions[answer] == "Exit":
                 sys.exit()
 
