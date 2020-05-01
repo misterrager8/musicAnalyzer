@@ -43,6 +43,7 @@ class Mainwindow(JFrame):
         self.bgPanel = JPanel(mousePressed=self.bgPanelMousePressed,
                               mouseDragged=self.bgPanelMouseDragged)
         self.exitButton = JLabel(mouseClicked=self.exitButtonMouseClicked)
+        self.contentPanel = JPanel()
         self.jScrollPane1 = JScrollPane()
         self.albumTable = JTable(mouseClicked=self.albumTableMouseClicked)
         self.countLabel = JLabel()
@@ -86,6 +87,19 @@ class Mainwindow(JFrame):
                                    mouseExited=self.searchButtonMouseExited,
                                    mouseClicked=self.searchButtonMouseClicked)
         self.termField = JTextField(focusGained=self.termFieldFocusGained)
+        self.mainButtonPanel = JPanel()
+        self.mainButton1 = JLabel(mouseEntered=self.mainButton1MouseEntered,
+                                mouseExited=self.mainButton1MouseExited,
+                                mouseClicked=self.mainButton1MouseClicked)
+        self.mainButton2 = JLabel(mouseEntered=self.mainButton2MouseEntered,
+                                mouseExited=self.mainButton2MouseExited,
+                                mouseClicked=self.mainButton2MouseClicked)
+        self.mainButton3 = JLabel(mouseEntered=self.mainButton3MouseEntered,
+                                mouseExited=self.mainButton3MouseExited,
+                                mouseClicked=self.mainButton3MouseClicked)
+        self.mainButton4 = JLabel(mouseEntered=self.mainButton4MouseEntered,
+                                  mouseExited=self.mainButton4MouseExited,
+                                  mouseClicked=self.mainButton4MouseClicked)
 
         self.init_components()
         self.setVisible(True)
@@ -94,92 +108,23 @@ class Mainwindow(JFrame):
 
         self.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE)
         self.setUndecorated(True)
-        self.setPreferredSize(Dimension(800, 580))
+        self.setPreferredSize(Dimension(1000, 570))
         self.getContentPane().setLayout(None)
 
-        self.bgPanel.setBackground(Color(69, 126, 174))
+        self.bgPanel.setBackground(Color(51, 153, 255))
         self.bgPanel.setLayout(None)
 
         self.exitButton.setHorizontalAlignment(SwingConstants.CENTER)
         self.exitButton.setText("X")
         self.exitButton.setCursor(Cursor(Cursor.HAND_CURSOR))
         self.bgPanel.add(self.exitButton)
-        self.exitButton.setBounds(760, 0, 40, 40)
+        self.exitButton.setBounds(960, 10, 30, 30)
 
-        self.albumTable.setModel(Tablemodelwrapper())
-        self.albumTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION)
-        self.jScrollPane1.setViewportView(self.albumTable)
-
-        self.albumTable.getColumnModel().getColumn(0).setPreferredWidth(3)
-        self.albumTable.getColumnModel().getColumn(1).setPreferredWidth(175)
-        self.albumTable.getColumnModel().getColumn(5).setPreferredWidth(6)
-
-        self.bgPanel.add(self.jScrollPane1)
-        self.jScrollPane1.setBounds(6, 275, 790, 270)
-
-        self.countLabel.setText("")
-        self.bgPanel.add(self.countLabel)
-        self.countLabel.setBounds(10, 550, 250, 16)
-
-        self.statusLabel.setHorizontalAlignment(SwingConstants.TRAILING)
-        self.statusLabel.setText("")
-        self.bgPanel.add(self.statusLabel)
-        self.statusLabel.setBounds(565, 550, 220, 16)
-
-        self.buttonPanel.setOpaque(False)
-        self.buttonPanel.setLayout(GridLayout(3, 3, 5, 5))
-
-        self.addButton.setBackground(self.bgPanel.getBackground().brighter())
-        self.addButton.setHorizontalAlignment(SwingConstants.CENTER)
-        self.addButton.setText("Add")
-        self.addButton.setCursor(Cursor(Cursor.HAND_CURSOR))
-        self.addButton.setOpaque(True)
-        self.buttonPanel.add(self.addButton)
-
-        self.exportButton.setBackground(self.bgPanel.getBackground().brighter())
-        self.exportButton.setHorizontalAlignment(SwingConstants.CENTER)
-        self.exportButton.setText("Export All")
-        self.exportButton.setCursor(Cursor(Cursor.HAND_CURSOR))
-        self.exportButton.setOpaque(True)
-        self.buttonPanel.add(self.exportButton)
-
-        self.editButton.setBackground(self.bgPanel.getBackground().brighter())
-        self.editButton.setHorizontalAlignment(SwingConstants.CENTER)
-        self.editButton.setText("Edit")
-        self.editButton.setCursor(Cursor(Cursor.HAND_CURSOR))
-        self.editButton.setOpaque(True)
-        self.buttonPanel.add(self.editButton)
-
-        self.geniusButton.setBackground(self.bgPanel.getBackground().brighter())
-        self.geniusButton.setHorizontalAlignment(SwingConstants.CENTER)
-        self.geniusButton.setText("Genius")
-        self.geniusButton.setCursor(Cursor(Cursor.HAND_CURSOR))
-        self.geniusButton.setOpaque(True)
-        self.buttonPanel.add(self.geniusButton)
-
-        self.delButton.setBackground(self.bgPanel.getBackground().brighter())
-        self.delButton.setHorizontalAlignment(SwingConstants.CENTER)
-        self.delButton.setText("Delete")
-        self.delButton.setCursor(Cursor(Cursor.HAND_CURSOR))
-        self.delButton.setOpaque(True)
-        self.buttonPanel.add(self.delButton)
-
-        self.importButton.setBackground(self.bgPanel.getBackground().brighter())
-        self.importButton.setHorizontalAlignment(SwingConstants.CENTER)
-        self.importButton.setText("Import")
-        self.importButton.setCursor(Cursor(Cursor.HAND_CURSOR))
-        self.importButton.setOpaque(True)
-        self.buttonPanel.add(self.importButton)
-
-        self.lyricsButton.setBackground(self.bgPanel.getBackground().brighter())
-        self.lyricsButton.setHorizontalAlignment(SwingConstants.CENTER)
-        self.lyricsButton.setText("Lyrics")
-        self.lyricsButton.setCursor(Cursor(Cursor.HAND_CURSOR))
-        self.lyricsButton.setOpaque(True)
-        self.buttonPanel.add(self.lyricsButton)
-
-        self.bgPanel.add(self.buttonPanel)
-        self.buttonPanel.setBounds(233, 172, 280, 97)
+        self.contentPanel.setBorder(BorderFactory.createLineBorder(Color(0, 0, 0)))
+        self.contentPanel.setOpaque(False)
+        self.contentPanel.setLayout(None)
+        self.contentPanel.add(self.termField)
+        self.termField.setBounds(622, 208, 190, 26)
 
         self.formPanel.setOpaque(False)
         self.formPanel.setLayout(GridLayout(11, 1, 5, 5))
@@ -210,25 +155,131 @@ class Mainwindow(JFrame):
         self.formPanel.add(self.tagsLabel)
         self.formPanel.add(self.tagsField)
 
-        self.bgPanel.add(self.formPanel)
+        self.contentPanel.add(self.formPanel)
         self.formPanel.setBounds(6, 6, 221, 263)
 
-        self.filterBox.setModel(DefaultComboBoxModel(["By Title", "By Artist", "By Date", "By Tags"]))
-        self.bgPanel.add(self.filterBox)
-        self.filterBox.setBounds(622, 175, 160, 27)
+        self.albumTable.setModel(Tablemodelwrapper())
+        self.jScrollPane1.setViewportView(self.albumTable)
 
-        self.searchButton.setBackground(self.bgPanel.getBackground().brighter())
+        self.albumTable.getColumnModel().getColumn(0).setPreferredWidth(3)
+        self.albumTable.getColumnModel().getColumn(1).setPreferredWidth(175)
+        self.albumTable.getColumnModel().getColumn(5).setPreferredWidth(6)
+
+        self.contentPanel.add(self.jScrollPane1)
+        self.jScrollPane1.setBounds(6, 275, 810, 200)
+
+        self.filterBox.setModel(DefaultComboBoxModel(["Search Filter", "By Title", "By Artist", "By Date", "By Tags"]))
+        self.contentPanel.add(self.filterBox)
+        self.filterBox.setBounds(622, 175, 190, 27)
+
+        self.buttonPanel.setOpaque(False)
+        self.buttonPanel.setLayout(GridLayout(3, 3, 5, 5))
+
+        self.addButton.setBackground(self.bgPanel.getBackground().darker())
+        self.addButton.setHorizontalAlignment(SwingConstants.CENTER)
+        self.addButton.setText("Add")
+        self.addButton.setCursor(Cursor(Cursor.HAND_CURSOR))
+        self.addButton.setOpaque(True)
+        self.buttonPanel.add(self.addButton)
+
+        self.exportButton.setBackground(self.bgPanel.getBackground().darker())
+        self.exportButton.setHorizontalAlignment(SwingConstants.CENTER)
+        self.exportButton.setText("Export All")
+        self.exportButton.setCursor(Cursor(Cursor.HAND_CURSOR))
+        self.exportButton.setOpaque(True)
+        self.buttonPanel.add(self.exportButton)
+
+        self.editButton.setBackground(self.bgPanel.getBackground().darker())
+        self.editButton.setHorizontalAlignment(SwingConstants.CENTER)
+        self.editButton.setText("Edit")
+        self.editButton.setCursor(Cursor(Cursor.HAND_CURSOR))
+        self.editButton.setOpaque(True)
+        self.buttonPanel.add(self.editButton)
+
+        self.geniusButton.setBackground(self.bgPanel.getBackground().darker())
+        self.geniusButton.setHorizontalAlignment(SwingConstants.CENTER)
+        self.geniusButton.setText("Genius")
+        self.geniusButton.setCursor(Cursor(Cursor.HAND_CURSOR))
+        self.geniusButton.setOpaque(True)
+        self.buttonPanel.add(self.geniusButton)
+
+        self.delButton.setBackground(self.bgPanel.getBackground().darker())
+        self.delButton.setHorizontalAlignment(SwingConstants.CENTER)
+        self.delButton.setText("Delete")
+        self.delButton.setCursor(Cursor(Cursor.HAND_CURSOR))
+        self.delButton.setOpaque(True)
+        self.buttonPanel.add(self.delButton)
+
+        self.importButton.setBackground(self.bgPanel.getBackground().darker())
+        self.importButton.setHorizontalAlignment(SwingConstants.CENTER)
+        self.importButton.setText("Import")
+        self.importButton.setCursor(Cursor(Cursor.HAND_CURSOR))
+        self.importButton.setOpaque(True)
+        self.buttonPanel.add(self.importButton)
+
+        self.lyricsButton.setBackground(self.bgPanel.getBackground().darker())
+        self.lyricsButton.setHorizontalAlignment(SwingConstants.CENTER)
+        self.lyricsButton.setText("Lyrics")
+        self.lyricsButton.setCursor(Cursor(Cursor.HAND_CURSOR))
+        self.lyricsButton.setOpaque(True)
+        self.buttonPanel.add(self.lyricsButton)
+
+        self.contentPanel.add(self.buttonPanel)
+        self.buttonPanel.setBounds(233, 172, 280, 97)
+
+        self.searchButton.setBackground(self.bgPanel.getBackground().darker())
         self.searchButton.setHorizontalAlignment(SwingConstants.CENTER)
         self.searchButton.setText("Search")
         self.searchButton.setCursor(Cursor(Cursor.HAND_CURSOR))
         self.searchButton.setOpaque(True)
-        self.bgPanel.add(self.searchButton)
-        self.searchButton.setBounds(622, 240, 160, 29)
-        self.bgPanel.add(self.termField)
-        self.termField.setBounds(622, 208, 157, 26)
+        self.contentPanel.add(self.searchButton)
+        self.searchButton.setBounds(622, 240, 190, 29)
+        self.contentPanel.add(self.countLabel)
+        self.countLabel.setBounds(10, 480, 230, 20)
+
+        self.statusLabel.setHorizontalAlignment(SwingConstants.TRAILING)
+        self.contentPanel.add(self.statusLabel)
+        self.statusLabel.setBounds(550, 480, 260, 20)
+
+        self.bgPanel.add(self.contentPanel)
+        self.contentPanel.setBounds(170, 50, 820, 510)
+
+        self.mainButtonPanel.setOpaque(False)
+        self.mainButtonPanel.setLayout(GridLayout(10, 1, 5, 5))
+
+        self.mainButton1.setBackground(self.bgPanel.getBackground().darker())
+        self.mainButton1.setHorizontalAlignment(SwingConstants.CENTER)
+        self.mainButton1.setText("Button 1")
+        self.mainButton1.setCursor(Cursor(Cursor.HAND_CURSOR))
+        self.mainButton1.setOpaque(True)
+        self.mainButtonPanel.add(self.mainButton1)
+
+        self.mainButton2.setBackground(self.bgPanel.getBackground().darker())
+        self.mainButton2.setHorizontalAlignment(SwingConstants.CENTER)
+        self.mainButton2.setText("Button 2")
+        self.mainButton2.setCursor(Cursor(Cursor.HAND_CURSOR))
+        self.mainButton2.setOpaque(True)
+        self.mainButtonPanel.add(self.mainButton2)
+
+        self.mainButton3.setBackground(self.bgPanel.getBackground().darker())
+        self.mainButton3.setHorizontalAlignment(SwingConstants.CENTER)
+        self.mainButton3.setText("Button 3")
+        self.mainButton3.setCursor(Cursor(Cursor.HAND_CURSOR))
+        self.mainButton3.setOpaque(True)
+        self.mainButtonPanel.add(self.mainButton3)
+
+        self.mainButton4.setBackground(self.bgPanel.getBackground().darker())
+        self.mainButton4.setHorizontalAlignment(SwingConstants.CENTER)
+        self.mainButton4.setText("Button 4")
+        self.mainButton4.setCursor(Cursor(Cursor.HAND_CURSOR))
+        self.mainButton4.setOpaque(True)
+        self.mainButtonPanel.add(self.mainButton4)
+
+        self.bgPanel.add(self.mainButtonPanel)
+        self.mainButtonPanel.setBounds(10, 50, 150, 510)
 
         self.getContentPane().add(self.bgPanel)
-        self.bgPanel.setBounds(0, 0, 800, 580)
+        self.bgPanel.setBounds(0, 0, 1000, 570)
 
         self.pack()
         self.setLocationRelativeTo(None)
@@ -395,6 +446,42 @@ class Mainwindow(JFrame):
     def lyricsButtonMouseClicked(self, evt):
         genius_url = str(self.albumTable.getValueAt(self.albumTable.getSelectedRow(), 7))
         subprocess.call("python Ctrla.py lyrics " + genius_url, shell=True)
+
+    def mainButton1MouseEntered(self, evt):
+        self.mainButton1.setBorder(border.LineBorder(Color.black))
+
+    def mainButton1MouseExited(self, evt):
+        self.mainButton1.setBorder(None)
+
+    def mainButton1MouseClicked(self, evt):
+        print("None")
+
+    def mainButton2MouseEntered(self, evt):
+        self.mainButton2.setBorder(border.LineBorder(Color.black))
+
+    def mainButton2MouseExited(self, evt):
+        self.mainButton2.setBorder(None)
+
+    def mainButton2MouseClicked(self, evt):
+        print("None")
+
+    def mainButton3MouseEntered(self, evt):
+        self.mainButton3.setBorder(border.LineBorder(Color.black))
+
+    def mainButton3MouseExited(self, evt):
+        self.mainButton3.setBorder(None)
+
+    def mainButton3MouseClicked(self, evt):
+        print("None")
+
+    def mainButton4MouseEntered(self, evt):
+        self.mainButton4.setBorder(border.LineBorder(Color.black))
+
+    def mainButton4MouseExited(self, evt):
+        self.mainButton4.setBorder(None)
+
+    def mainButton4MouseClicked(self, evt):
+        print("None")
 
     def view_table(self):
         """Takes Album data from DB for display on JTable"""
