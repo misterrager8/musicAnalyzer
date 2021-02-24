@@ -1,16 +1,32 @@
-from sqlalchemy import Column, Integer, String
-from sqlalchemy.ext.declarative import declarative_base
+import os
 
+import dotenv
+import sqlalchemy
+from sqlalchemy import Column, Integer, Text
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import sessionmaker
+
+dotenv.load_dotenv()
+
+db_host = os.getenv("host")
+db_user = os.getenv("user")
+db_passwd = os.getenv("passwd")
+db_name = os.getenv("db")
+
+engine = sqlalchemy.create_engine(f'mysql://{db_user}:{db_passwd}@{db_host}/{db_name}')
 Base = declarative_base()
+
+Session = sqlalchemy.orm.sessionmaker(bind=engine)
+session = Session()
 
 
 class Album(Base):
     __tablename__ = "albums"
 
-    title = Column(String)
-    artist_id = Column(Integer)  # FK
-    genre = Column(String)
-    release_date = Column(String)
+    title = Column(Text)
+    artist_id = Column(Integer) # FK
+    genre = Column(Text)
+    release_date = Column(Text)
     rating = Column(Integer)
     album_id = Column(Integer, primary_key=True)
 
@@ -32,9 +48,9 @@ class Album(Base):
 class Artist(Base):
     __tablename__ = "artists"
 
-    name = Column(String)
-    hometown = Column(String)
-    dob = Column(String)
+    name = Column(Text)
+    hometown = Column(Text)
+    dob = Column(Text)
     artist_id = Column(Integer, primary_key=True)
 
     def __init__(self,
@@ -51,12 +67,12 @@ class Artist(Base):
 class Song(Base):
     __tablename__ = "songs"
 
-    name = Column(String)
-    artist_id = Column(Integer)  # FK
+    name = Column(Text)
+    artist_id = Column(Integer) # FK
     album_id = Column(Integer)  # FK
     play_count = Column(Integer)
     rating = Column(Integer)
-    last_played = Column(String)
+    last_played = Column(Text)
     song_id = Column(Integer, primary_key=True)
 
     def __init__(self,
@@ -74,3 +90,6 @@ class Song(Base):
         self.rating = rating
         self.last_played = last_played
         self.song_id = song_id
+
+
+Base.metadata.create_all(engine)

@@ -1,32 +1,41 @@
 import os
 
-import MySQLdb
-from dotenv import load_dotenv
-from sqlalchemy import create_engine
+import dotenv
+import sqlalchemy.ext.declarative
+from sqlalchemy.orm import sessionmaker
+
+dotenv.load_dotenv()
+
+db_host = os.getenv("host")
+db_user = os.getenv("user")
+db_passwd = os.getenv("passwd")
+db_name = os.getenv("db")
+
+engine = sqlalchemy.create_engine(f'mysql://{db_user}:{db_passwd}@{db_host}/{db_name}')
+Base = sqlalchemy.ext.declarative.declarative_base()
+
+Session = sqlalchemy.orm.sessionmaker(bind=engine)
 
 
 class DB:
     def __init__(self):
-        load_dotenv()
-        db_host = os.getenv("host")
-        db_user = os.getenv("user")
-        db_passwd = os.getenv("passwd")
-        db_name = os.getenv("db")
+        pass
 
-        self.db = create_engine(f'mysql://{db_user}:{db_passwd}@{db_host}/{db_name}')
+    @staticmethod
+    def create(obj):
+        session = Session()
+        session.add(obj)
+        session.commit()
+        session.close()
 
-    def read(self, stmt: str) -> list:
-        try:
-            cursor = self.db.cursor()
-            cursor.execute(stmt)
-            return cursor.fetchall()
-        except MySQLdb.Error as e:
-            print(e)
+    @staticmethod
+    def read():
+        session = Session()
 
-    def write(self, stmt: str):
-        try:
-            cursor = self.db.cursor()
-            cursor.execute(stmt)
-            self.db.commit()
-        except MySQLdb.Error as e:
-            print(e)
+    @staticmethod
+    def update(stmt):
+        session = Session()
+
+    @staticmethod
+    def delete(stmt):
+        session = Session()
