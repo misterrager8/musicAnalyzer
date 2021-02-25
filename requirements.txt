@@ -1,3 +1,3 @@
-mysqlclient
 python-dotenv
 SQLAlchemy
+PyInquirer

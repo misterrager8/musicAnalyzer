@@ -4,7 +4,7 @@ import dotenv
 import sqlalchemy
 from sqlalchemy import Column, Integer, Text
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy.orm import relationship
 
 dotenv.load_dotenv()
 
@@ -16,19 +16,17 @@ db_name = os.getenv("db")
 engine = sqlalchemy.create_engine(f'mysql://{db_user}:{db_passwd}@{db_host}/{db_name}')
 Base = declarative_base()
 
-Session = sqlalchemy.orm.sessionmaker(bind=engine)
-session = Session()
-
 
 class Album(Base):
     __tablename__ = "albums"
 
     title = Column(Text)
-    artist_id = Column(Integer) # FK
+    artist_id = Column(Integer, sqlalchemy.ForeignKey("artists.id"))
     genre = Column(Text)
     release_date = Column(Text)
     rating = Column(Integer)
-    album_id = Column(Integer, primary_key=True)
+    id = Column(Integer, primary_key=True)
+    songs = relationship("Song")
 
     def __init__(self,
                  title: str,
@@ -44,6 +42,9 @@ class Album(Base):
         self.rating = rating
         self.album_id = album_id
 
+    def to_string(self):
+        print(self.title)
+
 
 class Artist(Base):
     __tablename__ = "artists"
@@ -51,7 +52,8 @@ class Artist(Base):
     name = Column(Text)
     hometown = Column(Text)
     dob = Column(Text)
-    artist_id = Column(Integer, primary_key=True)
+    id = Column(Integer, primary_key=True)
+    albums = relationship("Album")
 
     def __init__(self,
                  name: str,
@@ -63,17 +65,20 @@ class Artist(Base):
         self.dob = dob
         self.artist_id = artist_id
 
+    def to_string(self):
+        print(self.name)
+
 
 class Song(Base):
     __tablename__ = "songs"
 
     name = Column(Text)
-    artist_id = Column(Integer) # FK
-    album_id = Column(Integer)  # FK
+    artist_id = Column(Integer, sqlalchemy.ForeignKey("artists.id"))
+    album_id = Column(Integer, sqlalchemy.ForeignKey("albums.id"))
     play_count = Column(Integer)
     rating = Column(Integer)
     last_played = Column(Text)
-    song_id = Column(Integer, primary_key=True)
+    id = Column(Integer, primary_key=True)
 
     def __init__(self,
                  name: str,
@@ -90,6 +95,9 @@ class Song(Base):
         self.rating = rating
         self.last_played = last_played
         self.song_id = song_id
+
+    def to_string(self):
+        print(self.name)
 
 
 Base.metadata.create_all(engine)

@@ -29,13 +29,20 @@ class DB:
         session.close()
 
     @staticmethod
-    def read():
+    def read(obj_name):
         session = Session()
+        results = session.query(obj_name).all()
+        for i in results:
+            i.to_string()
 
-    @staticmethod
-    def update(stmt):
-        session = Session()
+    # @staticmethod
+    # def update(stmt):
+    #     # session = Session()
+    #     pass
 
     @staticmethod
     def delete(stmt):
         session = Session()
+        session.execute(stmt)
+        session.commit()
+        session.close()
