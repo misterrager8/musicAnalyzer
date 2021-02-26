@@ -1,20 +1,4 @@
-import os
-
-import dotenv
-import sqlalchemy.ext.declarative
-from sqlalchemy.orm import sessionmaker
-
-dotenv.load_dotenv()
-
-db_host = os.getenv("host")
-db_user = os.getenv("user")
-db_passwd = os.getenv("passwd")
-db_name = os.getenv("db")
-
-engine = sqlalchemy.create_engine(f'mysql://{db_user}:{db_passwd}@{db_host}/{db_name}')
-Base = sqlalchemy.ext.declarative.declarative_base()
-
-Session = sqlalchemy.orm.sessionmaker(bind=engine)
+from modules.base import session_factory
 
 
 class DB:
@@ -23,14 +7,14 @@ class DB:
 
     @staticmethod
     def create(obj):
-        session = Session()
+        session = session_factory()
         session.add(obj)
         session.commit()
         session.close()
 
     @staticmethod
     def read(obj_name):
-        session = Session()
+        session = session_factory()
         results = session.query(obj_name).all()
         for i in results:
             i.to_string()
@@ -42,7 +26,7 @@ class DB:
 
     @staticmethod
     def delete(stmt):
-        session = Session()
+        session = session_factory()
         session.execute(stmt)
         session.commit()
         session.close()
