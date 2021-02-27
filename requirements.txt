@@ -1,3 +1,5 @@
 python-dotenv
 SQLAlchemy
 PyInquirer
+praw
+Flask
