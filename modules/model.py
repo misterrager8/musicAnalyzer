@@ -12,7 +12,7 @@ class Artist(db.Model):
     hometown = Column(Text)
     dob = Column(Text)
     id = Column(Integer, primary_key=True)
-    albums = relationship("Album")
+    albums = relationship("Album", backref="artists")
 
     def __init__(self, name: str):
         self.name = name
@@ -30,8 +30,7 @@ class Album(db.Model):
     release_date = Column(Text)
     rating = Column(Integer)
     id = Column(Integer, primary_key=True)
-    artist = relationship("Artist")
-    songs = relationship("Song")
+    songs = relationship("Song", backref="albums")
 
     def __init__(self, title: str):
         self.title = title
@@ -44,6 +43,7 @@ class Song(db.Model):
     __tablename__ = "songs"
 
     name = Column(Text)
+    artist_id = Column(Integer, sqlalchemy.ForeignKey("artists.id"))
     album_id = Column(Integer, sqlalchemy.ForeignKey("albums.id"))
     play_count = Column(Integer)
     rating = Column(Integer)

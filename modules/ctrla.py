@@ -1,11 +1,8 @@
 import os
 
 import dotenv
-import praw
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
-
-reddit = praw.Reddit("bot1")
 
 app = Flask(__name__)
 
@@ -46,9 +43,3 @@ class DB:
         db.session.execute(stmt)
         db.session.commit()
         db.session.close()
-
-    @staticmethod
-    def sub_posts():
-        for submission in reddit.subreddit("hiphopheads").new(limit=250):
-            if "FRESH" in submission.title:
-                print(submission.title)
