@@ -1,6 +1,7 @@
-import sys
-
 import PyInquirer.prompts
+
+from modules.ctrla import DB
+from modules.model import Album, Artist, Song
 
 
 class CmdLnInterface:

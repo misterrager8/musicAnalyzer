@@ -22,24 +22,28 @@ class DB:
         pass
 
     @staticmethod
-    def create(obj: object):
-        db.session.add(obj)
+    def insert_one(item: object):
+        db.session.add(item)
         db.session.commit()
 
     @staticmethod
-    def read(obj_name):
-        return db.session.query(obj_name).all()
+    def insert_many(items: list):
+        db.session.add_all(items)
+        db.session.commit()
 
     @staticmethod
-    def find_by_id(obj_name, obj_id: int):
-        return db.session.query(obj_name).get(obj_id)
+    def get_all(item_type):
+        return db.session.query(item_type).all()
+
+    @staticmethod
+    def find_by_id(item_type, item_id: int):
+        return db.session.query(item_type).get(item_id)
 
     @staticmethod
     def update(stmt):
         pass
 
     @staticmethod
-    def delete(stmt):
-        db.session.execute(stmt)
+    def delete(item):
+        db.session.delete(item)
         db.session.commit()
-        db.session.close()

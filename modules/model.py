@@ -13,12 +13,19 @@ class Artist(db.Model):
     dob = Column(Text)
     id = Column(Integer, primary_key=True)
     albums = relationship("Album", backref="artists")
+    songs = relationship("Song", backref="artists")
 
     def __init__(self, name: str):
         self.name = name
 
+    def add_albums(self, new_albums: list):
+        for i in new_albums:
+            self.albums.append(i)
+
+        db.session.commit()
+
     def to_string(self):
-        print(self.name)
+        print(str(self.id) + "\t" + self.name)
 
 
 class Album(db.Model):
@@ -35,8 +42,15 @@ class Album(db.Model):
     def __init__(self, title: str):
         self.title = title
 
+    def add_songs(self, new_songs: list):
+        for i in new_songs:
+            i.artists = self.artists
+            self.songs.append(i)
+
+        db.session.commit()
+
     def to_string(self):
-        print([self.title])
+        print(str(self.id) + "\t" + self.title)
 
 
 class Song(db.Model):
@@ -54,7 +68,7 @@ class Song(db.Model):
         self.name = name
 
     def to_string(self):
-        print(self.name)
+        print(str(self.id) + "\t" + self.name)
 
 
 db.create_all()
