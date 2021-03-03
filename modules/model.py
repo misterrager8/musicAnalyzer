@@ -16,9 +16,19 @@ class Artist(db.Model):
     songs = relationship("Song", backref="artists")
 
     def __init__(self, name: str):
+        """
+        Create Artist object
+        Args:
+            name(str): Name of the Artist
+        """
         self.name = name
 
     def add_albums(self, new_albums: list):
+        """
+        Add a list of Albums to the Artist
+        Args:
+            new_albums (list): List of Albums to be added
+        """
         for i in new_albums:
             self.albums.append(i)
 
@@ -40,9 +50,19 @@ class Album(db.Model):
     songs = relationship("Song", backref="albums")
 
     def __init__(self, title: str):
+        """
+        Create Album object
+        Args:
+            title(str): title of the Album
+        """
         self.title = title
 
     def add_songs(self, new_songs: list):
+        """
+        Add Songs to the Album
+        Args:
+            new_songs(list): List of Songs to be added to the Album
+        """
         for i in new_songs:
             i.artists = self.artists
             self.songs.append(i)
@@ -65,6 +85,11 @@ class Song(db.Model):
     id = Column(Integer, primary_key=True)
 
     def __init__(self, name: str):
+        """
+        Create Song object
+        Args:
+            name(str): Name of the Song
+        """
         self.name = name
 
     def to_string(self):
