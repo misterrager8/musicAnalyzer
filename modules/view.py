@@ -2,13 +2,14 @@ import sys
 
 import PyInquirer.prompts
 
-from modules.ctrla import DB
+from modules.ctrla import DB, SongScraper
 from modules.model import Album, Artist, Song
 
 
 class CmdLnInterface:
     def __init__(self):
         self.db = DB()
+        self.scrp = SongScraper()
 
         main_options = [{
             'type': 'list',
@@ -18,6 +19,8 @@ class CmdLnInterface:
                 "ARTISTS",
                 "ALBUMS",
                 "SONGS",
+                "NEW",
+                "LYRICS",
                 "EXIT"
             ]
         }]
@@ -30,6 +33,10 @@ class CmdLnInterface:
                 self.albums_view()
             elif answer["menu"] == "SONGS":
                 self.songs_view()
+            elif answer["menu"] == "NEW":
+                self.fresh_view()
+            elif answer["menu"] == "LYRICS":
+                self.lyrics_view()
             elif answer["menu"] == "EXIT":
                 sys.exit()
 
@@ -51,10 +58,24 @@ class CmdLnInterface:
         """
         self.print_list(self.db.get_all(Song))
 
+    def fresh_view(self):
+        """
+        Functionality for getting 'FRESH' music from r/HipHopHeads
+        """
+        self.print_list(self.scrp.get_fresh_music())
+
+    def lyrics_view(self):
+        """
+        Functionality for getting lyrics from Genius.com
+        """
+        _ = "https://genius.com/Gorillaz-desole-lyrics"
+        print(self.scrp.get_lyrics(_))
+
     @staticmethod
     def print_list(objects_list: list):
         """
         Print list of objects
+
         Args:
             objects_list(list): List of objects
         """

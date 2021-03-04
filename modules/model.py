@@ -18,6 +18,7 @@ class Artist(db.Model):
     def __init__(self, name: str):
         """
         Create Artist object
+
         Args:
             name(str): Name of the Artist
         """
@@ -26,6 +27,7 @@ class Artist(db.Model):
     def add_albums(self, new_albums: list):
         """
         Add a list of Albums to the Artist
+
         Args:
             new_albums (list): List of Albums to be added
         """
@@ -52,6 +54,7 @@ class Album(db.Model):
     def __init__(self, title: str):
         """
         Create Album object
+
         Args:
             title(str): title of the Album
         """
@@ -60,6 +63,7 @@ class Album(db.Model):
     def add_songs(self, new_songs: list):
         """
         Add Songs to the Album
+
         Args:
             new_songs(list): List of Songs to be added to the Album
         """
@@ -87,6 +91,7 @@ class Song(db.Model):
     def __init__(self, name: str):
         """
         Create Song object
+
         Args:
             name(str): Name of the Song
         """

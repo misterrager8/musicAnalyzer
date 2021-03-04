@@ -3,3 +3,5 @@ SQLAlchemy
 PyInquirer
 praw
 Flask
+requests
+beautifulsoup4
