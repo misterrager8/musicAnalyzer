@@ -1,24 +1,8 @@
-import os
-from datetime import datetime
-
 import bs4
-import dotenv
 import praw
 import requests
-from flask import Flask
-from flask_sqlalchemy import SQLAlchemy
 
-app = Flask(__name__)
-
-dotenv.load_dotenv()
-db_host = os.getenv("host")
-db_user = os.getenv("user")
-db_passwd = os.getenv("passwd")
-db_name = os.getenv("db")
-app.config["SQLALCHEMY_DATABASE_URI"] = f"mysql://{db_user}:{db_passwd}@{db_host}/{db_name}"
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-
-db = SQLAlchemy(app)
+from modules.model import FreshItem, db
 
 
 class DB:
@@ -126,23 +110,9 @@ class SongScraper:
 
         return x[0].find("p").text
 
-
-class FreshItem:
-    def __init__(self,
-                 title: str,
-                 url: str,
-                 time_posted: str):
-        """
-        'FRESH' Submission object from PRAW
-
-        Args:
-            title (str): Title of the Submission
-            url (str): URL of the Submission
-            time_posted (str): Time posted of the Submission in UTC
-        """
-        self.title = title
-        self.url = url
-        self.time_posted = datetime.utcfromtimestamp(float(time_posted))
-
-    def to_string(self):
-        print(str(self.time_posted) + "\t" + self.title)
+    @staticmethod
+    def search_lyrics(search_term: str):
+        page = requests.get("https://genius.com/search?q=" + search_term)
+        soup = bs4.BeautifulSoup(page.content, 'html.parser')
+        print(page.content)
+        _ = soup.find_all("div", class_="mini_card-title")

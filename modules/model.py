@@ -1,8 +1,12 @@
-import sqlalchemy
-from sqlalchemy import Column, Integer, Text
+from datetime import datetime
+
+from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import Column, Integer, Text, ForeignKey
 from sqlalchemy.orm import relationship
 
-from modules.ctrla import db
+from modules import init
+
+db = SQLAlchemy(init())
 
 
 class Artist(db.Model):
@@ -36,6 +40,19 @@ class Artist(db.Model):
 
         db.session.commit()
 
+    def duplicate_checked(self):
+        """
+        Checks whether Artist is already in DB
+
+        Returns:
+            Artist: Either new Artist or preexisting Artist
+        """
+        _ = db.session.query(Artist).filter(Artist.name == self.name).first()
+        if _ is not None:
+            return _
+        else:
+            return self
+
     def to_string(self):
         print(str(self.id) + "\t" + self.name)
 
@@ -44,7 +61,7 @@ class Album(db.Model):
     __tablename__ = "albums"
 
     title = Column(Text)
-    artist_id = Column(Integer, sqlalchemy.ForeignKey("artists.id"))
+    artist_id = Column(Integer, ForeignKey("artists.id"))
     genre = Column(Text)
     release_date = Column(Text)
     rating = Column(Integer)
@@ -81,8 +98,8 @@ class Song(db.Model):
     __tablename__ = "songs"
 
     name = Column(Text)
-    artist_id = Column(Integer, sqlalchemy.ForeignKey("artists.id"))
-    album_id = Column(Integer, sqlalchemy.ForeignKey("albums.id"))
+    artist_id = Column(Integer, ForeignKey("artists.id"))
+    album_id = Column(Integer, ForeignKey("albums.id"))
     play_count = Column(Integer)
     rating = Column(Integer)
     last_played = Column(Text)
@@ -99,6 +116,27 @@ class Song(db.Model):
 
     def to_string(self):
         print(str(self.id) + "\t" + self.name)
+
+
+class FreshItem:
+    def __init__(self,
+                 title: str,
+                 url: str,
+                 time_posted: str):
+        """
+        'FRESH' Submission object from PRAW
+
+        Args:
+            title (str): Title of the Submission
+            url (str): URL of the Submission
+            time_posted (str): Time posted of the Submission in UTC
+        """
+        self.title = title
+        self.url = url
+        self.time_posted = datetime.utcfromtimestamp(float(time_posted))
+
+    def to_string(self):
+        print(str(self.time_posted) + "\t" + self.title)
 
 
 db.create_all()
