@@ -1,12 +1,25 @@
+import os
 from datetime import datetime
 
+import dotenv
+from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import Column, Integer, Text, ForeignKey
 from sqlalchemy.orm import relationship
 
-from modules import init
+app = Flask(__name__)
 
-db = SQLAlchemy(init())
+dotenv.load_dotenv()
+
+db_host = os.getenv("host")
+db_user = os.getenv("user")
+db_passwd = os.getenv("passwd")
+db_name = os.getenv("db")
+
+app.config["SQLALCHEMY_DATABASE_URI"] = f"mysql://{db_user}:{db_passwd}@{db_host}/{db_name}"
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+db = SQLAlchemy(app)
 
 
 class Artist(db.Model):
@@ -118,7 +131,14 @@ class Song(db.Model):
         print(str(self.id) + "\t" + self.name)
 
 
-class FreshItem:
+class FreshItem(db.Model):
+    __tablename__ = "fresh_items"
+
+    title = Column(Text)
+    url = Column(Text)
+    time_posted = Column(Text)
+    id = Column(Integer, primary_key=True)
+
     def __init__(self,
                  title: str,
                  url: str,
