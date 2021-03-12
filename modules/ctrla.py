@@ -76,7 +76,23 @@ class SongScraper:
     def __init__(self):
         self.reddit = praw.Reddit("bot1")
 
-    def get_fresh_music(self) -> list:
+    def get_news(self) -> list:
+        """
+        Get posts in r/HipHopHeads
+
+        Returns:
+            list: List of posts
+        """
+        results = []
+        for submission in self.reddit.subreddit("hiphopheads").new(limit=25):
+            _ = FreshItem(submission.title,
+                          submission.url,
+                          submission.created_utc)
+            results.append(_)
+
+        return results
+
+    def get_fresh(self) -> list:
         """
         Get posts with the tag 'FRESH' in r/HipHopHeads
 

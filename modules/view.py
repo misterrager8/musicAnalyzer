@@ -1,18 +1,23 @@
 from flask import Flask, render_template
 
-from modules.ctrla import DB
+from modules.ctrla import DB, SongScraper
 from modules.model import Album, Artist, Song
 
 app = Flask(__name__)
 
-b = DB().get_all(Artist)
-c = DB().get_all(Album)
-d = DB().get_all(Song)
+x = DB()
+y = SongScraper()
+
+b = x.get_all(Artist)
+c = x.get_all(Album)
+d = x.get_all(Song)
+
+e = y.get_news()
 
 
 @app.route("/")
 def index():
-    return render_template("index.html")
+    return render_template("index.html", fresh=e)
 
 
 @app.route("/artists")
