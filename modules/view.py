@@ -25,14 +25,29 @@ def artists_pg():
     return render_template("artists.html", artists=b)
 
 
+@app.route("/artist/<name>")
+def artists_profile_pg(name):
+    return render_template("artist_profile.html", artist_name=name)
+
+
 @app.route("/albums")
 def albums_pg():
     return render_template("albums.html", albums=c)
 
 
+@app.route("/albums/<name>")
+def album_profile_pg(name):
+    return render_template("album_profile.html", album_name=name)
+
+
 @app.route("/songs")
 def songs_pg():
     return render_template("songs.html", songs=d)
+
+
+@app.route("/songs/<name>")
+def song_profile_pg(name):
+    return render_template("song_profile.html", song_name=name)
 
 
 if __name__ == "__main__":

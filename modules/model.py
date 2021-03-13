@@ -81,7 +81,12 @@ class Album(db.Model):
     id = Column(Integer, primary_key=True)
     songs = relationship("Song", backref="albums")
 
-    def __init__(self, title: str):
+    def __init__(self,
+                 title: str,
+                 artist_id=None,
+                 genre: str = None,
+                 release_date: str = None,
+                 rating=None):
         """
         Create Album object
 
@@ -89,6 +94,10 @@ class Album(db.Model):
             title(str): title of the Album
         """
         self.title = title
+        self.artist_id = artist_id
+        self.genre = genre
+        self.release_date = release_date
+        self.rating = rating
 
     def add_songs(self, new_songs: list):
         """

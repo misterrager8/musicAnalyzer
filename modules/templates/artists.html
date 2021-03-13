@@ -4,14 +4,14 @@
 <title>Artists</title>
 <body>
 <h1 class="display-4 text-center">Artists</h1>
-<div class="card-deck">
+<div class="row">
   {% for i in artists %}
-  <div class="card m-3 shadow">
-    <img class="card-img" src="https://via.placeholder.com/250" alt="Card image cap">
+  <a class="col-3 p-3" href="{{ url_for('artists_profile_pg', name=i.name) }}">
+    <img class="card-img shadow" src="https://via.placeholder.com/250" alt="Card image cap">
     <div class="card-img-overlay">
       <p>{{ i.name }}</p>
     </div>
-  </div>
+  </a>
   {% endfor %}
 </div>
 </body>

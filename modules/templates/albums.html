@@ -4,16 +4,16 @@
 <title>Albums</title>
 <body>
 <h1 class="display-4 text-center">Albums</h1>
-<div class="card-deck">
+<div class="row">
   {% for i in albums %}
-  <div class="card">
+  <a href="{{ url_for('album_profile_pg', name=i.title) }}" class="col-3">
     <img class="card-img-top" src="https://via.placeholder.com/250" alt="Card image cap">
     <div class="card-body">
       <p class="font-italic">{{ i.title }}</p>
       <p>{{ i.artists.name }}</p>
       <small class="text-muted">{{ i.release_date }}</small>
     </div>
-  </div>
+  </a>
   {% endfor %}
 </div>
 </body>
