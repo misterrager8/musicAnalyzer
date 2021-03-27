@@ -1,8 +1,21 @@
 {% extends "base.html" %}
 
 {% block body %}
-<title>{{ album_name }}</title>
+<title>{{ album.title }}</title>
 <body>
-<h1 class="display-4 text-center">{{ album_name }}</h1>
+<div class="text-center">
+  <p class="display-4">{{ album.title }}</p>
+  <a href="{{ url_for('artists_profile_pg', id_=album.artists.id) }}" class="text-muted">{{ album.artists.name }}</a>
+  <p>{{ album.release_date }}</p>
+</div>
+<h3 class="font-weight-bold m-2">Songs</h3>
+{% for i in album.songs %}
+<a href="{{ url_for('song_profile_pg', id_=i.id) }}"
+   class="list-group-item list-group-item-action border-0 m-3 rounded-lg">
+  <div class="d-flex w-100 justify-content-between">
+    <h3 class="mb-1">{{ i.name }}</h3>
+  </div>
+</a>
+{% endfor %}
 </body>
 {% endblock %}

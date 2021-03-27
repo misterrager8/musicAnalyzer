@@ -1,54 +1,52 @@
-from flask import Flask, render_template
+from flask import render_template
 
+from modules import app
 from modules.ctrla import DB, SongScraper
 from modules.model import Album, Artist, Song
 
-app = Flask(__name__)
-
-x = DB()
+music_db = DB()
 y = SongScraper()
 
-b = x.get_all(Artist)
-c = x.get_all(Album)
-d = x.get_all(Song)
+artists = music_db.get_all(Artist)
+albums = music_db.get_all(Album)
+songs = music_db.get_all(Song)
 
-e = y.get_news()
+news = y.get_news()
 
 
 @app.route("/")
 def index():
-    return render_template("index.html", fresh=e)
+    return render_template("index.html", fresh=news)
 
 
 @app.route("/artists")
 def artists_pg():
-    return render_template("artists.html", artists=b)
+    return render_template("artists.html", artists=artists)
 
 
-@app.route("/artist/<name>")
-def artists_profile_pg(name):
-    return render_template("artist_profile.html", artist_name=name)
+@app.route("/artist/<id_>")
+def artists_profile_pg(id_: int):
+    artist = music_db.find_by_id(Artist, id_)
+    return render_template("artist_profile.html", artist=artist)
 
 
 @app.route("/albums")
 def albums_pg():
-    return render_template("albums.html", albums=c)
+    return render_template("albums.html", albums=albums)
 
 
-@app.route("/albums/<name>")
-def album_profile_pg(name):
-    return render_template("album_profile.html", album_name=name)
+@app.route("/albums/<id_>")
+def album_profile_pg(id_: int):
+    album = music_db.find_by_id(Album, id_)
+    return render_template("album_profile.html", album=album)
 
 
 @app.route("/songs")
 def songs_pg():
-    return render_template("songs.html", songs=d)
+    return render_template("songs.html", songs=songs)
 
 
-@app.route("/songs/<name>")
-def song_profile_pg(name):
-    return render_template("song_profile.html", song_name=name)
-
-
-if __name__ == "__main__":
-    app.run(debug=True)
+@app.route("/songs/<id_>")
+def song_profile_pg(id_: int):
+    song = music_db.find_by_id(Song, id_)
+    return render_template("song_profile.html", song=song)

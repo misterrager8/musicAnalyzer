@@ -1,8 +1,30 @@
 {% extends "base.html" %}
 
 {% block body %}
-<title>{{ artist_name }}</title>
+<title>{{ artist.name }}</title>
 <body>
-<h1 class="display-4 text-center">{{ artist_name }}</h1>
+<p class="display-4 text-center">{{ artist.name }}</p>
+<h3 class="font-weight-bold m-2">Albums</h3>
+<div class="row">
+  {% for i in artist.albums %}
+  <a href="{{ url_for('album_profile_pg', id_=i.id) }}" class="col-3">
+    <img class="card-img-top" src="https://via.placeholder.com/250" alt="Card image cap">
+    <div class="card-body">
+      <p class="text-muted">{{ i.title }}</p>
+    </div>
+  </a>
+  {% endfor %}
+</div>
+
+<h3 class="font-weight-bold m-2">Songs</h3>
+{% for i in artist.songs %}
+<a href="{{ url_for('song_profile_pg', id_=i.id) }}"
+   class="list-group-item list-group-item-action border-0 m-3 rounded-lg">
+  <div class="d-flex w-100 justify-content-between">
+    <h3 class="mb-1">{{ i.name }}</h3>
+    <small>{{ i.albums.release_date }}</small>
+  </div>
+</a>
+{% endfor %}
 </body>
 {% endblock %}

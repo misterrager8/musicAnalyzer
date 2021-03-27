@@ -1,8 +1,12 @@
 {% extends "base.html" %}
 
 {% block body %}
-<title>{{ song_name }}</title>
+<title>{{ song.name }}</title>
 <body>
-<h1 class="display-4 text-center">{{ song_name }}</h1>
+<div class="text-center">
+  <p class="display-4">{{ song.name }}</p>
+  <a href="{{ url_for('artists_profile_pg', id_=song.artists.id) }}" class="text-muted">{{ song.artists.name }}</a><br>
+  <a href="{{ url_for('album_profile_pg', id_=song.albums.id) }}" class="text-muted">{{ song.albums.title }}</a>
+</div>
 </body>
 {% endblock %}

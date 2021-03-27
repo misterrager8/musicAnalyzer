@@ -2,7 +2,8 @@ import bs4
 import praw
 import requests
 
-from modules.model import FreshItem, db
+from modules import db
+from modules.model import FreshItem
 
 
 class DB:

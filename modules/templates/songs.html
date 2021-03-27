@@ -5,7 +5,7 @@
 <body>
 <h1 class="display-4 text-center">Songs</h1>
 {% for i in songs %}
-<a href="{{ url_for('song_profile_pg', name=i.name) }}" class="list-group-item list-group-item-action border-0 m-3 rounded-lg">
+<a href="{{ url_for('song_profile_pg', id_=i.id) }}" class="list-group-item list-group-item-action border-0 m-3 rounded-lg">
   <div class="d-flex w-100 justify-content-between">
     <h3 class="mb-1">{{ i.name }}</h3>
     <small>{{ i.albums.release_date }}</small>
