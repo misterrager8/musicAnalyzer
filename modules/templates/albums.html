@@ -5,6 +5,11 @@
 <body>
 <h1 class="display-4 text-center">Albums</h1>
 <div class="row">
+  <a href="{{ url_for('sort', sort_by='title') }}" class="badge badge-primary">Title</a>
+  <a href="{{ url_for('sort', sort_by='artist') }}" class="badge badge-primary">Artist</a>
+  <a href="{{ url_for('sort', sort_by='year') }}" class="badge badge-primary">Year</a>
+</div>
+<div class="row">
   {% for i in albums %}
   <a href="{{ url_for('album_profile_pg', id_=i.id) }}" class="col-3">
     <img class="card-img-top" src="https://via.placeholder.com/250" alt="Card image cap">
