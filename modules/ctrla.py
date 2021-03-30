@@ -57,9 +57,11 @@ class DB:
         """
         return db.session.query(item_type).get(item_id)
 
-    # @staticmethod
-    # def update(stmt):
-    #     pass
+    @staticmethod
+    def search(item_type, search_term):
+        _ = "%{}%".format(search_term)
+        results = db.session.query(item_type).filter(item_type.like(_)).all()
+        return results
 
     @staticmethod
     def delete(item):
@@ -85,7 +87,7 @@ class SongScraper:
             list: List of posts
         """
         results = []
-        for submission in self.reddit.subreddit("hiphopheads").new(limit=25):
+        for submission in self.reddit.subreddit("hiphopheads").hot(limit=25):
             _ = FreshItem(submission.title,
                           submission.url,
                           submission.created_utc)

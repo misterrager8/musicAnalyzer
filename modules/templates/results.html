@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block body %}
+<title>Search</title>
+<body>
+<p class="display-4 text-center">Search for: '{{ search_term }}'</p>
+
+<h3 class="font-weight-bold m-2">Artists</h3>
+<div class="row">
+  {% for i in results["artist_results"] %}
+  <a class="col-3 p-3" href="{{ url_for('artists_profile_pg', id_=i.id) }}">
+    <img class="card-img shadow" src="https://via.placeholder.com/250" alt="Card image cap">
+    <div class="card-img-overlay">
+      <p class="text-body">{{ i.name }}</p>
+    </div>
+  </a>
+  {% endfor %}
+</div>
+
+<h3 class="font-weight-bold m-2">Albums</h3>
+<div class="row">
+  {% for i in results["album_results"] %}
+  <a href="{{ url_for('album_profile_pg', id_=i.id) }}" class="col-3">
+    <img class="card-img-top" src="https://via.placeholder.com/250" alt="Card image cap">
+    <div class="card-body">
+      <p class="text-body">{{ i.title }}</p>
+      <small class="text-muted">{{ i.release_date }}</small>
+    </div>
+  </a>
+  {% endfor %}
+</div>
+
+<h3 class="font-weight-bold m-2">Songs</h3>
+{% for i in results["song_results"] %}
+<a href="{{ url_for('song_profile_pg', id_=i.id) }}"
+   class="list-group-item list-group-item-action border-0 m-3 rounded-lg">
+  <div class="d-flex w-100 justify-content-between">
+    <h3 class="mb-1">{{ i.name }}</h3>
+  </div>
+</a>
+{% endfor %}
+
+</body>
+{% endblock %}
