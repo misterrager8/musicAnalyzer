@@ -45,7 +45,7 @@ class DB:
         return db.session.query(item_type).all()
 
     @staticmethod
-    def find_by_id(item_type, item_id: int) -> object:
+    def find_by_id(item_type, item_id: int):
         """
         Get a specific item of a specified type
 
@@ -53,7 +53,7 @@ class DB:
             item_type: type of Object to retrieve [Artist, Album, Song]
             item_id(int): the ID of the object being searched
         Returns:
-            object: Specific item
+            Specific item
         """
         return db.session.query(item_type).get(item_id)
 

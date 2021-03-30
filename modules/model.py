@@ -1,5 +1,7 @@
 from datetime import datetime
 
+import bs4
+import requests
 from sqlalchemy import Column, Integer, Text, ForeignKey
 from sqlalchemy.orm import relationship
 
@@ -37,6 +39,18 @@ class Artist(db.Model):
 
         db.session.commit()
 
+    def add_songs(self, new_songs: list):
+        """
+        Add a list of Songs to the Artist
+
+        Args:
+            new_songs (list): List of Songs to be added
+        """
+        for i in new_songs:
+            self.songs.append(i)
+
+        db.session.commit()
+
     def duplicate_checked(self):
         """
         Checks whether Artist is already in DB
@@ -50,8 +64,8 @@ class Artist(db.Model):
         else:
             return self
 
-    def to_string(self):
-        print(str(self.id) + "\t" + self.name)
+    def __str__(self):
+        return "%d\t%s" % (self.id, self.name)
 
 
 class Album(db.Model):
@@ -96,8 +110,8 @@ class Album(db.Model):
 
         db.session.commit()
 
-    def to_string(self):
-        print(str(self.id) + "\t" + self.title)
+    def __str__(self):
+        return "%d\t%s" % (self.id, self.title)
 
 
 class Song(db.Model):
@@ -107,8 +121,10 @@ class Song(db.Model):
     artist_id = Column(Integer, ForeignKey("artists.id"))
     album_id = Column(Integer, ForeignKey("albums.id"))
     play_count = Column(Integer)
+    track_num = Column(Integer)
     rating = Column(Integer)
     last_played = Column(Text)
+    lyrics = Column(Text)
     id = Column(Integer, primary_key=True)
 
     def __init__(self, name: str):
@@ -120,8 +136,22 @@ class Song(db.Model):
         """
         self.name = name
 
-    def to_string(self):
-        print(str(self.id) + "\t" + self.name)
+    def add_lyrics(self, genius_url: str):
+        """
+        Get lyrics of a song from Genius.com
+
+        Args:
+            genius_url (str): Genius URL of the lyrics
+        """
+        page = requests.get(genius_url)
+        soup = bs4.BeautifulSoup(page.content, 'html.parser')
+        x = soup.find_all("div", class_="lyrics")
+
+        self.lyrics = x[0].find("p").text
+        db.session.commit()
+
+    def __str__(self):
+        return "%d\t%s" % (self.id, self.name)
 
 
 class FreshItem(db.Model):
@@ -148,8 +178,8 @@ class FreshItem(db.Model):
         self.url = url
         self.time_posted = datetime.utcfromtimestamp(float(time_posted))
 
-    def to_string(self):
-        print(str(self.time_posted) + "\t" + self.title)
+    def __str__(self):
+        return "%s\t%s" % (self.time_posted, self.title)
 
 
 db.create_all()

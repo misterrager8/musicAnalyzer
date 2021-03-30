@@ -9,11 +9,15 @@
   <p>{{ album.release_date }}</p>
 </div>
 <h3 class="font-weight-bold m-2">Songs</h3>
-{% for i in album.songs %}
+{% for i in tracks %}
 <a href="{{ url_for('song_profile_pg', id_=i.id) }}"
    class="list-group-item list-group-item-action border-0 m-3 rounded-lg">
   <div class="d-flex w-100 justify-content-between">
+    {% if i.track_num %}
+    <h3 class="mb-1">{{ i.track_num }} - {{ i.name }}</h3>
+    {% else %}
     <h3 class="mb-1">{{ i.name }}</h3>
+    {% endif %}
   </div>
 </a>
 {% endfor %}

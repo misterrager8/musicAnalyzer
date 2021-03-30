@@ -11,6 +11,7 @@
     <img class="card-img-top" src="https://via.placeholder.com/250" alt="Card image cap">
     <div class="card-body">
       <p class="text-muted">{{ i.title }}</p>
+      <small class="text-muted">{{ i.release_date }}</small>
     </div>
   </a>
   {% endfor %}
@@ -24,6 +25,7 @@
     <h3 class="mb-1">{{ i.name }}</h3>
     <small>{{ i.albums.release_date }}</small>
   </div>
+  <h6 class="mb-1 text-muted">{{ i.albums.title }}</h6>
 </a>
 {% endfor %}
 </body>

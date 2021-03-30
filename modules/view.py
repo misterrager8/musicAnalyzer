@@ -46,7 +46,8 @@ def sort_albums(sort_by: str):
 @app.route("/albums/<id_>")
 def album_profile_pg(id_: int):
     album = music_db.find_by_id(Album, id_)
-    return render_template("album_profile.html", album=album)
+    _ = sorted(album.songs, key=lambda x: x.track_num)
+    return render_template("album_profile.html", album=album, tracks=_)
 
 
 @app.route("/songs")

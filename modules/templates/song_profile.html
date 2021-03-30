@@ -7,6 +7,30 @@
   <p class="display-4">{{ song.name }}</p>
   <a href="{{ url_for('artists_profile_pg', id_=song.artists.id) }}" class="text-muted">{{ song.artists.name }}</a><br>
   <a href="{{ url_for('album_profile_pg', id_=song.albums.id) }}" class="text-muted">{{ song.albums.title }}</a>
+  <div id="accordion" role="tablist" class="col-6 offset-3">
+    <div class="card">
+      <a class="card-header text-body" role="tab" id="headingOne" href="#collapseOne" data-toggle="collapse"
+         aria-expanded="true"
+         aria-controls="collapseOne">
+        Lyrics
+      </a>
+      <div id="collapseOne" class="collapse" role="tabpanel" aria-labelledby="headingOne" style="">
+        <div class="card-body">
+          {% if song.lyrics %}
+
+          {% for i in song.lyrics.split("\n") %}
+          <p>{{ i }}</p>
+          {% endfor %}
+
+          {% else %}
+
+          <p>No lyrics found.</p>
+
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 </body>
 {% endblock %}
