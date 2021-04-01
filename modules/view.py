@@ -1,17 +1,20 @@
 from flask import render_template, request
 
-from modules import app
+from modules import app, db
 from modules.ctrla import DB, SongScraper
 from modules.model import Album, Artist, Song
 
 music_db = DB()
 y = SongScraper()
 
-artists = music_db.get_all(Artist)
 albums = music_db.get_all(Album)
 songs = music_db.get_all(Song)
 
 news = y.get_news()
+
+
+def refresh(item_type):
+    for i in music_db.get_all(item_type): db.session.refresh(i)
 
 
 @app.route("/")
@@ -21,6 +24,7 @@ def index():
 
 @app.route("/artists")
 def artists_pg():
+    artists = music_db.get_all(Artist)
     return render_template("artists.html", artists=sorted(artists, key=lambda x: x.name))
 
 
@@ -30,9 +34,10 @@ def artists_profile_pg(id_: int):
     return render_template("artist_profile.html", artist=artist)
 
 
-@app.route("/albums/sort-title")
+@app.route("/albums")
 def albums_pg():
-    return render_template("albums.html", albums=sorted(albums, key=lambda x: x.title))
+    j = music_db.get_all_paginate(Album)
+    return render_template("albums.html", albums=j)
 
 
 @app.route("/albums/sort-<sort_by>")
@@ -69,3 +74,23 @@ def results_pg():
                    "album_results": music_db.search(Album.title, search_term),
                    "song_results": music_db.search(Song.name, search_term)}
         return render_template("results.html", search_term=search_term, results=results)
+
+
+@app.route("/add", methods=["GET", "POST"])
+def add_pg():
+    if request.method == "POST":
+        _ = Artist(request.form["artist_name"])
+        music_db.insert_one(_)
+        render_template("artists.html")
+
+    return render_template("add.html")
+
+
+@app.route("/edit<id_>", methods=["POST"])
+def edit(id_: int):
+    if request.method == "POST":
+        artist = music_db.find_by_id(Artist, id_)
+        _ = Album(request.form["album_title"], release_date=request.form["year"])
+        artist.add_albums([_])
+        refresh(Artist)
+        return render_template("artist_profile.html", artist=artist)
