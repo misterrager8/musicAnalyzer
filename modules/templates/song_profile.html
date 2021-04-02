@@ -25,10 +25,32 @@
           {% else %}
 
           <p>No lyrics found.</p>
-          <a href="#" class="badge badge-primary m-1">+ Lyrics</a>
+          <a href="#" class="badge badge-primary m-1" data-toggle="modal" data-target="#exampleModal">+ Lyrics</a>
 
           {% endif %}
         </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Add Lyrics</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form method="post" action="{{ url_for('song_profile_pg', id_=song.id) }}">
+          <a href="https://genius.com/search?q={{ song.name }}">Search On Genius</a>
+          <input type="text" placeholder="Genius URL" name="genius_url" autocomplete="off">
+          <button type="submit" class="btn btn-primary">Save changes</button>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
       </div>
     </div>
   </div>

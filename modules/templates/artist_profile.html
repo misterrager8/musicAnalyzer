@@ -42,7 +42,7 @@
         </button>
       </div>
       <div class="modal-body">
-        <form method="post" action="{{ url_for('edit', id_=artist.id) }}">
+        <form method="post" action="{{ url_for('artists_profile_pg', id_=artist.id) }}">
           <input type="text" placeholder="Album Name" name="album_title" autocomplete="off">
           <input type="text" placeholder="Year" name="year" autocomplete="off">
           <button type="submit" class="btn btn-primary">Save changes</button>

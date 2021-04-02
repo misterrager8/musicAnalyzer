@@ -4,6 +4,9 @@
 <title>Artists</title>
 <body>
 <h1 class="display-4 text-center">Artists</h1>
+<div class="d-flex justify-content-center">
+  <a href="#" class="badge badge-primary mr-2" data-toggle="modal" data-target="#exampleModal">+ Artist</a>
+</div>
 <div class="row">
   {% for i in artists.items %}
   <a class="col-3 p-3" href="{{ url_for('artists_profile_pg', id_=i.id) }}">
@@ -14,5 +17,45 @@
   </a>
   {% endfor %}
 </div>
+<div class="modal" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">New Artist</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form method="post" action="{{ url_for('artists_pg') }}">
+          <input type="text" placeholder="Artist Name" name="artist_name" autocomplete="off">
+          <button type="submit" class="btn btn-primary">Save changes</button>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+<nav aria-label="Page navigation example" class="d-flex justify-content-center">
+  <ul class="pagination">
+    {% if artists.has_prev %}
+    <li class="page-item"><a class="page-link"
+                             href="{{ url_for('artists_pg', page=artists.prev_num) }}">Previous</a>
+    </li>
+    {% else %}
+    <li class="page-item"><a class="page-link btn disabled" href="#">Previous</a></li>
+    {% endif %}
+
+    {% if artists.has_next %}
+    <li class="page-item"><a class="page-link"
+                             href="{{ url_for('artists_pg', page=artists.next_num) }}">Next</a></li>
+    {% else %}
+    <li class="page-item"><a class="page-link btn disabled" href="#">Next</a></li>
+    {% endif %}
+
+  </ul>
+</nav>
 </body>
 {% endblock %}

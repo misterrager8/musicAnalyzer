@@ -31,7 +31,7 @@
         <a class="nav-link" href="{{ url_for('albums_pg', order_by='title') }}">Albums</a>
       </li>
       <li class="navbar-item">
-        <a class="nav-link" href="{{ url_for('songs_pg') }}">Songs</a>
+        <a class="nav-link" href="{{ url_for('songs_pg', order_by='songs_name') }}">Songs</a>
       </li>
     </ul>
     <form class="input-group col-3 ml-auto" action="{{ url_for('results_pg') }}" method="post">
