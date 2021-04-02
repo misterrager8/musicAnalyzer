@@ -5,7 +5,7 @@
 <body>
 <h1 class="display-4 text-center">Artists</h1>
 <div class="row">
-  {% for i in artists %}
+  {% for i in artists.items %}
   <a class="col-3 p-3" href="{{ url_for('artists_profile_pg', id_=i.id) }}">
     <img class="card-img shadow" src="https://via.placeholder.com/250" alt="Card image cap">
     <div class="card-img-overlay">

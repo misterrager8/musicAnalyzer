@@ -33,16 +33,17 @@ class DB:
         db.session.commit()
 
     @staticmethod
-    def get_all(item_type) -> list:
+    def get_all(item_type, order_by=None):
         """
         Get all objects of the specified Class, returns a list of them
 
         Args:
             item_type: type of Object to retrieve [Artist, Album, Song]
+            order_by: sorting criteria
         Returns:
-            list: List of all items of specified type
+            List of all items of specified type
         """
-        return db.session.query(item_type).all()
+        return db.session.query(item_type).order_by(order_by)
 
     @staticmethod
     def find_by_id(item_type, item_id: int):

@@ -5,30 +5,25 @@
 <body>
 <h1 class="display-4 text-center">Albums</h1>
 <div class="row m-1">Sort by:
-  {% if sort_by == "title" %}
-  <a href="{{ url_for('sort_albums', sort_by='artist') }}" class="badge badge-dark m-1"
+  {% if order_by == "title" %}
+  <a href="{{ url_for('albums_pg', order_by='artists.name') }}" class="badge badge-dark m-1"
      style="background-color: #2B805A;">Artist</a>
-  <a href="{{ url_for('sort_albums', sort_by='year') }}" class="badge badge-dark m-1"
+  <a href="{{ url_for('albums_pg', order_by='release_date desc') }}" class="badge badge-dark m-1"
      style="background-color: #3AAE7A;">Year</a>
-  {% elif sort_by == "artist" %}
-  <a href="{{ url_for('sort_albums', sort_by='title') }}" class="badge badge-dark m-1"
+  {% elif order_by == "artists.name" %}
+  <a href="{{ url_for('albums_pg', order_by='title') }}" class="badge badge-dark m-1"
      style="background-color: #194A34;">Title</a>
-  <a href="{{ url_for('sort_albums', sort_by='year') }}" class="badge badge-dark m-1"
+  <a href="{{ url_for('albums_pg', order_by='release_date desc') }}" class="badge badge-dark m-1"
      style="background-color: #3AAE7A;">Year</a>
-  {% elif sort_by == "year" %}
-  <a href="{{ url_for('sort_albums', sort_by='title') }}" class="badge badge-dark m-1"
+  {% elif order_by == "release_date desc" %}
+  <a href="{{ url_for('albums_pg', order_by='title') }}" class="badge badge-dark m-1"
      style="background-color: #194A34;">Title</a>
-  <a href="{{ url_for('sort_albums', sort_by='artist') }}" class="badge badge-dark m-1"
+  <a href="{{ url_for('albums_pg', order_by='artists.name') }}" class="badge badge-dark m-1"
      style="background-color: #2B805A;">Artist</a>
-  {% else %}
-  <a href="{{ url_for('sort_albums', sort_by='artist') }}" class="badge badge-dark m-1"
-     style="background-color: #2B805A;">Artist</a>
-  <a href="{{ url_for('sort_albums', sort_by='year') }}" class="badge badge-dark m-1"
-     style="background-color: #3AAE7A;">Year</a>
   {% endif %}
 </div>
 <div class="row">
-  {% for i in albums %}
+  {% for i in albums.items %}
   <a href="{{ url_for('album_profile_pg', id_=i.id) }}" class="col-3">
     <img class="card-img-top" src="https://via.placeholder.com/250" alt="Card image cap">
     <div class="card-body">
@@ -39,5 +34,24 @@
   </a>
   {% endfor %}
 </div>
+<nav aria-label="Page navigation example">
+  <ul class="pagination">
+    {% if albums.has_prev %}
+    <li class="page-item"><a class="page-link"
+                             href="{{ url_for('albums_pg', page=albums.prev_num, order_by=order_by) }}">Previous</a>
+    </li>
+    {% else %}
+    <li class="page-item"><a class="page-link btn disabled" href="#">Previous</a></li>
+    {% endif %}
+
+    {% if albums.has_next %}
+    <li class="page-item"><a class="page-link"
+                             href="{{ url_for('albums_pg', page=albums.next_num, order_by=order_by) }}">Next</a></li>
+    {% else %}
+    <li class="page-item"><a class="page-link btn disabled" href="#">Next</a></li>
+    {% endif %}
+
+  </ul>
+</nav>
 </body>
 {% endblock %}
