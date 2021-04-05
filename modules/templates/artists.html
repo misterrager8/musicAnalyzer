@@ -10,7 +10,11 @@
 <div class="row">
   {% for i in artists.items %}
   <a class="col-3 p-3" href="{{ url_for('artists_profile_pg', id_=i.id) }}">
+    {% if i.profile_pic %}
+    <img class="card-img shadow" src="{{ url_for('static', filename=i.profile_pic) }}" alt="Card image cap" height="250" width="250">
+    {% else %}
     <img class="card-img shadow" src="https://via.placeholder.com/250" alt="Card image cap">
+    {% endif %}
     <div class="card-img-overlay">
       <p class="text-body">{{ i.name }}</p>
     </div>

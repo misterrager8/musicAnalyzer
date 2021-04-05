@@ -1,3 +1,4 @@
+import os
 from datetime import datetime
 
 import bs4
@@ -14,6 +15,7 @@ class Artist(db.Model):
     name = Column(Text)
     hometown = Column(Text)
     dob = Column(Text)
+    profile_pic = Column(Text)
     id = Column(Integer, primary_key=True)
     albums = relationship("Album", backref="artists")
     songs = relationship("Song", backref="artists")
@@ -49,6 +51,17 @@ class Artist(db.Model):
         for i in new_songs:
             self.songs.append(i)
 
+        db.session.commit()
+
+    def set_pic(self, filename: str):
+        pics_dir = os.path.join(os.path.dirname(__file__), "static/")
+
+        og_filename = os.path.join(pics_dir, filename)
+        new_filename = os.path.join(pics_dir, "%s.jpg" % self.name)
+
+        os.rename(og_filename, new_filename)
+
+        self.profile_pic = "%s.jpg" % self.name
         db.session.commit()
 
     def duplicate_checked(self):
