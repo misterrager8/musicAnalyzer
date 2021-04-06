@@ -3,10 +3,15 @@
 {% block body %}
 <title>{{ artist.name }}</title>
 <body>
+{% if artist.profile_pic %}
+<img class="rounded-circle mx-auto d-block m-3 shadow" src="{{ url_for('static', filename=artist.profile_pic) }}"
+     alt="Card image cap" width="250" height="250">
+{% else %}
+<img class="rounded-circle mx-auto d-block m-3 shadow" src="https://via.placeholder.com/250" alt="Card image cap">
+{% endif %}
 <p class="display-4 text-center">{{ artist.name }}</p>
 <div class="d-flex justify-content-center">
   <a href="#" class="badge badge-primary mr-2" data-toggle="modal" data-target="#exampleModal">+ Album</a>
-  <a href="#" class="badge badge-success">+ Song</a>
 </div>
 <h3 class="font-weight-bold m-2">Albums</h3>
 <div class="row">
@@ -36,7 +41,7 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+        <h5 class="modal-title" id="exampleModalLabel">New Album</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
