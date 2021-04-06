@@ -25,7 +25,11 @@
 <div class="row">
   {% for i in albums.items %}
   <a href="{{ url_for('album_profile_pg', id_=i.id) }}" class="col-3">
-    <img class="card-img-top" src="https://via.placeholder.com/250" alt="Card image cap">
+    {% if i.cover_art %}
+    <img class="card-img-top shadow" src="{{ url_for('static', filename=i.cover_art) }}" alt="Card image cap">
+    {% else %}
+    <img class="card-img-top shadow" src="https://via.placeholder.com/250" alt="Card image cap">
+    {% endif %}
     <div class="card-body">
       <p class="text-body">{{ i.title }}</p>
       <p class="text-body">{{ i.artists.name }}</p>

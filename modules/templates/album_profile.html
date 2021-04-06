@@ -3,7 +3,12 @@
 {% block body %}
 <title>{{ album.title }}</title>
 <body>
-<div class="text-center">
+<div class="text-center m-2">
+  {% if album.cover_art %}
+  <img class="img-fluid shadow rounded" src="{{ url_for('static', filename=album.cover_art) }}" alt="Card image cap" height="250" width="250">
+  {% else %}
+  <img class="img-fluid shadow rounded" src="https://via.placeholder.com/250" alt="Card image cap">
+  {% endif %}
   <p class="display-4">{{ album.title }}</p>
   <a href="{{ url_for('artists_profile_pg', id_=album.artists.id) }}" class="text-muted">{{ album.artists.name }}</a>
   <p>{{ album.release_date }}</p>

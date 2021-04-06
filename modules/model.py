@@ -89,6 +89,7 @@ class Album(db.Model):
     genre = Column(Text)
     release_date = Column(Text)
     rating = Column(Integer)
+    cover_art = Column(Text)
     id = Column(Integer, primary_key=True)
     songs = relationship("Song", backref="albums")
 
@@ -121,6 +122,17 @@ class Album(db.Model):
             i.artists = self.artists
             self.songs.append(i)
 
+        db.session.commit()
+
+    def set_cover_art(self, filename):
+        pics_dir = os.path.join(os.path.dirname(__file__), "static/")
+
+        og_filename = os.path.join(pics_dir, filename)
+        new_filename = os.path.join(pics_dir, "%s.jpg" % self.title)
+
+        os.rename(og_filename, new_filename)
+
+        self.cover_art = "%s.jpg" % self.title
         db.session.commit()
 
     def __str__(self):
