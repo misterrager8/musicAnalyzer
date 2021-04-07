@@ -1,9 +1,11 @@
+import shutil
+
 import bs4
 import praw
 import requests
 
 from modules import db
-from modules.model import FreshItem
+from modules.model import FreshItem, Song
 
 
 class DB:
@@ -136,3 +138,21 @@ class SongScraper:
         soup = bs4.BeautifulSoup(page.content, 'html.parser')
         print(page.content)
         _ = soup.find_all("div", class_="mini_card-title")
+
+
+class WikiScraper:
+    def __init__(self, url: str):
+        page = requests.get(url)
+        self.soup = bs4.BeautifulSoup(page.content, "html.parser")
+
+    def get_tracklist(self) -> list:
+        _ = []
+        table = self.soup.find("table", class_="tracklist")
+        for i in table.tbody.find_all("tr")[1:-1]:
+            h = i.contents[1]
+            if h.contents[0].string == "\"":
+                _.append(Song(h.contents[1].string))
+            else:
+                _.append(Song(h.contents[0].string.strip("\" ")))
+
+        return _
