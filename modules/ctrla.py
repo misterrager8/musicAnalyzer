@@ -3,9 +3,10 @@ import shutil
 import bs4
 import praw
 import requests
+from wikipedia import wikipedia
 
 from modules import db
-from modules.model import FreshItem, Song
+from modules.model import FreshItem, Album
 
 
 class DB:
@@ -141,18 +142,25 @@ class SongScraper:
 
 
 class WikiScraper:
-    def __init__(self, url: str):
-        page = requests.get(url)
-        self.soup = bs4.BeautifulSoup(page.content, "html.parser")
+    def __init__(self):
+        pass
 
-    def get_tracklist(self) -> list:
-        _ = []
-        table = self.soup.find("table", class_="tracklist")
-        for i in table.tbody.find_all("tr")[1:-1]:
-            h = i.contents[1]
-            if h.contents[0].string == "\"":
-                _.append(Song(h.contents[1].string))
-            else:
-                _.append(Song(h.contents[0].string.strip("\" ")))
+    @staticmethod
+    def get_tracklist(album: Album):
+        return wikipedia.page(album.title).html()
 
-        return _
+    @staticmethod
+    def get_cover_art(album: Album):
+        _ = wikipedia.page(album.title).images
+        for i in _: print(i)
+        choice = input("? ")
+
+        image_url = _[int(choice)]
+        filename = image_url.split("/")[-1]
+
+        r = requests.get(image_url, stream=True)
+
+        r.raw.decode_content = True
+
+        with open(filename, "wb") as f:
+            shutil.copyfileobj(r.raw, f)

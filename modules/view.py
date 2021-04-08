@@ -19,7 +19,7 @@ def index():
 def artists_pg(page=1):
     if request.method == "POST":
         artist_name = request.form["artist_name"]
-        music_db.insert_one(Artist(artist_name))
+        music_db.insert_one(Artist(artist_name).duplicate_checked())
 
     _ = music_db.get_all(Artist).order_by(Artist.name).paginate(page=page, per_page=20)
     return render_template("artists.html", artists=_)
