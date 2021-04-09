@@ -1,3 +1,4 @@
+import os
 import shutil
 
 import bs4
@@ -6,7 +7,7 @@ import requests
 from wikipedia import wikipedia
 
 from modules import db
-from modules.model import FreshItem, Album
+from modules.model import FreshItem, Album, Artist, Song
 
 
 class DB:
@@ -116,30 +117,6 @@ class SongScraper:
 
         return results
 
-    @staticmethod
-    def get_lyrics(genius_url: str) -> str:
-        """
-        Get lyrics of a song from Genius.com
-
-        Args:
-            genius_url (str): Genius URL of the lyrics
-
-        Returns:
-            str: The lyrics of the song
-        """
-        page = requests.get(genius_url)
-        soup = bs4.BeautifulSoup(page.content, 'html.parser')
-        x = soup.find_all("div", class_="lyrics")
-
-        return x[0].find("p").text
-
-    @staticmethod
-    def search_lyrics(search_term: str):
-        page = requests.get("https://genius.com/search?q=" + search_term)
-        soup = bs4.BeautifulSoup(page.content, 'html.parser')
-        print(page.content)
-        _ = soup.find_all("div", class_="mini_card-title")
-
 
 class WikiScraper:
     def __init__(self):
@@ -147,20 +124,86 @@ class WikiScraper:
 
     @staticmethod
     def get_tracklist(album: Album):
-        return wikipedia.page(album.title).html()
+        page = requests.get(album.wiki_url)
+        soup = bs4.BeautifulSoup(page.content, "html.parser")
+        _ = []
+        table = soup.find("table", class_="tracklist")
+        for i in table.tbody.find_all("tr")[1:-1]:
+            h = i.contents[1]
+            if h.contents[0].string == "\"":
+                _.append(Song(h.contents[1].string))
+            else:
+                _.append(Song(h.contents[0].string.strip("\" ")))
+
+        album.add_songs(_)
 
     @staticmethod
     def get_cover_art(album: Album):
-        _ = wikipedia.page(album.title).images
-        for i in _: print(i)
+        _ = wikipedia.WikipediaPage(pageid=album.wiki_id).images
+        for idx, i in enumerate(_): print("%d\t%s" % (idx, i))
         choice = input("? ")
-
         image_url = _[int(choice)]
+
         filename = image_url.split("/")[-1]
+        ext = os.path.splitext(filename)[1]
 
         r = requests.get(image_url, stream=True)
 
         r.raw.decode_content = True
 
-        with open(filename, "wb") as f:
+        img_path = os.path.join(os.path.dirname(__file__), "../modules/static/")
+
+        with open(img_path + filename, "wb") as f:
             shutil.copyfileobj(r.raw, f)
+
+        old_name = img_path + filename
+        new_name = img_path + album.title + ext
+        os.rename(old_name, new_name)
+
+        album.set_cover_art(album.title + ext)
+
+    @staticmethod
+    def get_artist_pic(artist: Artist):
+        _ = wikipedia.WikipediaPage(pageid=artist.wiki_id).images
+        for idx, i in enumerate(_): print("%d\t%s" % (idx, i))
+        choice = input("? ")
+        image_url = _[int(choice)]
+
+        filename = image_url.split("/")[-1]
+        ext = os.path.splitext(filename)[1]
+
+        r = requests.get(image_url, stream=True)
+
+        r.raw.decode_content = True
+
+        img_path = os.path.join(os.path.dirname(__file__), "../modules/static/")
+
+        with open(img_path + filename, "wb") as f:
+            shutil.copyfileobj(r.raw, f)
+
+        old_name = img_path + filename
+        new_name = img_path + artist.name + ext
+        os.rename(old_name, new_name)
+
+        artist.set_pic(artist.name + ext)
+
+    @staticmethod
+    def get_lyrics(genius_url: str):
+        init_url = genius_url
+        album_name = init_url.split("/")[5]
+
+        res_a = requests.get(init_url)
+        os.makedirs("/" + album_name, 0o777)
+
+        soup_a = bs4.BeautifulSoup(res_a.text, features="html.parser")
+        type(soup_a)
+
+        elems_a = soup_a.findAll("a", {"class": "u-display_block", "href": True})
+
+        for i, item in enumerate(elems_a):
+            res = requests.get(item["href"])
+
+            soup = bs4.BeautifulSoup(res.text, features="html.parser")
+            type(soup)
+
+            return soup.select(".lyrics")[0].getText()

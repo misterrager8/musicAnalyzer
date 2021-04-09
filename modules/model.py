@@ -1,4 +1,3 @@
-import os
 from datetime import datetime
 
 import bs4
@@ -16,6 +15,7 @@ class Artist(db.Model):
     hometown = Column(Text)
     dob = Column(Text)
     profile_pic = Column(Text)
+    wiki_id = Column(Text)
     id = Column(Integer, primary_key=True)
     albums = relationship("Album", backref="artists")
     songs = relationship("Song", backref="artists")
@@ -54,14 +54,7 @@ class Artist(db.Model):
         db.session.commit()
 
     def set_pic(self, filename: str):
-        pics_dir = os.path.join(os.path.dirname(__file__), "static/")
-
-        og_filename = os.path.join(pics_dir, filename)
-        new_filename = os.path.join(pics_dir, "%s.jpg" % self.name)
-
-        os.rename(og_filename, new_filename)
-
-        self.profile_pic = "%s.jpg" % self.name
+        self.profile_pic = filename
         db.session.commit()
 
     def duplicate_checked(self):
@@ -90,6 +83,8 @@ class Album(db.Model):
     release_date = Column(Text)
     rating = Column(Integer)
     cover_art = Column(Text)
+    wiki_id = Column(Text)
+    genius_url = Column(Text)
     id = Column(Integer, primary_key=True)
     songs = relationship("Song", backref="albums")
 
@@ -124,15 +119,8 @@ class Album(db.Model):
 
         db.session.commit()
 
-    def set_cover_art(self, filename):
-        pics_dir = os.path.join(os.path.dirname(__file__), "static/")
-
-        og_filename = os.path.join(pics_dir, filename)
-        new_filename = os.path.join(pics_dir, "%s.jpg" % self.title)
-
-        os.rename(og_filename, new_filename)
-
-        self.cover_art = "%s.jpg" % self.title
+    def set_cover_art(self, filename: str):
+        self.cover_art = filename
         db.session.commit()
 
     def __str__(self):
