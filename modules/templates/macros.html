@@ -48,7 +48,6 @@
 {% endmacro %}
 
 {% macro badge(txt, bg_color='black', txt_color='white', class='', href='#', newtab=false, modal_id='') %}
-<!--suppress HtmlUnknownAttribute -->
 <a href="{{ href }}"
    class="badge {{ class }}"
    style="text-decoration:none; background-color:{{ bg_color }}; color:{{ txt_color }}"
@@ -101,4 +100,101 @@
   <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
   <path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2zm12 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1v-1c0-1-1-4-6-4s-6 3-6 4v1a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12z"/>
 </svg>
+{% endmacro %}
+
+{% macro album_card(album) %}
+{% call link(href=url_for('album_profile_pg', id_=album.id), class='col-3') %}
+<img class="card-img-top" src="https://via.placeholder.com/250" alt="Card image cap">
+<div class="card-body">
+  {{ paragraph(album.title, class='font-italic') }}
+  {{ paragraph(album.artists.name, size=0.9) }}
+  {{ paragraph(album.release_date, size=0.8) }}
+</div>
+{% endcall %}
+{% endmacro %}
+
+{% macro artist_card(artist) %}
+{% call link(href=url_for('artists_profile_pg', id_=artist.id), class='col-3 p-3') %}
+<img class="card-img shadow" src="https://via.placeholder.com/250" alt="Card image cap">
+<div class="card-img-overlay">
+  {{ paragraph(artist.name) }}
+</div>
+{% endcall %}
+{% endmacro %}
+
+{% macro song_list_item(song) %}
+{% call link(href=url_for('song_profile_pg', id_=song.id), class='list-group-item list-group-item-action border-0 rounded') %}
+<ul class="list-inline m-0">
+  <li class="list-inline-item">{{ paragraph(song.name, size=1.5) }}</li>
+  <li class="list-inline-item">{{ paragraph(song.artists.name, size=1) }}</li>
+  <li>{{ paragraph(song.albums.title, class='font-italic', size=0.9) }}</li>
+</ul>
+{% endcall %}
+{% endmacro %}
+
+{% macro news_list_item(item) %}
+{% call link(href=item.url, class='list-group-item list-group-item-action border-0 rounded', newtab=true) %}
+<ul class="list-inline m-0">
+  <li class="list-inline-item">{{ paragraph(item.title, size=1.25) }}</li>
+  <li>{{ paragraph(item.time_posted, size=0.9, class='text-muted font-italic') }}</li>
+</ul>
+{% endcall %}
+{% endmacro %}
+
+{% macro songs_sort_filter() %}
+<ul class="list-inline">
+  <li class="list-inline-item">Sort By:</li>
+  {% if order_by == "songs_name" %}
+  <li class="list-inline-item">{{ badge('Artist', href=url_for('songs_pg', order_by='artists.name')) }}</li>
+  <li class="list-inline-item">{{ badge('Year', href=url_for('songs_pg', order_by='albums.release_date desc')) }}</li>
+  {% elif order_by == "artists.name" %}
+  <li class="list-inline-item">{{ badge('Year', href=url_for('songs_pg', order_by='albums.release_date desc')) }}</li>
+  <li class="list-inline-item">{{ badge('Title', href=url_for('songs_pg', order_by='songs_name')) }}</li>
+  {% elif order_by == "albums.release_date desc" %}
+  <li class="list-inline-item">{{ badge('Artist', href=url_for('songs_pg', order_by='artists.name')) }}</li>
+  <li class="list-inline-item">{{ badge('Title', href=url_for('songs_pg', order_by='songs_name')) }}</li>
+  {% endif %}
+</ul>
+{% endmacro %}
+
+{% macro albums_sort_filter() %}
+<ul class="list-inline">
+  <li class="list-inline-item">Sort By:</li>
+  {% if order_by == "title" %}
+  <li class="list-inline-item">{{ badge('Artist', href=url_for('albums_pg', order_by='artists.name')) }}</li>
+  <li class="list-inline-item">{{ badge('Year', href=url_for('albums_pg', order_by='release_date desc')) }}</li>
+  {% elif order_by == "artists.name" %}
+  <li class="list-inline-item">{{ badge('Year', href=url_for('albums_pg', order_by='release_date desc')) }}</li>
+  <li class="list-inline-item">{{ badge('Title', href=url_for('albums_pg', order_by='title')) }}</li>
+  {% elif order_by == "release_date desc" %}
+  <li class="list-inline-item">{{ badge('Artist', href=url_for('albums_pg', order_by='artists.name')) }}</li>
+  <li class="list-inline-item">{{ badge('Title', href=url_for('albums_pg', order_by='title')) }}</li>
+  {% endif %}
+</ul>
+{% endmacro %}
+
+{% macro albums_paginate() %}
+<nav class="d-flex justify-content-center">
+  <ul class="pagination">
+    <li class="page-item">
+      <a class="page-link {% if not albums.has_prev %}btn disabled{% endif %}" {% if albums.has_prev %} href="{{ url_for('albums_pg', page=albums.prev_num, order_by=order_by) }}" {% endif %}>Previous</a>
+    </li>
+    <li class="page-item">
+      <a class="page-link {% if not albums.has_next %}btn disabled{% endif %}" {% if albums.has_next %} href="{{ url_for('albums_pg', page=albums.next_num, order_by=order_by) }}" {% endif %}>Next</a>
+    </li>
+  </ul>
+</nav>
+{% endmacro %}
+
+{% macro artists_paginate() %}
+<nav aria-label="Page navigation example" class="d-flex justify-content-center">
+  <ul class="pagination">
+    <li class="page-item">
+      <a class="page-link {% if not artists.has_prev %} btn disabled {% endif %}" {% if artists.has_prev %} href="{{ url_for('artists_pg', page=artists.prev_num) }}" {% endif %}>Previous</a>
+    </li>
+    <li class="page-item">
+      <a class="page-link {% if not artists.has_next %} btn disabled {% endif %}" {% if artists.has_next %} href="{{ url_for('artists_pg', page=artists.next_num) }}" {% endif %}>Next</a>
+    </li>
+  </ul>
+</nav>
 {% endmacro %}
