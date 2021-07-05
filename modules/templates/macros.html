@@ -198,3 +198,87 @@
   </ul>
 </nav>
 {% endmacro %}
+
+{% macro artist_create_form() %}
+<form class="form-group" action="{{ url_for('artist_create') }}" method="POST">
+  {{ input('artist_name', 'Name', class='mb-2') }}
+  {{ button('Add') }}
+</form>
+{% endmacro %}
+
+{% macro artist_update_form(artist) %}
+<form class="form-group" action="{{ url_for('artist_update', id_=artist.id) }}" method="POST">
+  {{ input('artist_name', 'Name', value=artist.name, class='mb-2') }}
+  {{ button('Edit') }}
+</form>
+{% endmacro %}
+
+{% macro album_create_form(artist) %}
+<form class="form-group" action="{{ url_for('album_create', id_=artist.id) }}" method="POST">
+  {{ input('title', 'Title', class='mb-2') }}
+  {{ input('release_date', 'Year', class='mb-2') }}
+  {{ button('Add') }}
+</form>
+{% endmacro %}
+
+{% macro album_update_form(album) %}
+<form class="form-group" action="{{ url_for('album_update', id_=album.id) }}" method="POST">
+  {{ input('title', 'Title', value=album.title, class='mb-2') }}
+  {{ input('release_date', 'Year', value=album.release_date, class='mb-2') }}
+  {{ button('Edit') }}
+</form>
+{% endmacro %}
+
+{% macro song_create_form(album) %}
+<form class="form-group" action="{{ url_for('song_create', id_=album.id) }}" method="POST">
+  {{ input('song_name', 'Name', class='mb-2') }}
+  <input type="number" name="track_num" class="form-control mb-2" min="0" value="0">
+  {{ button('Add') }}
+</form>
+{% endmacro %}
+
+{% macro song_update_form(song) %}
+<form class="form-group" action="{{ url_for('song_update', id_=song.id) }}" method="POST">
+  {{ input('song_name', 'Name', value=song.name, class='mb-2') }}
+  <input type="number" name="track_num" class="form-control mb-2" value="{{ song.track_num }}">
+  {{ button('Edit') }}
+</form>
+{% endmacro %}
+
+{% macro search_form(class='') %}
+<form class="form-group form-inline {{ class }}" action="{{ url_for('search') }}" method="POST">
+  {{ input('search_term', 'Search') }}
+  <button type="submit" class="btn btn-secondary">{{ search_icon() }}</button>
+</form>
+{% endmacro %}
+
+{% macro artist_options(artist) %}
+<ul class="list-inline">
+  <li class="list-inline-item">{% call link(modal_id='album_create') %}{{ add_icon() }}{% endcall %}</li>
+  <li class="list-inline-item">{% call link(modal_id='artist_update') %}{{ edit_icon() }}{% endcall %}</li>
+  <li class="list-inline-item">{% call link(modal_id='artist_delete') %}{{ delete_icon() }}{% endcall %}</li>
+</ul>
+{% call modal('album_create') %}{{ album_create_form(artist) }}{% endcall %}
+{% call modal('artist_update') %}{{ artist_update_form(artist) }}{% endcall %}
+{% call modal('artist_delete') %}{% call link(class='btn btn-lg btn-danger', href=url_for('artist_delete', id_=artist.id)) %}Delete{% endcall %}{% endcall %}
+{% endmacro %}
+
+{% macro album_options(album) %}
+<ul class="list-inline">
+  <li class="list-inline-item">{% call link(modal_id='song_create') %}{{ add_icon() }}{% endcall %}</li>
+  <li class="list-inline-item">{% call link(modal_id='album_update') %}{{ edit_icon() }}{% endcall %}</li>
+  <li class="list-inline-item">{% call link(modal_id='album_delete') %}{{ delete_icon() }}{% endcall %}</li>
+</ul>
+{% call modal('song_create') %}{{ song_create_form(album) }}{% endcall %}
+{% call modal('album_update') %}{{ album_update_form(album) }}{% endcall %}
+{% call modal('album_delete') %}{% call link(class='btn btn-lg btn-danger', href=url_for('album_delete', id_=album.id)) %}Delete{% endcall %}{% endcall %}
+{% endmacro %}
+
+{% macro song_options(song) %}
+<ul class="list-inline">
+  <li class="list-inline-item">{% call link(modal_id='song_update') %}{{ edit_icon() }}{% endcall %}</li>
+  <li class="list-inline-item">{% call link(modal_id='song_delete') %}{{ delete_icon() }}{% endcall %}</li>
+</ul>
+{% call modal('song_update') %}{{ song_update_form(song) }}{% endcall %}
+{% call modal('song_delete') %}{% call link(class='btn btn-lg btn-danger', href=url_for('song_delete', id_=song.id)) %}Delete{% endcall %}{% endcall %}
+{% endmacro %}
