@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% import "macros.html" as macros with context %}
+
+{% block body %}
+<title>Songs</title>
+<body>
+{{ macros.paragraph('Songs', class='text-center m-3', size=3) }}
+{{ macros.songs_sort_filter() }}
+
+{% for i in songs %}
+{{ macros.song_list_item(i) }}
+{% endfor %}
+</body>
+{% endblock %}

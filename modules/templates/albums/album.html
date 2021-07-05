@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% import "macros.html" as macros with context %}
+
+{% block body %}
+<title>{{ album.title }}</title>
+<body>
+<div class="text-center m-3">
+  {{ macros.paragraph(album.title, class='font-italic', size=3) }}
+  {% call macros.link(href=url_for('artist_', id_=album.artists.id)) %}{{ macros.paragraph(album.artists.name, size=2) }}{% endcall %}
+  {{ macros.paragraph(album.release_date, class='mb-3', size=1) }}
+  {{ macros.album_options(album) }}
+</div>
+
+{% for i in album.songs | sort(attribute='track_num') %}
+{{ macros.song_list_item(i) }}
+{% endfor %}
+</body>
+{% endblock %}

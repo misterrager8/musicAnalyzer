@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% import "macros.html" as macros with context %}
+
+{% block body %}
+<title>Albums</title>
+<body>
+{{ macros.paragraph('Albums', class='text-center m-3', size=3) }}
+{{ macros.albums_sort_filter() }}
+<div class="row">
+  {% for i in albums.items %}
+  {{ macros.album_card(i) }}
+  {% endfor %}
+</div>
+{{ macros.albums_paginate() }}
+</body>
+{% endblock %}
