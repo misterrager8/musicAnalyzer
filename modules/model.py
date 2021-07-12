@@ -1,7 +1,5 @@
 from datetime import datetime
 
-import bs4
-import requests
 from sqlalchemy import Column, Integer, Text, ForeignKey
 from sqlalchemy.orm import relationship
 
@@ -20,42 +18,8 @@ class Artist(db.Model):
     albums = relationship("Album", backref="artists")
     songs = relationship("Song", backref="artists")
 
-    def __init__(self, name: str):
-        """
-        Create Artist object
-
-        Args:
-            name(str): Name of the Artist
-        """
-        self.name = name
-
-    def add_albums(self, new_albums: list):
-        """
-        Add a list of Albums to the Artist
-
-        Args:
-            new_albums (list): List of Albums to be added
-        """
-        for i in new_albums:
-            self.albums.append(i)
-
-        db.session.commit()
-
-    def add_songs(self, new_songs: list):
-        """
-        Add a list of Songs to the Artist
-
-        Args:
-            new_songs (list): List of Songs to be added
-        """
-        for i in new_songs:
-            self.songs.append(i)
-
-        db.session.commit()
-
-    def set_pic(self, filename: str):
-        self.profile_pic = filename
-        db.session.commit()
+    def __init__(self, **kwargs):
+        super(Artist, self).__init__(**kwargs)
 
     def duplicate_checked(self):
         """
@@ -88,40 +52,8 @@ class Album(db.Model):
     id = Column(Integer, primary_key=True)
     songs = relationship("Song", backref="albums")
 
-    def __init__(self,
-                 title: str,
-                 artist_id=None,
-                 genre: str = None,
-                 release_date: str = None,
-                 rating=None):
-        """
-        Create Album object
-
-        Args:
-            title(str): title of the Album
-        """
-        self.title = title
-        self.artist_id = artist_id
-        self.genre = genre
-        self.release_date = release_date
-        self.rating = rating
-
-    def add_songs(self, new_songs: list):
-        """
-        Add Songs to the Album
-
-        Args:
-            new_songs(list): List of Songs to be added to the Album
-        """
-        for i in new_songs:
-            i.artists = self.artists
-            self.songs.append(i)
-
-        db.session.commit()
-
-    def set_cover_art(self, filename: str):
-        self.cover_art = filename
-        db.session.commit()
+    def __init__(self, **kwargs):
+        super(Album, self).__init__(**kwargs)
 
     def __str__(self):
         return "%d\t%s" % (self.id, self.title)
@@ -134,34 +66,14 @@ class Song(db.Model):
     artist_id = Column(Integer, ForeignKey("artists.id"))
     album_id = Column(Integer, ForeignKey("albums.id"))
     play_count = Column(Integer)
-    track_num = Column(Integer)
+    track_num = Column(Integer, default=0)
     rating = Column(Integer)
     last_played = Column(Text)
     lyrics = Column(Text)
     id = Column(Integer, primary_key=True)
 
-    def __init__(self, name: str):
-        """
-        Create Song object
-
-        Args:
-            name(str): Name of the Song
-        """
-        self.name = name
-
-    def add_lyrics(self, genius_url: str):
-        """
-        Get lyrics of a song from Genius.com
-
-        Args:
-            genius_url (str): Genius URL of the lyrics
-        """
-        page = requests.get(genius_url)
-        soup = bs4.BeautifulSoup(page.content, 'html.parser')
-        x = soup.find_all("div", class_="lyrics")
-
-        self.lyrics = x[0].find("p").text
-        db.session.commit()
+    def __init__(self, **kwargs):
+        super(Song, self).__init__(**kwargs)
 
     def __str__(self):
         return "%d\t%s" % (self.id, self.name)

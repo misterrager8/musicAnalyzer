@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% import "macros.html" as macros with context %}
 
 {% block body %}
 <title>Home</title>
@@ -7,9 +8,9 @@
   <div class="carousel-inner rounded" style="height: 400px">
     {% for i in fresh[:5] %}
     <div class="h-100 p-5 carousel-item text-center {% if loop.index == 1 %} active {% endif %} bg-light">
-      <a href="{{ i.url }}" class="h-100 d-flex justify-content-center align-items-center p-5">
-        <h1>{{ i.title }}</h1>
-      </a>
+      {% call macros.link(href=i.url, class='h-100 d-flex justify-content-center align-items-center p-5') %}
+      {{ macros.paragraph(i.title, size=3) }}
+      {% endcall %}
     </div>
     {% endfor %}
   </div>
@@ -22,36 +23,9 @@
     <span class="sr-only">Next</span>
   </a>
 </div>
-<h1 class="display-4 text-center">News</h1>
+{{ macros.paragraph('News', class='text-center', size=3) }}
 {% for i in fresh[5:] %}
-<a class="list-group-item list-group-item-action border-0 m-3 rounded-lg" href="{{ i.url }}">
-  <div class="d-flex w-100 justify-content-between">
-    <h5 class="mb-1">{{ i.title }}</h5>
-    <small>{{ i.time_posted }}</small>
-  </div>
-</a>
+{{ macros.news_list_item(i) }}
 {% endfor %}
 </body>
-<style type="text/css">
-a:link {
-/* link in normal state */
-color: black;
-}
-
-a:active {
-/* link in clicked state */
-color: black;
-}
-
-a:hover {
-/* link with mouse over it */
-color: DimGray;
-text-decoration: none;
-}
-
-a:visited {
-/* visited link */
-color: black;
-}
-</style>
 {% endblock %}
