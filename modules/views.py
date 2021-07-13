@@ -1,12 +1,14 @@
 from flask import render_template, request, url_for
+from lyricsgenius import Genius
 from sqlalchemy import text
 from werkzeug.utils import redirect
 
 from modules import app, db
-from modules.ctrla import RedditWrapper, GeniusWrapper
+from modules.ctrla import RedditWrapper
 from modules.model import Album, Artist, Song
 
 fresh = RedditWrapper().get_news()
+x = Genius()
 
 
 @app.route("/")
@@ -24,8 +26,9 @@ def artists_(page=1):
 @app.route("/artist")
 def artist_():
     id_: int = request.args.get("id_")
-    artist: Artist = db.session.query(Artist).get(id_)
-    return render_template("artists/artist.html", artist=artist)
+    artist = x.search_artist(None, artist_id=id_, max_songs=0)
+    artist_albums = x.artist_albums(artist.id)
+    return render_template("artists/artist.html", artist=artist, artist_albums=artist_albums)
 
 
 @app.route("/artist_create", methods=["POST"])
@@ -72,7 +75,7 @@ def albums_(page=1):
 @app.route("/album")
 def album_():
     id_: int = request.args.get("id_")
-    album: Album = db.session.query(Album).get(id_)
+    album = x.search_album(None, album_id=id_, get_full_info=False)
     return render_template("albums/album.html", album=album)
 
 
@@ -171,4 +174,4 @@ def search():
         search_term = request.form["search_term"]
 
         return render_template("search.html", search_term=search_term,
-                               result=GeniusWrapper().search_artist(search_term))
+                               result=x.search_artist(search_term, max_songs=0, allow_name_change=False))
