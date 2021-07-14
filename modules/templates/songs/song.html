@@ -2,10 +2,12 @@
 {% import "macros.html" as macros with context %}
 
 {% block body %}
-<title>{{ 'song.name' }}</title>
+<title>{{ song['title_with_featured'] }}</title>
 <body>
 <div class="text-center m-3">
-  {{ macros.paragraph('song.name', size=3) }}
+  {{ macros.paragraph(song['title_with_featured'], size=3) }}
+  {{ macros.paragraph(song['album']['artist']['name'], size=2) }}
+  {{ macros.paragraph(song['album']['name'], size=1, class='font-italic') }}
 </div>
 </body>
 {% endblock %}
