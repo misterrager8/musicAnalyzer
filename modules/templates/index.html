@@ -4,28 +4,5 @@
 {% block body %}
 <title>Home</title>
 <body>
-<div id="main_carousel" class="carousel slide" data-ride="carousel">
-  <div class="carousel-inner rounded" style="height: 400px">
-    {% for i in fresh[:5] %}
-    <div class="h-100 p-5 carousel-item text-center {% if loop.index == 1 %} active {% endif %} bg-light">
-      {% call macros.link(href=i.url, class='h-100 d-flex justify-content-center align-items-center p-5') %}
-      {{ macros.paragraph(i.title, size=3) }}
-      {% endcall %}
-    </div>
-    {% endfor %}
-  </div>
-  <a class="carousel-control-prev" href="#main_carousel" role="button" data-slide="prev">
-    <span class="carousel-control-prev-icon" aria-hidden="true" style="filter: invert(100%);"></span>
-    <span class="sr-only">Previous</span>
-  </a>
-  <a class="carousel-control-next" href="#main_carousel" role="button" data-slide="next">
-    <span class="carousel-control-next-icon" aria-hidden="true" style="filter: invert(100%);"></span>
-    <span class="sr-only">Next</span>
-  </a>
-</div>
-{{ macros.paragraph('News', class='text-center', size=3) }}
-{% for i in fresh[5:] %}
-{{ macros.news_list_item(i) }}
-{% endfor %}
 </body>
 {% endblock %}

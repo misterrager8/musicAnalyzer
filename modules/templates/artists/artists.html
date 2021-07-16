@@ -6,19 +6,6 @@
 <body>
 <div class="text-center m-3">
   {{ macros.paragraph('Artists', size=3) }}
-  {% call macros.link(modal_id='add_artist') %}{{ macros.add_icon() }}{% endcall %}
 </div>
-
-<div class="row">
-  {% for i in artists.items %}
-  {{ macros.artist_card(i) }}
-  {% endfor %}
-</div>
-
-{% call macros.modal('add_artist') %}
-{{ macros.artist_create_form() }}
-{% endcall %}
-
-{{ macros.artists_paginate() }}
 </body>
 {% endblock %}

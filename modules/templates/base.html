@@ -12,7 +12,7 @@
     <a class="navbar-brand" href="{{ url_for('index') }}">
       {{ macros.navbar_icon() }}
     </a>
-    <ul class="navbar-nav">
+    <ul class="navbar-nav mr-auto">
       <li class="navbar-item">
         <a class="nav-link" href="{{ url_for('artists_') }}">Artists</a>
       </li>
@@ -23,7 +23,10 @@
         <a class="nav-link" href="{{ url_for('songs_') }}">Songs</a>
       </li>
     </ul>
-    {{ macros.search_form(class='ml-auto m-0') }}
+    <form class="form-group form-inline ml-auto m-0" action="{{ url_for('search') }}" method="POST">
+      {{ macros.input('search_term', 'Search') }}
+      <button type="submit" class="btn btn-secondary">{{ macros.search_icon() }}</button>
+    </form>
   </div>
 </nav>
 <div class="container">

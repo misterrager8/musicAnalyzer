@@ -2,28 +2,26 @@
 {% import "macros.html" as macros with context %}
 
 {% block body %}
-<title>{{ artist.name }}</title>
+<title>{{ artist['name'] }}</title>
 <body>
 <div class="text-center m-3">
-  {{ macros.paragraph(artist.name, size=3.5) }}
-  {{ macros.artist_options(artist) }}
+  <img class="rounded-circle" src="{{ artist['image_url'] }}" style="width:250px;height:250px;">
+  {{ macros.paragraph(artist['name'], class='m-2', size=3) }}
 </div>
 
-{% if artist.albums %}
-{{ macros.paragraph('Albums', size=2, class='m-3') }}
 <div class="row">
-  {% for i in artist.albums | sort(attribute='release_date', reverse=true) %}
-  {{ macros.album_card(i) }}
+  {% for i in artist_albums %}
+  <div class="card col-3 border-0">
+    {% call macros.link(href=url_for('album_', id_=i['id']), class='card-body') %}
+    <img class="rounded shadow" src="{{ i['cover_art_url'] }}" style="width:250px;height:250px;">
+    <div class="m-2">
+      {{ macros.paragraph(i['name'], class='font-italic font-weight-bold') }}
+      {{ macros.paragraph(i['release_date_components']['year'], size=0.75) }}
+    </div>
+    {% endcall %}
+  </div>
   {% endfor %}
 </div>
-{% endif %}
-
-{% if artist.songs %}
-{{ macros.paragraph('Songs', size=2, class='m-3') }}
-{% for i in artist.songs | sort(attribute='name') %}
-{{ macros.song_list_item(i) }}
-{% endfor %}
-{% endif %}
 
 </body>
 {% endblock %}
