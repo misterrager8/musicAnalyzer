@@ -17,23 +17,23 @@ def index():
 
 
 @app.route("/artists")
-@app.route("/artists/<int:page>")
-def artists_(page=1):
+def artists_():
     return render_template("artists/artists.html",
-                           artists=db.session.query(Artist).order_by(Artist.name).paginate(page=page, per_page=20))
+                           artists=db.session.query(Artist).order_by(Artist.name))
 
 
 @app.route("/artist")
 def artist_():
     id_: int = request.args.get("id_")
-    artist = x.search_artist(None, artist_id=id_, max_songs=0)
-    artist_albums = x.artist_albums(artist.id)
-    return render_template("artists/artist.html", artist=artist, artist_albums=artist_albums)
+    artist: Artist = db.session.query(Artist).get(id_)
+    return render_template("artists/artist.html", artist=artist)
 
 
 @app.route("/artist_create", methods=["POST"])
 def artist_create():
-    db.session.add(Artist(name=request.form["artist_name"]))
+    db.session.add(Artist(name=request.form["artist_name"],
+                          profile_pic=request.form["profile_pic"],
+                          genius_id=request.form["genius_id"]))
     db.session.commit()
 
     return redirect(url_for("artists_"))
@@ -63,13 +63,9 @@ def artist_delete():
 
 
 @app.route("/albums")
-@app.route("/albums/<int:page>")
-def albums_(page=1):
-    order_by = request.args.get("order_by", default="title")
+def albums_():
     return render_template("albums/albums.html",
-                           albums=db.session.query(Album).order_by(text(order_by)).join(Artist).paginate(page=page,
-                                                                                                         per_page=20),
-                           order_by=order_by)
+                           albums=db.session.query(Album).all())
 
 
 @app.route("/album")
@@ -81,15 +77,12 @@ def album_():
 
 @app.route("/album_create", methods=["POST"])
 def album_create():
-    id_: int = request.args.get("id_")
-    artist: Artist = db.session.query(Artist).get(id_)
-
-    db.session.add(Album(title=request.form["title"],
-                         release_date=request.form["release_date"],
-                         artists=artist))
+    db.session.add(Album(title=request.form["album_name"],
+                         cover_art=request.form["cover_art"],
+                         genius_id=request.form["genius_id"]))
     db.session.commit()
 
-    return redirect(url_for("artist_", id_=artist.id))
+    return redirect(url_for("albums_"))
 
 
 @app.route("/album_update", methods=["POST"])
@@ -172,6 +165,9 @@ def song_delete():
 def search():
     if request.method == "POST":
         search_term = request.form["search_term"]
-
-        return render_template("search.html", search_term=search_term,
-                               result=x.search_artist(search_term, max_songs=0, allow_name_change=False))
+        _a = x.search_artists(search_term)["sections"][0]["hits"]
+        _b = x.search_albums(search_term)["sections"][0]["hits"]
+        return render_template("search.html",
+                               search_term=search_term,
+                               artist_results=_a,
+                               album_results=_b)
