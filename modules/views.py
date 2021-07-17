@@ -25,7 +25,7 @@ def index():
 @app.route("/artists/<int:page>")
 def artists_(page=1):
     return render_template("artists/artists.html",
-                           artists=db.session.query(Artist).order_by(Artist.name))
+                           artists=db.session.query(Artist).order_by(text("id desc")).paginate(page=page, per_page=20))
 
 
 @app.route("/artist")
