@@ -89,7 +89,10 @@ def album_():
 def album_create():
     db.session.add(Album(title=request.form["album_name"],
                          cover_art=request.form["cover_art"],
-                         genius_id=request.form["genius_id"]))
+                         genius_id=request.form["genius_id"],
+                         artist=request.form["artist_id"],
+                         release_date=datetime.strptime(request.form["release_date"],
+                                                        "{'year': %Y, 'month': %m, 'day': %d}")))
     db.session.commit()
 
     return redirect(url_for("albums_"))
@@ -175,8 +178,8 @@ def song_delete():
 def search():
     if request.method == "POST":
         search_term = request.form["search_term"]
-        _a = x.search_artists(search_term)["sections"][0]["hits"]
-        _b = x.search_albums(search_term)["sections"][0]["hits"]
+        _ = genius.search_artists(search_term)["sections"][0]["hits"]
+
         return render_template("search.html",
                                search_term=search_term,
                                artist_results=_a,

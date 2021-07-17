@@ -25,26 +25,5 @@
   {% endcall %}
   {% endfor %}
 </div>
-
-<div class="row">
-  {% for i in album_results %}
-  <div class="card col-3 border-0">
-    {% call macros.link(modal_id='album_create_%s' % i['result']['id'], class='card-body') %}
-    <img class="rounded shadow" src="{{ i['result']['cover_art_url'] }}" style="width:250px;height:250px;">
-    {{ macros.paragraph(i['result']['name'], class='m-2 text-center') }}
-    {% endcall %}
-  </div>
-
-  {% call macros.modal('album_create_%s' % i['result']['id']) %}
-  <form class="form-group" action="{{ url_for('album_create') }}" method="POST">
-    {{ macros.input('album_name', 'Name', value=i['result']['name'], class='mb-2') }}
-    {{ macros.input('cover_art', 'Cover Art URL', value=i['result']['cover_art_url'], class='mb-2') }}
-    {{ macros.input('genius_id', 'Genius ID', value=i['result']['id'], class='mb-2') }}
-    {{ macros.button('Add') }}
-  </form>
-  {% endcall %}
-  {% endfor %}
-</div>
-
 </body>
 {% endblock %}
