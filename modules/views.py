@@ -4,11 +4,16 @@ from sqlalchemy import text
 from werkzeug.utils import redirect
 
 from modules import app, db
-from modules.ctrla import RedditWrapper
+from modules.ctrla import Ctrla
 from modules.model import Album, Artist, Song
 
-fresh = RedditWrapper().get_news()
-x = Genius()
+fresh = Ctrla().get_news()
+genius = Genius()
+
+
+@app.context_processor
+def get_all():
+    return dict(all_artists=db.session.query(Artist).all())
 
 
 @app.route("/")

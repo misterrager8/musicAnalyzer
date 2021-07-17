@@ -4,7 +4,7 @@ from lyricsgenius import Genius
 from modules.model import FreshItem
 
 
-class RedditWrapper:
+class Ctrla:
     def __init__(self):
         self.reddit = praw.Reddit("bot1")
 
