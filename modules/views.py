@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from flask import render_template, request, url_for
 from lyricsgenius import Genius
 from sqlalchemy import text
