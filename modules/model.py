@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from sqlalchemy import Column, Integer, Text, ForeignKey
+from sqlalchemy import Column, Integer, Text, ForeignKey, Date
 from sqlalchemy.orm import relationship
 
 from modules import db
@@ -10,29 +10,14 @@ class Artist(db.Model):
     __tablename__ = "artists"
 
     name = Column(Text)
-    hometown = Column(Text)
-    dob = Column(Text)
     profile_pic = Column(Text)
-    wiki_id = Column(Text)
+    genius_id = Column(Text)
     id = Column(Integer, primary_key=True)
     albums = relationship("Album", backref="artists")
     songs = relationship("Song", backref="artists")
 
     def __init__(self, **kwargs):
         super(Artist, self).__init__(**kwargs)
-
-    def duplicate_checked(self):
-        """
-        Checks whether Artist is already in DB
-
-        Returns:
-            Artist: Either new Artist or preexisting Artist
-        """
-        _ = db.session.query(Artist).filter(Artist.name == self.name).first()
-        if _ is not None:
-            return _
-        else:
-            return self
 
     def __str__(self):
         return "%d\t%s" % (self.id, self.name)
@@ -42,13 +27,12 @@ class Album(db.Model):
     __tablename__ = "albums"
 
     title = Column(Text)
-    artist_id = Column(Integer, ForeignKey("artists.id"))
+    artist = Column(Integer, ForeignKey("artists.id"))
     genre = Column(Text)
-    release_date = Column(Text)
+    release_date = Column(Date)
     rating = Column(Integer)
     cover_art = Column(Text)
-    wiki_id = Column(Text)
-    genius_url = Column(Text)
+    genius_id = Column(Text)
     id = Column(Integer, primary_key=True)
     songs = relationship("Song", backref="albums")
 
@@ -63,13 +47,12 @@ class Song(db.Model):
     __tablename__ = "songs"
 
     name = Column(Text)
-    artist_id = Column(Integer, ForeignKey("artists.id"))
-    album_id = Column(Integer, ForeignKey("albums.id"))
-    play_count = Column(Integer)
-    track_num = Column(Integer, default=0)
+    artist = Column(Integer, ForeignKey("artists.id"))
+    album = Column(Integer, ForeignKey("albums.id"))
+    track_num = Column(Integer)
     rating = Column(Integer)
-    last_played = Column(Text)
     lyrics = Column(Text)
+    genius_id = Column(Text)
     id = Column(Integer, primary_key=True)
 
     def __init__(self, **kwargs):
