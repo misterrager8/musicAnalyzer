@@ -4,8 +4,13 @@
 {% block body %}
 <title>Artists</title>
 <body>
-<div class="text-center m-3">
-  {{ macros.paragraph('Artists', size=3) }}
+{{ macros.paragraph('Artists', size=3, class='text-center m-3') }}
+
+<div class="row">
+  {% for i in artists.items %}
+  {{ macros.artist_card(i) }}
+  {% endfor %}
 </div>
+{{ macros.artists_paginate() }}
 </body>
 {% endblock %}

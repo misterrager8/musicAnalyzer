@@ -2,21 +2,17 @@
 {% import "macros.html" as macros with context %}
 
 {% block body %}
-<title>{{ album['name'] }}</title>
+<title>{{ album.title }}</title>
 <body>
 <div class="text-center m-3">
-  <img class="rounded shadow" src="{{ album['cover_art_url'] }}" style="width:250px;height:250px;">
-  <div class="m-2">
-    {{ macros.paragraph(album['name'], size=3, class='font-italic') }}
-    {{ macros.paragraph(album['release_date_components']['year'], size=1) }}
-  </div>
+  {{ macros.paragraph(album.title, class='font-italic', size=3) }}
+  {% call macros.link(href=url_for('artist_', id_=album.artists.id)) %}{{ macros.paragraph(album.artists.name, size=2) }}{% endcall %}
+  {{ macros.paragraph(album.release_date.year, class='mb-3', size=1) }}
+  {{ macros.album_options(album) }}
 </div>
 
-{% for i in album_tracks['tracks'] %}
-{% call macros.link(href=url_for('song_', id_=i['song']['id']), class='list-group-item list-group-item-action border-0 list-inline') %}
-{{ macros.paragraph(i['number'], class='list-inline-item mr-3 font-weight-bold') }}
-{{ macros.paragraph(i['song']['title_with_featured'], class='list-inline-item') }}
-{% endcall %}
+{% for i in album.songs | sort(attribute='track_num') %}
+{{ macros.song_list_item(i) }}
 {% endfor %}
 
 </body>
