@@ -5,6 +5,7 @@
 <title>Artists</title>
 <body>
 {{ macros.paragraph('Artists', size=3, class='text-center m-3') }}
+{{ macros.artists_sort_filter() }}
 
 <div class="row">
   {% for i in artists.items %}

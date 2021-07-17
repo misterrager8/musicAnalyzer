@@ -178,6 +178,17 @@
 </ul>
 {% endmacro %}
 
+{% macro artists_sort_filter() %}
+<ul class="list-inline">
+  <li class="list-inline-item">Sort By:</li>
+  {% if order_by == "name" %}
+  <li class="list-inline-item">{{ badge('Recently Added', href=url_for('artists_', order_by='id desc'), bg_color='orange') }}</li>
+  {% elif order_by == "id desc" %}
+  <li class="list-inline-item">{{ badge('Name', href=url_for('artists_', order_by='name'), bg_color='orange') }}</li>
+  {% endif %}
+</ul>
+{% endmacro %}
+
 {% macro albums_paginate() %}
 <nav class="d-flex justify-content-center">
   <ul class="pagination">
@@ -199,6 +210,19 @@
     </li>
     <li class="page-item">
       <a class="page-link {% if not artists.has_next %} btn disabled {% endif %}" {% if artists.has_next %} href="{{ url_for('artists_', page=artists.next_num) }}" {% endif %}>Next</a>
+    </li>
+  </ul>
+</nav>
+{% endmacro %}
+
+{% macro songs_paginate() %}
+<nav aria-label="Page navigation example" class="d-flex justify-content-center">
+  <ul class="pagination">
+    <li class="page-item">
+      <a class="page-link {% if not songs.has_prev %} btn disabled {% endif %}" {% if songs.has_prev %} href="{{ url_for('songs_', page=songs.prev_num) }}" {% endif %}>Previous</a>
+    </li>
+    <li class="page-item">
+      <a class="page-link {% if not songs.has_next %} btn disabled {% endif %}" {% if songs.has_next %} href="{{ url_for('songs_', page=songs.next_num) }}" {% endif %}>Next</a>
     </li>
   </ul>
 </nav>

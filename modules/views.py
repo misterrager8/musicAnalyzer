@@ -26,8 +26,10 @@ def index():
 @app.route("/artists")
 @app.route("/artists/<int:page>")
 def artists_(page=1):
+    order_by = request.args.get("order_by", default="id desc")
     return render_template("artists/artists.html",
-                           artists=db.session.query(Artist).order_by(text("id desc")).paginate(page=page, per_page=20))
+                           artists=db.session.query(Artist).order_by(text(order_by)).paginate(page=page, per_page=20),
+                           order_by=order_by)
 
 
 @app.route("/artist")
@@ -125,10 +127,12 @@ def album_delete():
 
 
 @app.route("/songs")
-def songs_():
+@app.route("/songs/<int:page>")
+def songs_(page=1):
     order_by = request.args.get("order_by", default="songs_name")
     return render_template("songs/songs.html",
-                           songs=db.session.query(Song).order_by(text(order_by)).join(Artist, Album),
+                           songs=db.session.query(Song).order_by(text(order_by)).join(Artist, Album).paginate(page=page,
+                                                                                                              per_page=100),
                            order_by=order_by)
 
 
