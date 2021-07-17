@@ -195,4 +195,21 @@ def search():
 def get_albums():
     id_ = request.args.get("id_")
     _ = genius.artist_albums(id_)["albums"]
-    return render_template("albums/get_albums.html", results=_)
+    return render_template("genius/get_albums.html", results=_)
+
+
+@app.route("/get_songs")
+def get_songs():
+    id_ = request.args.get("id_")
+    album: Album = db.session.query(Album).get(id_)
+
+    for i in genius.album_tracks(album.genius_id)["tracks"]:
+        db.session.add(Song(name=i["song"]["title"],
+                            artist=album.artist,
+                            album=album.id,
+                            track_num=i["number"],
+                            genius_id=i["song"]["id"]))
+
+    db.session.commit()
+
+    return redirect(url_for("album_", id_=id_))

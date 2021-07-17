@@ -304,6 +304,7 @@
 <ul class="list-inline">
   <li class="list-inline-item">{% call link(modal_id='song_create') %}{{ add_icon() }}{% endcall %}</li>
   <li class="list-inline-item">{% call link(modal_id='album_update') %}{{ edit_icon() }}{% endcall %}</li>
+  <li class="list-inline-item">{% call link(href=url_for('get_songs', id_=album.id)) %}{{ search_icon(color='black') }}{% endcall %}</li>
   <li class="list-inline-item">{% call link(modal_id='album_delete') %}{{ delete_icon() }}{% endcall %}</li>
 </ul>
 {% call modal('song_create') %}{{ song_create_form(album) }}{% endcall %}
