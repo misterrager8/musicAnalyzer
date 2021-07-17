@@ -182,5 +182,11 @@ def search():
 
         return render_template("search.html",
                                search_term=search_term,
-                               artist_results=_a,
-                               album_results=_b)
+                               artist_results=_)
+
+
+@app.route("/get_albums", methods=["POST", "GET"])
+def get_albums():
+    id_ = request.args.get("id_")
+    _ = genius.artist_albums(id_)["albums"]
+    return render_template("albums/get_albums.html", results=_)
