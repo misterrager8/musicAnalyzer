@@ -1,31 +1,50 @@
 {% extends "base.html" %}
-{% import "macros.html" as macros with context %}
+{% import "macros.html" as macros %}
 
 {% block body %}
 <title>Home</title>
-<body>
-<div id="main_carousel" class="carousel slide" data-ride="carousel">
-  <div class="carousel-inner rounded" style="height: 400px">
-    {% for i in fresh[:5] %}
-    <div class="h-100 p-5 carousel-item text-center {% if loop.index == 1 %} active {% endif %} bg-light">
-      {% call macros.link(href=i.url, class='h-100 d-flex justify-content-center align-items-center p-5') %}
-      {{ macros.paragraph(i.title, size=3) }}
-      {% endcall %}
-    </div>
+<div>
+  {% call macros.link(href=recent_news[0].url, class='col-12 p-0', newtab=true) %}
+  <div class="border m-1 p-5" style="height: 400px; border-radius: 10px; background-color: gray">{{ recent_news[0].title[:180] }}</div>
+  {% endcall %}
+  <div class="row m-0">
+    {% call macros.link(href=recent_news[1].url, class='col-4 p-0', newtab=true) %}
+    <div class="border m-1 p-5" style="height: 200px; border-radius: 10px; background-color: gray">{{ recent_news[1].title[:180] }}</div>
+    {% endcall %}
+    {% call macros.link(href=recent_news[2].url, class='col-4 p-0', newtab=true) %}
+    <div class="border m-1 p-5" style="height: 200px; border-radius: 10px; background-color: gray">{{ recent_news[2].title[:180] }}</div>
+    {% endcall %}
+    {% call macros.link(href=recent_news[3].url, class='col-4 p-0', newtab=true) %}
+    <div class="border m-1 p-5" style="height: 200px; border-radius: 10px; background-color: gray">{{ recent_news[3].title[:180] }}</div>
+    {% endcall %}
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-6">
+    {{ macros.paragraph('LATEST SONGS', size=1.5, class='m-3 font-weight-bold') }}
+    {% for i in recent_songs[:10] %}
+    <a href="{{ i.url }}" class="card border-0" target="_blank" style="text-decoration:none; color:black; height:150px;">
+      <div class="card-body border-top">
+        {{ macros.paragraph(get_time_posted(i.created_utc), class='m-0', size=0.7) }}
+        {{ macros.paragraph(i.title[:180], class='m-0 font-weight-bold') }}
+        <p style="position: absolute; bottom:0; right:0; font-size:0.8em; color:green">{{ macros.upvote_icon() }}{{ i.score }}</p>
+      </div>
+    </a>
     {% endfor %}
   </div>
-  <a class="carousel-control-prev" href="#main_carousel" role="button" data-slide="prev">
-    <span class="carousel-control-prev-icon" aria-hidden="true" style="filter: invert(100%);"></span>
-    <span class="sr-only">Previous</span>
-  </a>
-  <a class="carousel-control-next" href="#main_carousel" role="button" data-slide="next">
-    <span class="carousel-control-next-icon" aria-hidden="true" style="filter: invert(100%);"></span>
-    <span class="sr-only">Next</span>
-  </a>
+  <div class="col-6">
+    {{ macros.paragraph('LATEST NEWS', size=1.5, class='m-3 font-weight-bold') }}
+    {% for i in recent_news[4:14] %}
+    <a href="{{ i.url }}" class="card border-0" target="_blank" style="text-decoration:none; color:black; height:150px;">
+      <div class="card-body border-top">
+        {{ macros.paragraph(get_time_posted(i.created_utc), class='m-0', size=0.7) }}
+        {{ macros.paragraph(i.title[:180], class='m-0 font-weight-bold') }}
+        <p style="position: absolute; bottom:0; right:0; font-size:0.8em; color:green">{{ macros.upvote_icon() }}{{ i.score }}</p>
+        <p class="ml-4" style="position: absolute; bottom:0; left:0; font-size:0.8em">{{ macros.comment_icon(size=15) }}{{ i.num_comments }}</p>
+      </div>
+    </a>
+    {% endfor %}
+  </div>
 </div>
-{{ macros.paragraph('News', class='text-center', size=3) }}
-{% for i in fresh[5:] %}
-{{ macros.news_list_item(i) }}
-{% endfor %}
-</body>
 {% endblock %}
