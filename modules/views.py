@@ -143,6 +143,11 @@ def song_():
     return render_template("songs/song.html", song=song)
 
 
+@app.route("/top_100")
+def top_100():
+    return render_template("songs/top_100.html", top=top_100_)
+
+
 @app.route("/song_create", methods=["POST"])
 def song_create():
     id_: int = request.args.get("id_")

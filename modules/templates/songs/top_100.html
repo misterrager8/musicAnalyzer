@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% import "macros.html" as macros with context %}
+
+{% block body %}
+<title>TOP 100</title>
+<body>
+{{ macros.paragraph('TOP 100', class='text-center m-3', size=3) }}
+
+{% for i in top %}
+<div class="list-group-item list-group-item-action border-0 rounded">
+  <ul class="list-inline m-0">
+    <li class="list-inline-item">{{ macros.paragraph('%s.' % loop.index, size=1) }}</li>
+    <li class="list-inline-item">{{ macros.paragraph(i[0], size=1.5) }}</li>
+    <li class="list-inline-item">{{ macros.paragraph(i[1], size=1) }}</li>
+  </ul>
+</div>
+{% endfor %}
+</body>
+{% endblock %}
