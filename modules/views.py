@@ -20,7 +20,9 @@ def get_all():
 
 @app.route("/")
 def index():
-    return render_template("index.html", fresh=fresh)
+    return render_template("index.html",
+                           latest_news=latest_news,
+                           fresh_songs=fresh_songs)
 
 
 @app.route("/artists")

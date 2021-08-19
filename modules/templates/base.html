@@ -1,32 +1,46 @@
 <!DOCTYPE html>
+{% import "macros.html" as macros with context %}
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
   <link crossorigin="anonymous" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" rel="stylesheet">
   <script crossorigin="anonymous" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
   <script crossorigin="anonymous" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
 </head>
 <body>
-<nav class="navbar navbar-expand-sm navbar-dark bg-dark">
-  <div class="collapse navbar-collapse">
-    <a class="navbar-brand" href="{{ url_for('index') }}">
-      {{ macros.navbar_icon() }}
-    </a>
+<nav class="navbar navbar-expand-xl navbar-dark px-5" style="background-color:black">
+  <a class="navbar-brand" href="{{ url_for('index') }}">{{ macros.navbar_icon() }}</a>
+  <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#nav-contents">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="nav-contents" style="font-size:0.75em">
     <ul class="navbar-nav mr-auto">
+      <li class="navbar-item"><a class="nav-link dropdown-toggle" href="#">NEWS</a></li>
+      <li class="navbar-item"><a class="nav-link" href="{{ url_for('top_100') }}">TOP 100</a></li>
+      <li class="navbar-item"><a class="nav-link" href="{{ url_for('songs_') }}">SONGS</a></li>
+      <li class="navbar-item"><a class="nav-link" href="{{ url_for('albums_') }}">ALBUMS</a></li>
+      <li class="navbar-item"><a class="nav-link" href="{{ url_for('artists_') }}">ARTISTS</a></li>
+    </ul>
+    <ul class="navbar-nav ml-auto">
       <li class="navbar-item">
-        <a class="nav-link" href="{{ url_for('artists_') }}">Artists</a>
+        <a class="nav-link dropdown-toggle" data-toggle="dropdown" data-target="#follow" href="#">FOLLOW</a>
+        <div class="dropdown-menu dropdown-menu-right text-center bg-dark" id="follow">
+          <a href="#" class="d-inline mx-2">{{ macros.facebook_icon(size=20, color='white') }}</a>
+          <a href="#" class="d-inline mx-2">{{ macros.twitter_icon(size=20, color='white') }}</a>
+          <a href="#" class="d-inline mx-2">{{ macros.instagram_icon(size=20, color='white') }}</a>
+          <a href="#" class="d-inline mx-2">{{ macros.youtube_icon(size=20, color='white') }}</a>
+        </div>
       </li>
+      <li class="navbar-item text-light py-2 mx-1 font-weight-light">|</li>
+      <li class="navbar-item"><a class="nav-link" href="#">{{ macros.user_icon(size=20, color='white') }}</a></li>
       <li class="navbar-item">
-        <a class="nav-link" href="{{ url_for('albums_') }}">Albums</a>
-      </li>
-      <li class="navbar-item">
-        <a class="nav-link" href="{{ url_for('songs_') }}">Songs</a>
+        <a class="nav-link" data-toggle="dropdown" data-target="#search_form" href="#">{{ macros.search_icon(size=20, color='white') }}</a>
+        <div class="dropdown-menu dropdown-menu-right p-0" id="search_form">
+          {{ macros.search_form(class='m-0') }}
+        </div>
       </li>
     </ul>
-    <form class="form-group form-inline ml-auto m-0" action="{{ url_for('search') }}" method="POST">
-      {{ macros.input('search_term', 'Search') }}
-      <button type="submit" class="btn btn-secondary">{{ macros.search_icon() }}</button>
-    </form>
   </div>
 </nav>
 <div class="container">

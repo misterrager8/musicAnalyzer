@@ -4,18 +4,34 @@
 {% block body %}
 <title>Home</title>
 <div>
-  {% call macros.link(href=recent_news[0].url, class='col-12 p-0', newtab=true) %}
-  <div class="border m-1 p-5" style="height: 400px; border-radius: 10px; background-color: gray">{{ recent_news[0].title[:180] }}</div>
+  {% call macros.link(href=latest_news[0].url, class='col-12 p-0', newtab=true) %}
+  <div class="border m-1 p-5" style="height: 400px; border-radius: 10px; background-color: gray">
+    {{ latest_news[0].title[:180] }}
+    {{ macros.paragraph(get_time_posted(latest_news[0].created_utc), class='m-0', size=0.7) }}
+    {{ macros.upvote_icon() }}{{ latest_news[0].score }}
+  </div>
   {% endcall %}
   <div class="row m-0">
-    {% call macros.link(href=recent_news[1].url, class='col-4 p-0', newtab=true) %}
-    <div class="border m-1 p-5" style="height: 200px; border-radius: 10px; background-color: gray">{{ recent_news[1].title[:180] }}</div>
+    {% call macros.link(href=latest_news[1].url, class='col-4 p-0', newtab=true) %}
+    <div class="border m-1 p-5" style="height: 200px; border-radius: 10px; background-color: gray">
+      {{ latest_news[1].title[:180] }}
+      {{ macros.paragraph(get_time_posted(latest_news[1].created_utc), class='m-0', size=0.7) }}
+      {{ macros.upvote_icon() }}{{ latest_news[1].score }}
+    </div>
     {% endcall %}
-    {% call macros.link(href=recent_news[2].url, class='col-4 p-0', newtab=true) %}
-    <div class="border m-1 p-5" style="height: 200px; border-radius: 10px; background-color: gray">{{ recent_news[2].title[:180] }}</div>
+    {% call macros.link(href=latest_news[2].url, class='col-4 p-0', newtab=true) %}
+    <div class="border m-1 p-5" style="height: 200px; border-radius: 10px; background-color: gray">
+      {{ latest_news[2].title[:180] }}
+      {{ macros.paragraph(get_time_posted(latest_news[2].created_utc), class='m-0', size=0.7) }}
+      {{ macros.upvote_icon() }}{{ latest_news[2].score }}
+    </div>
     {% endcall %}
-    {% call macros.link(href=recent_news[3].url, class='col-4 p-0', newtab=true) %}
-    <div class="border m-1 p-5" style="height: 200px; border-radius: 10px; background-color: gray">{{ recent_news[3].title[:180] }}</div>
+    {% call macros.link(href=latest_news[3].url, class='col-4 p-0', newtab=true) %}
+    <div class="border m-1 p-5" style="height: 200px; border-radius: 10px; background-color: gray">
+      {{ latest_news[3].title[:180] }}
+      {{ macros.paragraph(get_time_posted(latest_news[3].created_utc), class='m-0', size=0.7) }}
+      {{ macros.upvote_icon() }}{{ latest_news[3].score }}
+    </div>
     {% endcall %}
   </div>
 </div>
@@ -23,7 +39,7 @@
 <div class="row">
   <div class="col-6">
     {{ macros.paragraph('LATEST SONGS', size=1.5, class='m-3 font-weight-bold') }}
-    {% for i in recent_songs[:10] %}
+    {% for i in fresh_songs[:10] %}
     <a href="{{ i.url }}" class="card border-0" target="_blank" style="text-decoration:none; color:black; height:150px;">
       <div class="card-body border-top">
         {{ macros.paragraph(get_time_posted(i.created_utc), class='m-0', size=0.7) }}
@@ -35,7 +51,7 @@
   </div>
   <div class="col-6">
     {{ macros.paragraph('LATEST NEWS', size=1.5, class='m-3 font-weight-bold') }}
-    {% for i in recent_news[4:14] %}
+    {% for i in latest_news[4:14] %}
     <a href="{{ i.url }}" class="card border-0" target="_blank" style="text-decoration:none; color:black; height:150px;">
       <div class="card-body border-top">
         {{ macros.paragraph(get_time_posted(i.created_utc), class='m-0', size=0.7) }}
