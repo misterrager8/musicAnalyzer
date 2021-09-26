@@ -18,7 +18,7 @@ class Artist(db.Model):
         super(Artist, self).__init__(**kwargs)
 
     def __str__(self):
-        return "%d\t%s" % (self.id, self.name)
+        return self.name
 
 
 class Album(db.Model):
@@ -38,7 +38,7 @@ class Album(db.Model):
         super(Album, self).__init__(**kwargs)
 
     def __str__(self):
-        return "%d\t%s" % (self.id, self.title)
+        return "%s,%s,%s,%s" % (self.title, self.artists.name, self.genre, self.release_date)
 
 
 class Song(db.Model):
@@ -57,35 +57,7 @@ class Song(db.Model):
         super(Song, self).__init__(**kwargs)
 
     def __str__(self):
-        return "%d\t%s" % (self.id, self.name)
-
-
-class FreshItem(db.Model):
-    __tablename__ = "fresh_items"
-
-    title = Column(Text)
-    url = Column(Text)
-    time_posted = Column(Text)
-    id = Column(Integer, primary_key=True)
-
-    def __init__(self,
-                 title: str,
-                 url: str,
-                 time_posted: str):
-        """
-        'FRESH' Submission object from PRAW
-
-        Args:
-            title (str): Title of the Submission
-            url (str): URL of the Submission
-            time_posted (str): Time posted of the Submission in UTC
-        """
-        self.title = title
-        self.url = url
-        self.time_posted = datetime.utcfromtimestamp(float(time_posted))
-
-    def __str__(self):
-        return "%s\t%s" % (self.time_posted, self.title)
+        return "%s,%s,%s" % (self.name, self.artists.name, self.albums.title)
 
 
 db.create_all()
