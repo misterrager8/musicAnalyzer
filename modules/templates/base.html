@@ -9,38 +9,28 @@
   <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
 </head>
 <body>
-<nav class="navbar navbar-expand-xl navbar-dark px-5" style="background-color:black">
-  <a class="navbar-brand" href="{{ url_for('index') }}">{{ macros.navbar_icon() }}</a>
-  <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#nav-contents">
-    <span class="navbar-toggler-icon"></span>
-  </button>
-  <div class="collapse navbar-collapse" id="nav-contents" style="font-size:0.75em">
-    <ul class="navbar-nav mr-auto">
-      <li class="navbar-item"><a class="nav-link dropdown-toggle" href="#">NEWS</a></li>
-      <li class="navbar-item"><a class="nav-link" href="{{ url_for('top_100') }}">TOP 100</a></li>
-      <li class="navbar-item"><a class="nav-link" href="{{ url_for('songs_') }}">SONGS</a></li>
-      <li class="navbar-item"><a class="nav-link" href="{{ url_for('albums_') }}">ALBUMS</a></li>
-      <li class="navbar-item"><a class="nav-link" href="{{ url_for('artists_') }}">ARTISTS</a></li>
-    </ul>
-    <ul class="navbar-nav ml-auto">
-      <li class="navbar-item">
-        <a class="nav-link dropdown-toggle" data-toggle="dropdown" data-target="#follow" href="#">FOLLOW</a>
-        <div class="dropdown-menu dropdown-menu-right text-center bg-dark" id="follow">
-          <a href="#" class="d-inline mx-2">{{ macros.facebook_icon(size=20, color='white') }}</a>
-          <a href="#" class="d-inline mx-2">{{ macros.twitter_icon(size=20, color='white') }}</a>
-          <a href="#" class="d-inline mx-2">{{ macros.instagram_icon(size=20, color='white') }}</a>
-          <a href="#" class="d-inline mx-2">{{ macros.youtube_icon(size=20, color='white') }}</a>
-        </div>
-      </li>
-      <li class="navbar-item text-light py-2 mx-1 font-weight-light">|</li>
-      <li class="navbar-item"><a class="nav-link" href="#">{{ macros.user_icon(size=20, color='white') }}</a></li>
-      <li class="navbar-item">
-        <a class="nav-link" data-toggle="dropdown" data-target="#search_form" href="#">{{ macros.search_icon(size=20, color='white') }}</a>
-        <div class="dropdown-menu dropdown-menu-right p-0" id="search_form">
-          {{ macros.search_form(class='m-0') }}
-        </div>
-      </li>
-    </ul>
+<nav class="navbar navbar-expand-xl">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="{{ url_for('index') }}">{{ macros.navbar_icon() }}</a>
+    <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#nav-contents">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="nav-contents">
+      <ul class="navbar-nav me-auto">
+        <li class="navbar-item"><a class="nav-link" href="#">NEWS</a></li>
+        <li class="navbar-item"><a class="nav-link" href="{{ url_for('top_100') }}">TOP 100</a></li>
+        <li class="navbar-item"><a class="nav-link" href="{{ url_for('songs_') }}">SONGS</a></li>
+        <li class="navbar-item"><a class="nav-link" href="{{ url_for('albums_') }}">ALBUMS</a></li>
+        <li class="navbar-item"><a class="nav-link" href="{{ url_for('artists_') }}">ARTISTS</a></li>
+      </ul>
+      <ul class="navbar-nav ms-auto">
+        <li class="navbar-item"><a class="nav-link" href="#">{{ macros.user_icon(size=20) }}</a></li>
+        <li class="navbar-item">
+          <a class="nav-link" data-bs-toggle="dropdown" data-bs-target="#search_form" href="#">{{ macros.search_icon(size=20) }}</a>
+          <div class="dropdown-menu dropdown-menu-end p-1" id="search_form">{{ macros.search_form(class='m-0') }}</div>
+        </li>
+      </ul>
+    </div>
   </div>
 </nav>
 <div class="container">

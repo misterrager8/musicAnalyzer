@@ -1,0 +1,30 @@
+:root {
+    --primary-bg-color: #2a004f;
+    --secondary-bg-color: #9e78bf;
+    --navbar-font-color: #ebebeb;
+}
+
+.navbar {
+    background-color: var(--primary-bg-color);
+    color: var(--navbar-font-color);
+    font-size: 0.9em;
+}
+
+.navbar a:link,
+.navbar a:visited,
+.navbar a:hover,
+.navbar a:active {
+    color: var(--navbar-font-color);
+}
+
+.link, .link:hover {
+    text-decoration: none;
+    color: inherit;
+}
+
+.jumbo-card {
+    border-radius: 10px;
+    background-color: var(--secondary-bg-color);
+    margin: 1rem;
+    padding: 1.5rem;
+}

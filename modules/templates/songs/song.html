@@ -6,8 +6,8 @@
 <body>
 <div class="text-center m-3">
   {{ macros.paragraph(song.name, size=3) }}
-  {% call macros.link(href=url_for('artist_', id_=song.artists.id)) %}{{ macros.paragraph(song.artists.name, size=2) }}{% endcall %}
-  {% call macros.link(href=url_for('album_', id_=song.albums.id)) %}{{ macros.paragraph(song.albums.title, class='font-italic mb-3', size=1) }}{% endcall %}
+  <a href="{{ url_for('artist_', id_=song.artists.id) }}" class="link">{{ macros.paragraph(song.artists.name, size=2) }}</a>
+  <a href="{{ url_for('album_', id_=song.albums.id) }}" class="link">{{ macros.paragraph(song.albums.title, class='font-italic mb-3', size=1) }}</a>
   {{ macros.song_options(song) }}
 </div>
 </body>

@@ -5,25 +5,5 @@
 <title>Search</title>
 <body>
 
-
-<div class="row">
-  {% for i in artist_results %}
-  <div class="card col-3 border-0">
-    {% call macros.link(modal_id='artist_create_%s' % i['result']['id'], class='card-body') %}
-    <img class="rounded-circle shadow" src="{{ i['result']['image_url'] }}" style="width:250px;height:250px;">
-    {{ macros.paragraph(i['result']['name'], class='m-2 text-center') }}
-    {% endcall %}
-  </div>
-
-  {% call macros.modal('artist_create_%s' % i['result']['id']) %}
-  <form class="form-group" action="{{ url_for('artist_create') }}" method="POST">
-    {{ macros.input('artist_name', 'Name', value=i['result']['name'], class='mb-2') }}
-    {{ macros.input('profile_pic', 'Profile Pic URL', value=i['result']['image_url'], class='mb-2') }}
-    {{ macros.input('genius_id', 'Genius ID', value=i['result']['id'], class='mb-2') }}
-    {{ macros.button('Add') }}
-  </form>
-  {% endcall %}
-  {% endfor %}
-</div>
 </body>
 {% endblock %}

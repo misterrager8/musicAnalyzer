@@ -1,16 +1,42 @@
 from datetime import datetime
 
+import praw
+import requests
+from bs4 import BeautifulSoup
 from flask import render_template, request, url_for
-from lyricsgenius import Genius
 from sqlalchemy import text
 from werkzeug.utils import redirect
 
 from modules import app, db
-from modules.ctrla import Ctrla
-from modules.model import Album, Artist, Song
+from modules.model import Album, Artist, Song, Database
 
-fresh = Ctrla().get_news()
-genius = Genius()
+reddit = praw.Reddit("bot1")
+database = Database()
+
+
+def latest_news() -> list:
+    return [i for i in reddit.subreddit("HipHopHeads").hot(limit=100) if not i.stickied]
+
+
+def fresh_songs() -> list:
+    return [i for i in reddit.subreddit("HipHopHeads").hot(limit=100) if "[FRESH" in i.title]
+
+
+def get_top_100():
+    _ = []
+    soup = BeautifulSoup(requests.get("https://www.billboard.com/charts/hot-100").text, "html.parser")
+    songs = soup.find_all("span", "chart-element__information__song")
+    artists = soup.find_all("span", "chart-element__information__artist")
+
+    for idx, i in enumerate(songs):
+        _.append([songs[idx].get_text(), artists[idx].get_text()])
+
+    return _
+
+
+latest_news = latest_news()
+fresh_songs = fresh_songs()
+top_100_ = get_top_100()
 
 
 @app.context_processor
@@ -46,7 +72,7 @@ def artist_create():
                            profile_pic=request.form["profile_pic"],
                            genius_id=request.form["genius_id"]))
 
-    return redirect(url_for("artists_"))
+    return redirect(request.referrer)
 
 
 @app.route("/artist_update", methods=["POST"])
@@ -57,7 +83,7 @@ def artist_update():
     artist.profile_pic = request.form["profile_pic"]
     db.session.commit()
 
-    return redirect(url_for("artist_", id_=id_))
+    return redirect(request.referrer)
 
 
 @app.route("/artist_delete")
@@ -93,20 +119,19 @@ def album_create():
                           release_date=datetime.strptime(request.form["release_date"],
                                                          "{'year': %Y, 'month': %m, 'day': %d}")))
 
-    return redirect(url_for("albums_"))
+    return redirect(request.referrer)
 
 
 @app.route("/album_update", methods=["POST"])
 def album_update():
-    id_: int = request.args.get("id_")
-    album: Album = db.session.query(Album).get(id_)
+    album: Album = database.get(Album, request.args.get("id_"))
 
     album.title = request.form["title"]
     album.release_date = request.form["release_date"]
     album.cover_art = request.form["cover_art"]
     db.session.commit()
 
-    return redirect(url_for("album_", id_=id_))
+    return redirect(request.referrer)
 
 
 @app.route("/album_delete")
@@ -157,7 +182,7 @@ def song_update():
     song.track_num = int(request.form["track_num"])
     db.session.commit()
 
-    return redirect(url_for("song_", id_=id_))
+    return redirect(request.referrer)
 
 
 @app.route("/song_delete")
@@ -172,32 +197,5 @@ def song_delete():
 def search():
     if request.method == "POST":
         search_term = request.form["search_term"]
-        _ = genius.search_artists(search_term)["sections"][0]["hits"]
 
-        return render_template("search.html",
-                               search_term=search_term,
-                               artist_results=_)
-
-
-@app.route("/get_albums", methods=["POST", "GET"])
-def get_albums():
-    id_ = request.args.get("id_")
-    _ = genius.artist_albums(id_)["albums"]
-    return render_template("genius/get_albums.html", results=_)
-
-
-@app.route("/get_songs")
-def get_songs():
-    id_ = request.args.get("id_")
-    album: Album = db.session.query(Album).get(id_)
-
-    for i in genius.album_tracks(album.genius_id)["tracks"]:
-        db.session.add(Song(name=i["song"]["title"],
-                            artist=album.artist,
-                            album=album.id,
-                            track_num=i["number"],
-                            genius_id=i["song"]["id"]))
-
-    db.session.commit()
-
-    return redirect(url_for("album_", id_=id_))
+        return render_template("search.html", search_term=search_term)
