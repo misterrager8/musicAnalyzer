@@ -14,22 +14,6 @@
 </div>
 {% endmacro %}
 
-{% macro badge(txt, bg_color='black', txt_color='white', class='', href='#', newtab=false, modal_id='') %}
-<a href="{{ href }}"
-   class="badge {{ class }}"
-   style="text-decoration:none; background-color:{{ bg_color }}; color:{{ txt_color }}"
-   {% if newtab %}
-   target="_blank"
-   {% endif %}
-   {% if modal_id %}
-   data-bs-toggle="modal"
-   data-bs-target="#{{ modal_id }}"
-   {% endif %}
->
-  {{ txt }}
-</a>
-{% endmacro %}
-
 {% macro input(name, placeholder, class='', value='') %}
 <input type="text" name="{{ name }}" placeholder="{{ placeholder }}" class="form-control {{ class }}" autocomplete="off" value="{{ value }}">
 {% endmacro %}
@@ -41,22 +25,21 @@
 {% endmacro %}
 
 {% macro add_icon(size=25, color='green', class='') %}
-<svg xmlns="http://www.w3.org/2000/svg" width="{{ size }}" height="{{ size }}" fill="{{ color }}" class="bi bi-plus-square {{ class }}" viewBox="0 0 16 16">
-  <path d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"/>
+<svg xmlns="http://www.w3.org/2000/svg" width="{{ size }}" height="{{ size }}" fill="{{ color }}" class="bi bi-plus-circle {{ class }}" viewBox="0 0 16 16">
+  <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
   <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
 </svg>
 {% endmacro %}
 
 {% macro edit_icon(size=25, color='currentcolor', class='') %}
-<svg xmlns="http://www.w3.org/2000/svg" width="{{ size }}" height="{{ size }}" fill="{{ color }}" class="bi bi-pencil-square {{ class }}" viewBox="0 0 16 16">
-  <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
-  <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"/>
+<svg xmlns="http://www.w3.org/2000/svg" width="{{ size }}" height="{{ size }}" fill="{{ color }}" class="bi bi-pencil-fill {{ class }}" viewBox="0 0 16 16">
+  <path d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708l-3-3zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207l6.5-6.5zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.499.499 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11l.178-.178z"/>
 </svg>
 {% endmacro %}
 
 {% macro delete_icon(size=25, color='red', class='') %}
-<svg xmlns="http://www.w3.org/2000/svg" width="{{ size }}" height="{{ size }}" fill="{{ color }}" class="bi bi-x-square {{ class }}" viewBox="0 0 16 16">
-  <path d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"/>
+<svg xmlns="http://www.w3.org/2000/svg" width="{{ size }}" height="{{ size }}" fill="{{ color }}" class="bi bi-x-circle {{ class }}" viewBox="0 0 16 16">
+  <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
   <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
 </svg>
 {% endmacro %}
@@ -64,12 +47,6 @@
 {% macro search_icon(size=25, color='currentcolor', class='') %}
 <svg xmlns="http://www.w3.org/2000/svg" width="{{ size }}" height="{{ size }}" fill="{{ color }}" class="bi bi-search {{ class }}" viewBox="0 0 16 16">
   <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
-</svg>
-{% endmacro %}
-
-{% macro circle_icon(size=25, color='black', class='') %}
-<svg xmlns="http://www.w3.org/2000/svg" width="{{ size }}" height="{{ size }}" fill="{{ color }}" class="bi bi-circle-fill {{ class }}" viewBox="0 0 16 16">
-  <circle cx="8" cy="8" r="8"/>
 </svg>
 {% endmacro %}
 
@@ -96,7 +73,7 @@
 <a href="{{ url_for('album_', id_=album.id) }}" class="link col-3">
   <img class="card-img-top rounded shadow" src="{% if album.cover_art %}{{ album.cover_art }}{% else %}https://via.placeholder.com/250{% endif %}" alt="Card image cap">
   <div class="card-body">
-    {{ paragraph(album.title, class='font-italic font-weight-bold text-truncate') }}
+    {{ paragraph(album.title, class='fst-italic fw-bold text-truncate') }}
     {{ paragraph(album.artists.name, size=0.9) }}
     {{ paragraph(album.release_date.year, size=0.8) }}
   </div>
@@ -117,7 +94,7 @@
   <ul class="list-inline m-0">
     <li class="list-inline-item">{{ paragraph(song.name, size=1.5) }}</li>
     <li class="list-inline-item">{{ paragraph(song.artists.name, size=1) }}</li>
-    <li>{{ paragraph(song.albums.title, class='font-italic', size=0.9) }}</li>
+    <li>{{ paragraph(song.albums.title, class='fst-italic', size=0.9) }}</li>
   </ul>
 </a>
 {% endmacro %}
@@ -126,50 +103,49 @@
 <a href="{{ item.url }}" class="list-group-item list-group-item-action border-0 rounded" target="_blank">
   <ul class="list-inline m-0">
     <li class="list-inline-item">{{ paragraph(item.title, size=1.25) }}</li>
-    <li>{{ paragraph(item.time_posted, size=0.9, class='text-muted font-italic') }}</li>
+    <li>{{ paragraph(item.time_posted, size=0.9, class='text-muted fst-italic') }}</li>
   </ul>
 </a>
 {% endmacro %}
 
 {% macro songs_sort_filter() %}
 <ul class="list-inline">
-  <li class="list-inline-item">Sort By:</li>
-  {% if order_by == "songs_name" %}
-  <li class="list-inline-item">{{ badge('Artist', href=url_for('songs_', order_by='artists.name'), bg_color='darkblue') }}</li>
-  <li class="list-inline-item">{{ badge('Year', href=url_for('songs_', order_by='albums.release_date desc'), bg_color='darkblue') }}</li>
-  {% elif order_by == "artists.name" %}
-  <li class="list-inline-item">{{ badge('Year', href=url_for('songs_', order_by='albums.release_date desc'), bg_color='darkblue') }}</li>
-  <li class="list-inline-item">{{ badge('Title', href=url_for('songs_', order_by='songs_name'), bg_color='darkblue') }}</li>
-  {% elif order_by == "albums.release_date desc" %}
-  <li class="list-inline-item">{{ badge('Artist', href=url_for('songs_', order_by='artists.name'), bg_color='darkblue') }}</li>
-  <li class="list-inline-item">{{ badge('Title', href=url_for('songs_', order_by='songs_name'), bg_color='darkblue') }}</li>
+  <li class="list-inline-item">{{ paragraph('Sort By:', size=0.8) }}</li>
+  {% if order_by != "artists.name" %}
+  <li class="list-inline-item"><a href="{{ url_for('songs_', order_by='artists.name') }}" class="badge badge-custom link">Artist</a></li>
+  {% endif %}
+  {% if order_by != "albums.release_date desc" %}
+  <li class="list-inline-item"><a href="{{ url_for('songs_', order_by='albums.release_date desc') }}" class="badge badge-custom link">Year</a></li>
+  {% endif %}
+  {% if order_by != "songs_name" %}
+  <li class="list-inline-item"><a href="{{ url_for('songs_', order_by='songs_name') }}" class="badge badge-custom link">Title</a></li>
   {% endif %}
 </ul>
 {% endmacro %}
 
 {% macro albums_sort_filter() %}
 <ul class="list-inline">
-  <li class="list-inline-item">Sort By:</li>
-  {% if order_by == "title" %}
-  <li class="list-inline-item">{{ badge('Artist', href=url_for('albums_', order_by='artists.name'), bg_color='green') }}</li>
-  <li class="list-inline-item">{{ badge('Year', href=url_for('albums_', order_by='release_date desc'), bg_color='green') }}</li>
-  {% elif order_by == "artists.name" %}
-  <li class="list-inline-item">{{ badge('Year', href=url_for('albums_', order_by='release_date desc'), bg_color='green') }}</li>
-  <li class="list-inline-item">{{ badge('Title', href=url_for('albums_', order_by='title'), bg_color='green') }}</li>
-  {% elif order_by == "release_date desc" %}
-  <li class="list-inline-item">{{ badge('Artist', href=url_for('albums_', order_by='artists.name'), bg_color='green') }}</li>
-  <li class="list-inline-item">{{ badge('Title', href=url_for('albums_', order_by='title'), bg_color='green') }}</li>
+  <li class="list-inline-item">{{ paragraph('Sort By:', size=0.8) }}</li>
+  {% if order_by != "artists.name" %}
+  <li class="list-inline-item"><a href="{{ url_for('albums_', order_by='artists.name') }}" class="badge badge-custom link">Artist</a></li>
+  {% endif %}
+  {% if order_by != "release_date desc" %}
+  <li class="list-inline-item"><a href="{{ url_for('albums_', order_by='release_date desc') }}" class="badge badge-custom link">Year</a></li>
+  {% endif %}
+  {% if order_by != "title" %}
+  <li class="list-inline-item"><a href="{{ url_for('albums_', order_by='title') }}" class="badge badge-custom link">Title</a></li>
   {% endif %}
 </ul>
 {% endmacro %}
 
 {% macro artists_sort_filter() %}
 <ul class="list-inline">
-  <li class="list-inline-item">Sort By:</li>
-  {% if order_by == "name" %}
-  <li class="list-inline-item">{{ badge('Recently Added', href=url_for('artists_', order_by='id desc'), bg_color='orange') }}</li>
-  {% elif order_by == "id desc" %}
-  <li class="list-inline-item">{{ badge('Name', href=url_for('artists_', order_by='name'), bg_color='orange') }}</li>
+  <li class="list-inline-item">{{ paragraph('Sort By:', size=0.8) }}</li>
+  {% if order_by != "name" %}
+  <li class="list-inline-item"><a href="{{ url_for('artists_', order_by='name') }}" class="badge badge-custom link">Name</a></li>
+  {% endif %}
+  {% if order_by != "id desc" %}
+  <li class="list-inline-item"><a href="{{ url_for('artists_', order_by='id desc') }}" class="badge badge-custom link">Recently Added</a></li>
   {% endif %}
 </ul>
 {% endmacro %}
@@ -191,10 +167,10 @@
 <nav aria-label="Page navigation example" class="d-flex justify-content-center">
   <ul class="pagination">
     <li class="page-item">
-      <a class="page-link {% if not artists.has_prev %} btn disabled {% endif %}" {% if artists.has_prev %} href="{{ url_for('artists_', page=artists.prev_num) }}" {% endif %}>Previous</a>
+      <a class="page-link {% if not artists.has_prev %} btn disabled {% endif %}" {% if artists.has_prev %} href="{{ url_for('artists_', page=artists.prev_num, order_by=order_by) }}" {% endif %}>Previous</a>
     </li>
     <li class="page-item">
-      <a class="page-link {% if not artists.has_next %} btn disabled {% endif %}" {% if artists.has_next %} href="{{ url_for('artists_', page=artists.next_num) }}" {% endif %}>Next</a>
+      <a class="page-link {% if not artists.has_next %} btn disabled {% endif %}" {% if artists.has_next %} href="{{ url_for('artists_', page=artists.next_num, order_by=order_by) }}" {% endif %}>Next</a>
     </li>
   </ul>
 </nav>
@@ -216,7 +192,7 @@
 {% macro artist_create_form() %}
 <form class="form-group" action="{{ url_for('artist_create') }}" method="POST">
   {{ input('artist_name', 'Name', class='mb-2') }}
-  <button type="submit" class="btn w-100">Enter</button>
+  <button type="submit" class="btn btn-custom w-100">Enter</button>
 </form>
 {% endmacro %}
 
@@ -224,20 +200,20 @@
 <form class="form-group" action="{{ url_for('artist_update', id_=artist.id) }}" method="POST">
   {{ input('artist_name', 'Name', value=artist.name, class='mb-2') }}
   {{ input('profile_pic', 'Profile Pic URL', value=artist.profile_pic, class='mb-2') }}
-  <button type="submit" class="btn w-100">Enter</button>
+  <button type="submit" class="btn btn-custom w-100">Enter</button>
 </form>
 {% endmacro %}
 
 {% macro album_create_form(artist) %}
 <form class="form-group" action="{{ url_for('album_create', id_=artist.id) }}" method="POST">
-  {{ input('title', 'Title', class='mb-2') }}
-  {{ input('release_date', 'Year', class='mb-2') }}
-  <select class="form-control" name="artist_id">
+  {{ input('album_name', 'Title', class='mb-2') }}
+  <input type="date" class="form-control mb-2" name="release_date" autocomplete="off">
+  <select class="form-control mb-2" name="artist_id">
     {% for i in all_artists %}
-    <option value="{{ i.id }}">{{ i.name }}</option>
+    <option value="{{ i.id }}" {% if i.id== artist.id %}selected{% endif %}>{{ i.name }}</option>
     {% endfor %}
   </select>
-  <button type="submit" class="btn w-100">Enter</button>
+  <button type="submit" class="btn btn-custom w-100">Enter</button>
 </form>
 {% endmacro %}
 
@@ -246,7 +222,7 @@
   {{ input('title', 'Title', value=album.title, class='mb-2') }}
   <input type="date" class="form-control mb-2" name="release_date" autocomplete="off" value="{{ album.release_date }}">
   {{ input('cover_art', 'Cover Art URL', value=album.cover_art, class='mb-2') }}
-  <button type="submit" class="btn w-100">Enter</button>
+  <button type="submit" class="btn btn-custom w-100">Enter</button>
 </form>
 {% endmacro %}
 
@@ -254,7 +230,7 @@
 <form class="form-group" action="{{ url_for('song_create', id_=album.id) }}" method="POST">
   {{ input('song_name', 'Name', class='mb-2') }}
   <input type="number" name="track_num" class="form-control mb-2" min="0" value="0">
-  <button type="submit" class="btn w-100">Enter</button>
+  <button type="submit" class="btn btn-custom w-100">Enter</button>
 </form>
 {% endmacro %}
 
@@ -262,14 +238,14 @@
 <form class="form-group" action="{{ url_for('song_update', id_=song.id) }}" method="POST">
   {{ input('song_name', 'Name', value=song.name, class='mb-2') }}
   <input type="number" name="track_num" class="form-control mb-2" value="{{ song.track_num }}">
-  <button type="submit" class="btn w-100">Enter</button>
+  <button type="submit" class="btn btn-custom w-100">Enter</button>
 </form>
 {% endmacro %}
 
 {% macro search_form(class='') %}
-<form class="form-group form-inline {{ class }}" action="{{ url_for('search') }}" method="POST">
-  {{ input('search_term', 'Search') }}
-  <button type="submit" class="btn btn-secondary">{{ search_icon(size=15) }}</button>
+<form class="form-group row {{ class }}" action="{{ url_for('search') }}" method="POST">
+  {{ input('search_term', 'Search', class='col') }}
+  <button type="submit" class="btn btn-custom col-auto">{{ search_icon(size=15) }}</button>
 </form>
 {% endmacro %}
 

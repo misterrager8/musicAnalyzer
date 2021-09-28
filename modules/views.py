@@ -1,5 +1,3 @@
-from datetime import datetime
-
 import praw
 import requests
 from bs4 import BeautifulSoup
@@ -69,8 +67,7 @@ def artist_():
 @app.route("/artist_create", methods=["POST"])
 def artist_create():
     database.create(Artist(name=request.form["artist_name"],
-                           profile_pic=request.form["profile_pic"],
-                           genius_id=request.form["genius_id"]))
+                           profile_pic=request.form["profile_pic"]))
 
     return redirect(request.referrer)
 
@@ -113,11 +110,8 @@ def album_():
 @app.route("/album_create", methods=["POST"])
 def album_create():
     database.create(Album(title=request.form["album_name"],
-                          cover_art=request.form["cover_art"],
-                          genius_id=request.form["genius_id"],
                           artist=request.form["artist_id"],
-                          release_date=datetime.strptime(request.form["release_date"],
-                                                         "{'year': %Y, 'month': %m, 'day': %d}")))
+                          release_date=request.form["release_date"]))
 
     return redirect(request.referrer)
 

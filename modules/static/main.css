@@ -28,3 +28,13 @@
     margin: 1rem;
     padding: 1.5rem;
 }
+
+.btn-custom {
+    background-color: var(--secondary-bg-color);
+    color: var(--navbar-font-color);
+}
+
+.badge-custom {
+    background-color: var(--secondary-bg-color);
+    color: var(--navbar-font-color);
+}

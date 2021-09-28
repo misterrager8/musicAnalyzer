@@ -38,24 +38,24 @@
 
 <div class="row">
   <div class="col-6">
-    {{ macros.paragraph('LATEST SONGS', size=1.5, class='m-3 font-weight-bold') }}
+    {{ macros.paragraph('LATEST SONGS', size=1.5, class='m-3 fw-bold') }}
     {% for i in fresh_songs[:10] %}
     <a href="{{ i.url }}" class="card link border-0" target="_blank" style="height:150px;">
       <div class="card-body border-top">
         {{ macros.paragraph(get_time_posted(i.created_utc), size=0.7) }}
-        {{ macros.paragraph(i.title[:180], class='font-weight-bold') }}
+        {{ macros.paragraph(i.title[:180], class='fw-bold') }}
         <p style="position: absolute; bottom:0; right:0; font-size:0.8em; color:green">{{ macros.upvote_icon() }}{{ i.score }}</p>
       </div>
     </a>
     {% endfor %}
   </div>
   <div class="col-6">
-    {{ macros.paragraph('LATEST NEWS', size=1.5, class='m-3 font-weight-bold') }}
+    {{ macros.paragraph('LATEST NEWS', size=1.5, class='m-3 fw-bold') }}
     {% for i in latest_news[4:14] %}
     <a href="{{ i.url }}" class="card link border-0" target="_blank" style="height:150px;">
       <div class="card-body border-top">
         {{ macros.paragraph(get_time_posted(i.created_utc), size=0.7) }}
-        {{ macros.paragraph(i.title[:180], class='font-weight-bold') }}
+        {{ macros.paragraph(i.title[:180], class='fw-bold') }}
         <p style="position: absolute; bottom:0; right:0; font-size:0.8em; color:green">{{ macros.upvote_icon() }}{{ i.score }}</p>
         <p class="ms-4" style="position: absolute; bottom:0; left:0; font-size:0.8em">{{ macros.comment_icon(size=15) }}{{ i.num_comments }}</p>
       </div>
