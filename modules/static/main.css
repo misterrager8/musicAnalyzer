@@ -38,3 +38,7 @@
     background-color: var(--secondary-bg-color);
     color: var(--navbar-font-color);
 }
+
+.cursor-hover {
+    cursor: pointer;
+}
