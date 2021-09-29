@@ -66,8 +66,7 @@ def artist_():
 
 @app.route("/artist_create", methods=["POST"])
 def artist_create():
-    database.create(Artist(name=request.form["artist_name"],
-                           profile_pic=request.form["profile_pic"]))
+    database.create(Artist(name=request.form["artist_name"]))
 
     return redirect(request.referrer)
 
