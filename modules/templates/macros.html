@@ -199,7 +199,7 @@
 {% macro artist_update_form(artist) %}
 <form class="form-group" action="{{ url_for('artist_update', id_=artist.id) }}" method="POST">
   {{ input('artist_name', 'Name', value=artist.name, class='mb-2') }}
-  {{ input('profile_pic', 'Profile Pic URL', value=artist.profile_pic, class='mb-2') }}
+  <input type="text" name="profile_pic" placeholder="Profile Pic URL" class="form-control mb-2" autocomplete="off" {% if artist.profile_pic %}value="{{ artist.profile_pic }}" {% endif %}>
   <button type="submit" class="btn btn-custom w-100">Enter</button>
 </form>
 {% endmacro %}
@@ -221,7 +221,7 @@
 <form class="form-group" action="{{ url_for('album_update', id_=album.id) }}" method="POST">
   {{ input('title', 'Title', value=album.title, class='mb-2') }}
   <input type="date" class="form-control mb-2" name="release_date" autocomplete="off" value="{{ album.release_date }}">
-  {{ input('cover_art', 'Cover Art URL', value=album.cover_art, class='mb-2') }}
+  <input type="text" name="cover_art" placeholder="Cover Art URL" class="form-control mb-2" autocomplete="off" {% if album.cover_art %}value="{{ album.cover_art }}" {% endif %}>
   <button type="submit" class="btn btn-custom w-100">Enter</button>
 </form>
 {% endmacro %}
