@@ -5,6 +5,7 @@
 <title>{{ artist.name }}</title>
 <body>
 <div class="text-center m-3">
+  <img class="shadow rounded-circle col-3" src="{% if artist.profile_pic %}{{ artist.profile_pic }}{% else %}https://via.placeholder.com/250{% endif %}" alt="Card image cap">
   {{ macros.paragraph(artist.name, size=3.5) }}
   {{ macros.artist_options(artist) }}
 </div>

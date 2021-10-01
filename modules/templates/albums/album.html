@@ -5,6 +5,7 @@
 <title>{{ album.title }}</title>
 <body>
 <div class="text-center m-3">
+  <img class="rounded shadow col-3" src="{% if album.cover_art %}{{ album.cover_art }}{% else %}https://via.placeholder.com/250{% endif %}" alt="Card image cap" >
   {{ macros.paragraph(album.title, class='fst-italic', size=3) }}
   <a href="{{ url_for('artist_', id_=album.artists.id) }}" class="link">{{ macros.paragraph(album.artists.name, size=2) }}</a>
   {{ macros.paragraph(album.release_date.year, class='mb-3', size=1) }}
