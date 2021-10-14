@@ -5,23 +5,22 @@
   <meta charset="UTF-8">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ" crossorigin="anonymous"></script>
-  <script src="{{ url_for('static', filename='js/main.js') }}"></script>
   <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
 </head>
 <body>
-<nav class="navbar navbar-expand-xl">
+<nav class="navbar navbar-expand-xl bg-dark navbar-dark">
   <div class="container-fluid">
     <a class="navbar-brand" href="{{ url_for('index') }}">{{ macros.navbar_icon() }}</a>
     <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#nav-contents">
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="nav-contents">
-      <ul class="navbar-nav me-auto">
-        <li class="navbar-item"><a class="nav-link" href="#">NEWS</a></li>
-        <li class="navbar-item"><a class="nav-link" href="{{ url_for('top_100') }}">TOP 100</a></li>
-        <li class="navbar-item"><a class="nav-link" href="{{ url_for('songs_') }}">SONGS</a></li>
-        <li class="navbar-item"><a class="nav-link" href="{{ url_for('albums_') }}">ALBUMS</a></li>
-        <li class="navbar-item"><a class="nav-link" href="{{ url_for('artists_') }}">ARTISTS</a></li>
+      <ul class="navbar-nav">
+        <li class="nav-item"><a class="nav-link" href="#">NEWS</a></li>
+        <li class="nav-item"><a class="nav-link" href="{{ url_for('top_100') }}">TOP 100</a></li>
+        <li class="nav-item"><a class="nav-link" href="{{ url_for('songs_') }}">SONGS</a></li>
+        <li class="nav-item"><a class="nav-link" href="{{ url_for('albums_') }}">ALBUMS</a></li>
+        <li class="nav-item"><a class="nav-link" href="{{ url_for('artists_') }}">ARTISTS</a></li>
       </ul>
       <ul class="navbar-nav ms-auto">
         <li class="navbar-item"><a class="nav-link" href="#">{{ macros.user_icon(size=20) }}</a></li>
@@ -36,6 +35,7 @@
 <div class="container">
   {% block body %}
   {% endblock %}
+  <script src="{{ url_for('static', filename='js/main.js') }}"></script>
 </div>
 </body>
 </html>
