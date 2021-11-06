@@ -1,0 +1,198 @@
+{% macro paragraph(txt, class='', id='', size=1) %}
+<!--suppress ALL-->
+<p class="m-0 {{ class }}" id="{{ id }}" style="font-size:{{ size }}em">{{ txt }}</p>
+{% endmacro %}
+
+{% macro navbar_icon(size=20, color='currentcolor', class='') %}
+<svg xmlns="http://www.w3.org/2000/svg" width="{{ size }}" height="{{ size }}" fill="{{ color }}" class="bi bi-soundwave {{ class }}" viewBox="0 0 16 16">
+  <path fill-rule="evenodd" d="M8.5 2a.5.5 0 0 1 .5.5v11a.5.5 0 0 1-1 0v-11a.5.5 0 0 1 .5-.5zm-2 2a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zm4 0a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zm-6 1.5A.5.5 0 0 1 5 6v4a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm8 0a.5.5 0 0 1 .5.5v4a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm-10 1A.5.5 0 0 1 3 7v2a.5.5 0 0 1-1 0V7a.5.5 0 0 1 .5-.5zm12 0a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0V7a.5.5 0 0 1 .5-.5z"/>
+</svg>
+{% endmacro %}
+
+{% macro user_icon(size=20, color='currentcolor', class='') %}
+<svg xmlns="http://www.w3.org/2000/svg" width="{{ size }}" height="{{ size }}" fill="{{ color }}" class="bi bi-person-fill {{ class }}" viewBox="0 0 16 16">
+  <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+</svg>
+{% endmacro %}
+
+{% macro add_icon(size=20, color='green', class='') %}
+<svg xmlns="http://www.w3.org/2000/svg" width="{{ size }}" height="{{ size }}" fill="{{ color }}" class="bi bi-plus-circle {{ class }}" viewBox="0 0 16 16">
+  <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+  <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
+</svg>
+{% endmacro %}
+
+{% macro delete_icon(size=20, color='red', class='') %}
+<svg xmlns="http://www.w3.org/2000/svg" width="{{ size }}" height="{{ size }}" fill="{{ color }}" class="bi bi-trash {{ class }}" viewBox="0 0 16 16">
+  <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
+  <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/>
+</svg>
+{% endmacro %}
+
+{% macro edit_icon(size=20, color='currentcolor', class='') %}
+<svg xmlns="http://www.w3.org/2000/svg" width="{{ size }}" height="{{ size }}" fill="{{ color }}" class="bi bi-pencil-square {{ class }}" viewBox="0 0 16 16">
+  <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+  <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"/>
+</svg>
+{% endmacro %}
+
+{% macro play_icon(size=20, color='currentcolor', class='') %}
+<svg xmlns="http://www.w3.org/2000/svg" width="{{ size }}" height="{{ size }}" fill="{{ color }}" class="bi bi-play-fill {{ class }}" viewBox="0 0 16 16">
+  <path d="m11.596 8.697-6.363 3.692c-.54.313-1.233-.066-1.233-.697V4.308c0-.63.692-1.01 1.233-.696l6.363 3.692a.802.802 0 0 1 0 1.393z"/>
+</svg>
+{% endmacro %}
+
+{% macro star_icon(rated, size=20) %}
+{% if rated %}
+<svg class="bi bi-star-fill" fill="orange" height="{{ size }}" viewBox="0 0 16 16" width="{{ size }}" xmlns="http://www.w3.org/2000/svg">
+  <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"/>
+</svg>
+{% else %}
+<svg class="bi bi-star" fill="black" height="{{ size }}" viewBox="0 0 16 16" width="{{ size }}" xmlns="http://www.w3.org/2000/svg">
+  <path d="M2.866 14.85c-.078.444.36.791.746.593l4.39-2.256 4.389 2.256c.386.198.824-.149.746-.592l-.83-4.73 3.522-3.356c.33-.314.16-.888-.282-.95l-4.898-.696L8.465.792a.513.513 0 0 0-.927 0L5.354 5.12l-4.898.696c-.441.062-.612.636-.283.95l3.523 3.356-.83 4.73zm4.905-2.767-3.686 1.894.694-3.957a.565.565 0 0 0-.163-.505L1.71 6.745l4.052-.576a.525.525 0 0 0 .393-.288L8 2.223l1.847 3.658a.525.525 0 0 0 .393.288l4.052.575-2.906 2.77a.565.565 0 0 0-.163.506l.694 3.957-3.686-1.894a.503.503 0 0 0-.461 0z"/>
+</svg>
+{% endif %}
+{% endmacro %}
+
+{% macro artist_card(artist, class='') %}
+<div class="card col-4 border-0 {{ class }}">
+  <div class="card-body m-2 mx-auto">
+    <a href="{{ url_for('artist', id_=artist.id) }}" class="link">
+      <img class="card-img-top rounded-circle shadow" src="https://via.placeholder.com/250" alt="Card image cap">
+      {{ paragraph(artist.name, class='text-center mt-3') }}
+      <div class="mt-2 text-center">{{ artist_options(artist) }}</div>
+    </a>
+  </div>
+</div>
+{% endmacro %}
+
+{% macro artist_options(artist) %}
+<a class="link mx-1" onclick="toggleDiv('albumCreate' + {{ artist.id }})">{{ add_icon() }}</a>
+<a class="link mx-1" onclick="toggleDiv('artistUpdate' + {{ artist.id }})">{{ edit_icon() }}</a>
+<a class="link mx-1" onclick="toggleDiv('artistDelete' + {{ artist.id }})">{{ delete_icon() }}</a>
+
+<div class="mt-3" style="display:none;" id="albumCreate{{ artist.id }}">{{ album_create_form(artist) }}</div>
+<div class="mt-3" style="display:none;" id="artistUpdate{{ artist.id }}">{{ artist_update_form(artist) }}</div>
+<div class="mt-3" style="display:none;" id="artistDelete{{ artist.id }}"><a class="btn btn-danger w-100" onclick="deleteArtist({{ artist.id }})">Delete</a></div>
+{% endmacro %}
+
+{% macro album_card(album, class='') %}
+<div class="card col-4 border-0">
+  <div class="card-body">
+    <a class="link" href="{{ url_for('album', id_=album.id) }}">
+      <img class="card-img-top rounded shadow" src="https://via.placeholder.com/250" alt="Card image cap">
+      {{ paragraph(album.title, class='fst-italic fw-bold') }}
+    </a>
+    <a class="link" href="{{ url_for('artist', id_=album.artist) }}">{{ album.artists.name }}</a>
+    {{ paragraph(album.release_date.strftime('%Y') if album.release_date else 'None', class='fw-light', size=0.9) }}
+    <div class="text-center mt-2">{{ album_options(album) }}</div>
+  </div>
+</div>
+{% endmacro %}
+
+{% macro album_options(album) %}
+<a class="link mx-1" href="{{ url_for('album_play', id_=album.id) }}">{{ play_icon() }}</a>
+<a class="link mx-1" onclick="toggleDiv('songCreate' + {{ album.id }})">{{ add_icon() }}</a>
+<a class="link mx-1" onclick="toggleDiv('albumUpdate' + {{ album.id }})">{{ edit_icon() }}</a>
+<a class="link mx-1" onclick="toggleDiv('albumDelete' + {{ album.id }})">{{ delete_icon() }}</a>
+
+<div class="mt-3" style="display:none;" id="songCreate{{ album.id }}">{{ song_create_form(album) }}</div>
+<div class="mt-3" style="display:none;" id="albumUpdate{{ album.id }}">{{ album_update_form(album) }}</div>
+<div class="mt-3" style="display:none;" id="albumDelete{{ album.id }}"><a class="btn btn-danger w-100" onclick="deleteAlbum({{ album.id }})">Delete</a></div>
+{% endmacro %}
+
+{% macro song_card(song, class='') %}
+<div class="row list-group-item-action rounded border-0 p-1">
+  <div class="col text-truncate"><a href="{{ url_for('song', id_=song.id) }}" class="link fw-bold">{{ song.title }}</a></div>
+  <div class="col text-truncate"><a href="{{ url_for('artist', id_=song.artist) }}" class="link">{{ song.artists.name }}</a></div>
+  <div class="col text-truncate"><a href="{{ url_for('album', id_=song.album) }}" class="link fst-italic">{{ song.albums.title }}</a></div>
+  <div class="col-1">{{ paragraph(song.albums.release_date.strftime('%Y') if song.albums.release_date else 'None', class='fw-light', size=0.9) }}</div>
+  <div class="col-1">{{ paragraph(song.play_count if song.play_count else 0) }}</div>
+  <div class="col">
+    {% for i in range(song.rating) %}
+    {{ star_icon(true) }}
+    {% endfor %}
+  </div>
+  <div class="col text-center">{{ song_options(song) }}</div>
+</div>
+{% endmacro %}
+
+{% macro song_options(song) %}
+<a class="link" href="{{ url_for('song_play', id_=song.id) }}">{{ play_icon() }}</a>
+<a class="link" onclick="toggleDiv('songUpdate' + {{ song.id }})">{{ edit_icon() }}</a>
+<a class="link" onclick="toggleDiv('songDelete' + {{ song.id }})">{{ delete_icon() }}</a>
+
+<div class="row mt-3" style="display:none" id="songUpdate{{ song.id }}">{{ song_update_form(song) }}</div>
+<div class="row mt-3" style="display:none" id="songDelete{{ song.id }}"><a class="btn btn-danger" href="{{ url_for('song_delete', id_=song.id) }}">Delete</a></div>
+{% endmacro %}
+
+{% macro artist_create_form() %}
+<form class="input-group" onsubmit="event.preventDefault(); createArtist();">
+  <input autocomplete="off" class="form-control" name="name" placeholder="Name" id="artistName">
+  <button type="submit" class="btn btn-custom">Add</button>
+</form>
+{% endmacro %}
+
+{% macro artist_update_form(artist) %}
+<form class="form-group" onsubmit="event.preventDefault(); updateArtist({{ artist.id }});">
+  <input autocomplete="off" class="form-control mb-2" name="name" placeholder="Name" value="{{ artist.name }}" id="artistName{{ artist.id }}">
+  <input autocomplete="off" class="form-control mb-2" name="genius_url" placeholder="Genius URL" {% if artist.genius_url %}value="{{ artist.genius_url }}" {% endif %} id="artistGenius{{ artist.id }}">
+  <button type="submit" class="btn btn-custom w-100">Update</button>
+</form>
+{% endmacro %}
+
+{% macro album_create_form(artist) %}
+<form class="input-group" onsubmit="event.preventDefault(); createAlbum({{ artist.id }});">
+  <input autocomplete="off" class="form-control" name="title" placeholder="Title" id="albumName">
+  <button type="submit" class="btn btn-custom">Add</button>
+</form>
+{% endmacro %}
+
+{% macro album_update_form(album) %}
+<form class="form-group" onsubmit="event.preventDefault(); updateAlbum({{ album.id }});">
+  <input autocomplete="off" class="form-control mb-2" name="title" placeholder="Title" value="{{ album.title }}" id="albumTitle{{ album.id }}">
+  <input type="date" class="form-control mb-2" name="release_date" value="{{ album.release_date }}" id="albumDate{{ album.id }}">
+  <button type="submit" class="btn btn-custom w-100">Update</button>
+</form>
+{% endmacro %}
+
+{% macro song_create_form(album) %}
+<form class="input-group" onsubmit="event.preventDefault(); createSong({{ album.id }});">
+  <input autocomplete="off" class="form-control" name="title" placeholder="Title" id="songName">
+  <button type="submit" class="btn btn-custom">Add</button>
+</form>
+{% endmacro %}
+
+{% macro song_update_form(song) %}
+<form class="form-group" onsubmit="event.preventDefault(); updateSong({{ song.id }});">
+  <input autocomplete="off" class="form-control mb-2" name="title" placeholder="Title" value="{{ song.title }}" id="songTitle{{ song.id }}">
+  <input autocomplete="off" class="form-control mb-2" name="rating" placeholder="Rating" value="{{ song.rating }}" id="songRating{{ song.id }}">
+  <input autocomplete="off" class="form-control mb-2" name="track_num" placeholder="Track Num" {% if song.track_num %}value="{{ song.track_num }}" {% endif %} id="songTrackNum{{ song.id }}">
+  <button type="submit" class="btn btn-custom w-100">Update</button>
+</form>
+{% endmacro %}
+
+{% macro artist_sorter() %}
+<div class="list-inline my-3" style="color:white">
+  {% if order_by != 'name' %}<a href="{{ url_for('artists', order_by='name') }}" class="badge badge-custom link">Name</a>{% endif %}
+  {% if order_by != 'id desc' %}<a href="{{ url_for('artists', order_by='id desc') }}" class="badge badge-custom link">Recently Added</a>{% endif %}
+</div>
+{% endmacro %}
+
+{% macro album_sorter() %}
+<div class="list-inline my-3" style="color:white">
+  {% if order_by != 'albums.title' %}<a href="{{ url_for('albums', order_by='albums.title') }}" class="badge badge-custom link">Title</a>{% endif %}
+  {% if order_by != 'artists.name' %}<a href="{{ url_for('albums', order_by='artists.name') }}" class="badge badge-custom link">Artist</a>{% endif %}
+  {% if order_by != 'release_date desc' %}<a href="{{ url_for('albums', order_by='release_date desc') }}" class="badge badge-custom link">Release Date</a>{% endif %}
+</div>
+{% endmacro %}
+
+{% macro song_sorter() %}
+<div class="list-inline my-3" style="color:white">
+  {% if order_by != 'songs.title' %}<a href="{{ url_for('songs', order_by='songs.title') }}" class="badge badge-custom link">Title</a>{% endif %}
+  {% if order_by != 'artists.name' %}<a href="{{ url_for('songs', order_by='artists.name') }}" class="badge badge-custom link">Artist</a>{% endif %}
+  {% if order_by != 'albums.title' %}<a href="{{ url_for('songs', order_by='albums.title') }}" class="badge badge-custom link">Album</a>{% endif %}
+  {% if order_by != 'albums.release_date desc' %}<a href="{{ url_for('songs', order_by='albums.release_date desc') }}" class="badge badge-custom link">Release Date</a>{% endif %}
+  {% if order_by != 'play_count desc' %}<a href="{{ url_for('songs', order_by='play_count desc') }}" class="badge badge-custom link">Plays</a>{% endif %}
+</div>
+{% endmacro %}

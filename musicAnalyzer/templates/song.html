@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% import "macros.html" as macros with context %}
+
+{% block body %}
+<title>{{ song.title }}</title>
+<div class="text-center mb-3">
+  {{ macros.paragraph(song.title, size=2) }}
+  {{ macros.song_options(song) }}
+</div>
+{% endblock %}

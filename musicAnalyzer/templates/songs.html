@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% import "macros.html" as macros with context %}
+
+{% block body %}
+<title>Songs</title>
+
+{{ macros.song_sorter() }}
+<p class="badge bg-dark">{{ '%s Songs' % songs.count() }}</p>
+<div id="allSongs">
+  {% for i in songs %}
+  {{ macros.song_card(i) }}
+  {% endfor %}
+</div>
+{% endblock %}

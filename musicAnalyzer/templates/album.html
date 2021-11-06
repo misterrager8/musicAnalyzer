@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% import "macros.html" as macros with context %}
+
+{% block body %}
+<title>{{ album.title }}</title>
+<div class="text-center mb-3">
+  {{ macros.paragraph(album.title, size=2) }}
+  {{ macros.album_options(album) }}
+</div>
+
+<div id="allSongs">
+  {% for i in album.songs.order_by('track_num') %}
+  {{ macros.song_card(i) }}
+  {% endfor %}
+</div>
+
+{% endblock %}

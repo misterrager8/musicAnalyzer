@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% import "macros.html" as macros with context %}
+
+{% block body %}
+<title>{{ artist.name }}</title>
+<div class="text-center mb-3">
+  {{ macros.paragraph(artist.name, size=2) }}
+  {{ macros.artist_options(artist) }}
+</div>
+
+<div class="row mb-3" id="allAlbums">
+  {% for i in artist.albums %}
+  {{ macros.album_card(i) }}
+  {% endfor %}
+</div>
+
+<div id="allSongs">
+  {% for i in artist.songs %}
+  {{ macros.song_card(i) }}
+  {% endfor %}
+</div>
+
+{% endblock %}
