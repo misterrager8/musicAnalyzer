@@ -81,7 +81,10 @@
   <div class="card-body">
     <a class="link" href="{{ url_for('album', id_=album.id) }}">
       <img class="card-img-top rounded shadow" src="https://via.placeholder.com/250" alt="Card image cap">
-      {{ paragraph(album.title, class='fst-italic fw-bold') }}
+      <div class="d-flex justify-content-between">
+        {{ paragraph(album.title, class='fst-italic fw-bold') }}
+        {% if album.release_type %}<p class="badge m-1" style="background-color:{{ album.get_release_type()[1] }}">{{ album.release_type }}</p>{% endif %}
+      </div>
     </a>
     <a class="link" href="{{ url_for('artist', id_=album.artist) }}">{{ album.artists.name }}</a>
     {{ paragraph(album.release_date.strftime('%Y') if album.release_date else 'None', class='fw-light', size=0.9) }}
@@ -158,9 +161,15 @@
 {% endmacro %}
 
 {% macro album_update_form(album) %}
+{% set type_options = ['Album', 'Mixtape', 'EP'] %}
 <form class="form-group" onsubmit="event.preventDefault(); updateAlbum({{ album.id }});">
   <input autocomplete="off" class="form-control mb-2" name="title" placeholder="Title" value="{{ album.title }}" id="albumTitle{{ album.id }}">
   <input type="date" class="form-control mb-2" name="release_date" value="{{ album.release_date }}" id="albumDate{{ album.id }}">
+  <select class="form-control mb-2" name="release_type" id="albumReleaseType{{ album.id }}">
+    {% for i in type_options %}
+    <option value="{{ i }}" {% if i== album.release_type %}selected{% endif %}>{{ i }}</option>
+    {% endfor %}
+  </select>
   <button type="submit" class="btn btn-custom w-100">Update</button>
 </form>
 {% endmacro %}

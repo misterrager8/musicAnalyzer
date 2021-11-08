@@ -81,6 +81,7 @@ def album_update():
 
     _.title = request.form["title"]
     _.release_date = request.form["release_date"] or None
+    _.release_type = request.form["release_type"]
     db.session.commit()
 
     return redirect(request.referrer)

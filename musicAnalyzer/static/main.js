@@ -83,7 +83,8 @@ function updateAlbum(albumId) {
     $.post('album_update', {
         id_ : albumId,
         title : $('#albumTitle' + albumId).val(),
-        release_date : $('#albumDate' + albumId).val()
+        release_date : $('#albumDate' + albumId).val(),
+        release_type : $('#albumReleaseType' + albumId).val()
     },
     function(data) {
         refreshDiv('allAlbums');

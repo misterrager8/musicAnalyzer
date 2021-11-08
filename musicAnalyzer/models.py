@@ -25,11 +25,20 @@ class Album(db.Model):
     release_date = Column(Date)
     genius_url = Column(Text)
     genre = Column(Text)
+    release_type = Column(Text)
     artist = Column(Integer, ForeignKey("artists.id"))
     songs = relationship("Song", backref="albums", lazy="dynamic")
 
     def __init__(self, **kwargs):
         super(Album, self).__init__(**kwargs)
+
+    def get_release_type(self):
+        if self.release_type == "Album":
+            return [self.release_type, "#595cff"]
+        elif self.release_type == "EP":
+            return [self.release_type, "#00734e"]
+        elif self.release_type == "Mixtape":
+            return [self.release_type, "#e37424"]
 
     def get_avg_plays(self):
         return sum([i.play_count for i in self.songs]) / self.songs.count()
