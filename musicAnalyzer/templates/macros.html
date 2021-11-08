@@ -55,7 +55,7 @@
 {% endmacro %}
 
 {% macro artist_card(artist, class='') %}
-<div class="card col-4 border-0 {{ class }}">
+<div class="card col-xl-4 border-0 {{ class }}">
   <div class="card-body m-2 mx-auto">
     <a href="{{ url_for('artist', id_=artist.id) }}" class="link">
       <img class="card-img-top rounded-circle shadow" src="https://via.placeholder.com/250" alt="Card image cap">
@@ -77,7 +77,7 @@
 {% endmacro %}
 
 {% macro album_card(album, class='') %}
-<div class="card col-4 border-0">
+<div class="card col-xl-4 border-0">
   <div class="card-body">
     <a class="link" href="{{ url_for('album', id_=album.id) }}">
       <img class="card-img-top rounded shadow" src="https://via.placeholder.com/250" alt="Card image cap">
