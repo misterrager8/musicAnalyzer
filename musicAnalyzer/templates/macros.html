@@ -164,11 +164,11 @@
 {% endmacro %}
 
 {% macro song_update_form(song) %}
-<form class="form-group" onsubmit="event.preventDefault(); updateSong({{ song.id }});">
-  <input autocomplete="off" class="form-control mb-2" name="title" placeholder="Title" value="{{ song.title }}" id="songTitle{{ song.id }}">
-  <input autocomplete="off" class="form-control mb-2" name="rating" placeholder="Rating" value="{{ song.rating }}" id="songRating{{ song.id }}">
-  <input autocomplete="off" class="form-control mb-2" name="track_num" placeholder="Track Num" {% if song.track_num %}value="{{ song.track_num }}" {% endif %} id="songTrackNum{{ song.id }}">
-  <button type="submit" class="btn btn-custom w-100">Update</button>
+<form class="input-group" onsubmit="event.preventDefault(); updateSong({{ song.id }});">
+  <input type="number" min="1" autocomplete="off" class="form-control" name="track_num" placeholder="Track Num" {% if song.track_num %}value="{{ song.track_num }}" {% endif %} id="songTrackNum{{ song.id }}">
+  <input autocomplete="off" class="form-control" name="title" placeholder="Title" value="{{ song.title }}" id="songTitle{{ song.id }}">
+  <input autocomplete="off" class="form-control" name="rating" placeholder="Rating" value="{{ song.rating }}" id="songRating{{ song.id }}">
+  <button type="submit" class="btn btn-custom">Update</button>
 </form>
 {% endmacro %}
 
