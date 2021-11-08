@@ -103,6 +103,9 @@
 
 {% macro song_card(song, class='') %}
 <div class="row list-group-item-action rounded border-0 p-1">
+  {% if url_for(request.endpoint) == '/album' %}
+  <div class="col" ondblclick="this.contentEditable='true'">{{ song.track_num }}</div>
+  {% endif %}
   <div class="col text-truncate"><a href="{{ url_for('song', id_=song.id) }}" class="link fw-bold">{{ song.title }}</a></div>
   <div class="col text-truncate"><a href="{{ url_for('artist', id_=song.artist) }}" class="link">{{ song.artists.name }}</a></div>
   <div class="col text-truncate"><a href="{{ url_for('album', id_=song.album) }}" class="link fst-italic">{{ song.albums.title }}</a></div>
