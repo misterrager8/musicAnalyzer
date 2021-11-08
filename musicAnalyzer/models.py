@@ -1,4 +1,4 @@
-from sqlalchemy import Integer, Column, Text, ForeignKey, Numeric, Date
+from sqlalchemy import Integer, Column, Text, ForeignKey, Date
 from sqlalchemy.orm import relationship
 
 from musicAnalyzer import db
@@ -49,7 +49,7 @@ class Song(db.Model):
     rating = Column(Integer, default=0)
     genius_url = Column(Text)
     play_count = Column(Integer, default=0)
-    track_num = Column(Integer, default=0)
+    track_num = Column(Integer)
     artist = Column(Integer, ForeignKey("artists.id"))
     album = Column(Integer, ForeignKey("albums.id"))
 
