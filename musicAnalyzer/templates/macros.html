@@ -116,8 +116,14 @@
     {{ star_icon(true) }}
     {% endfor %}
   </div>
-  <div class="col text-center">{{ song_options(song) }}</div>
+  <div class="col text-center">
+    <a class="link" href="{{ url_for('song_play', id_=song.id) }}">{{ play_icon() }}</a>
+    <a class="link" onclick="toggleDiv('songUpdate' + {{ song.id }})">{{ edit_icon() }}</a>
+    <a class="link" onclick="toggleDiv('songDelete' + {{ song.id }})">{{ delete_icon() }}</a>
+  </div>
 </div>
+<div class="row" style="display:none" id="songUpdate{{ song.id }}">{{ song_update_form(song) }}</div>
+<div class="row" style="display:none" id="songDelete{{ song.id }}"><a class="btn btn-danger" href="{{ url_for('song_delete', id_=song.id) }}">Delete</a></div>
 {% endmacro %}
 
 {% macro song_options(song) %}
