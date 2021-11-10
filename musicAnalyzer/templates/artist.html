@@ -16,7 +16,7 @@
 </div>
 
 <div id="allSongs">
-  {% for i in artist.songs %}
+  {% for i in artist.songs.order_by('title') %}
   {{ macros.song_card(i) }}
   {% endfor %}
 </div>
