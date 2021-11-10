@@ -50,7 +50,8 @@ class Album(db.Model):
             return [self.release_type, "#e37424"]
 
     def get_avg_rating(self):
-        return float(sum([i.rating for i in self.songs]) / self.songs.count())
+        rated_songs = [i.rating for i in self.songs if i.rating > 0]
+        return "%.2f" % float(sum(rated_songs) / len(rated_songs)) if rated_songs else None
 
 
 class Song(db.Model):
