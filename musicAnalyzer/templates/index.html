@@ -3,5 +3,7 @@
 
 {% block body %}
 <title>Home</title>
-{{ macros.paragraph('Home') }}
+<div class="row">
+  {{ macros.artist_search_results(results) }}
+</div>
 {% endblock %}

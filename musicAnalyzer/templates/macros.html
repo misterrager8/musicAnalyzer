@@ -54,6 +54,12 @@
 {% endif %}
 {% endmacro %}
 
+{% macro search_icon(size=20, color='currentcolor', class='') %}
+<svg xmlns="http://www.w3.org/2000/svg" width="{{ size }}" height="{{ size }}" fill="{{ color }}" class="bi bi-search {{ class }}" viewBox="0 0 16 16">
+  <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+</svg>
+{% endmacro %}
+
 {% macro artist_card(artist, class='') %}
 <div class="card col-xl-4 border-0 {{ class }}">
   <div class="card-body m-2 mx-auto">
@@ -136,10 +142,10 @@
 <div class="row mt-3" style="display:none" id="songDelete{{ song.id }}"><a class="btn btn-danger" href="{{ url_for('song_delete', id_=song.id) }}">Delete</a></div>
 {% endmacro %}
 
-{% macro artist_create_form() %}
-<form class="input-group" onsubmit="event.preventDefault(); createArtist();">
-  <input autocomplete="off" class="form-control" name="name" placeholder="Name" id="artistName">
-  <button type="submit" class="btn btn-custom">Add</button>
+{% macro artist_search_form(class='') %}
+<form class="input-group {{ class }}" method="POST" action="{{ url_for('artists') }}">
+  <input autocomplete="off" class="form-control" type="text" name="term">
+  <button type="submit" class="btn btn-secondary">{{ search_icon(size=15) }}</button>
 </form>
 {% endmacro %}
 

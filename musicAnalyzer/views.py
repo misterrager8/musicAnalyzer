@@ -17,11 +17,15 @@ def index():
     return render_template("index.html")
 
 
-@app.route("/artists")
+@app.route("/artists", methods=["GET", "POST"])
 def artists():
-    order_by = request.args.get("order_by", default="id desc")
-    _ = database.search(Artist, order_by=order_by)
-    return render_template("artists.html", artists=_, order_by=order_by)
+    if request.method == "GET":
+        order_by = request.args.get("order_by", default="id desc")
+        _ = database.search(Artist, order_by=order_by)
+        return render_template("artists.html", artists=_, order_by=order_by)
+    else:
+        term = request.form["term"]
+        return render_template("index.html", results=genius.search_artists(term)["sections"][0]["hits"])
 
 
 @app.route("/artist")
