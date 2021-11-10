@@ -9,7 +9,8 @@ class Artist(db.Model):
 
     id = Column(Integer, primary_key=True)
     name = Column(Text)
-    genius_url = Column(Text)
+    genius_id = Column(Text)
+    pic_url = Column(Text)
     albums = relationship("Album", backref="artists", lazy="dynamic")
     songs = relationship("Song", backref="artists", lazy="dynamic")
 
@@ -25,6 +26,7 @@ class Album(db.Model):
     release_date = Column(Date)
     genius_url = Column(Text)
     genre = Column(Text)
+    cover_url = Column(Text)
     release_type = Column(Text)
     artist = Column(Integer, ForeignKey("artists.id"))
     songs = relationship("Song", backref="albums", lazy="dynamic")

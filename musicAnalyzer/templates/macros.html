@@ -58,7 +58,7 @@
 <div class="card col-xl-4 border-0 {{ class }}">
   <div class="card-body m-2 mx-auto">
     <a href="{{ url_for('artist', id_=artist.id) }}" class="link">
-      <img class="card-img-top rounded-circle shadow" src="https://via.placeholder.com/250" alt="Card image cap">
+      <img class="card-img-top rounded-circle shadow" style="width:250px; height:250px" src="{% if not artist.pic_url %}https://via.placeholder.com/250{% else %}{{ artist.pic_url }}{% endif %}" alt="Card image cap">
       {{ paragraph(artist.name, class='text-center mt-3') }}
       <div class="mt-2 text-center">{{ artist_options(artist) }}</div>
     </a>
@@ -78,9 +78,9 @@
 
 {% macro album_card(album, class='') %}
 <div class="card col-xl-4 border-0">
-  <div class="card-body">
+  <div class="card-body mx-auto">
     <a class="link" href="{{ url_for('album', id_=album.id) }}">
-      <img class="card-img-top rounded shadow" src="https://via.placeholder.com/250" alt="Card image cap">
+      <img class="card-img-top rounded shadow" style="width:250px; height:250px" src="{% if not album.cover_url %}https://via.placeholder.com/250{% else %}{{ album.cover_url }}{% endif %}" alt="Card image cap">
       <div class="d-flex justify-content-between">
         {{ paragraph(album.title, class='fst-italic fw-bold') }}
         {% if album.release_type %}<p class="badge m-1" style="background-color:{{ album.get_release_type()[1] }}">{{ album.release_type }}</p>{% endif %}
