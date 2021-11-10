@@ -135,7 +135,7 @@ def song():
 @app.route("/song_create", methods=["POST"])
 def song_create():
     _: Album = database.get(Album, int(request.form["id_"]))
-    title = request.form["title"].title()
+    title = request.form["title"]
 
     database.add(Song(title=title, album=_.id, artist=_.artist))
 
