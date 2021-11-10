@@ -36,12 +36,6 @@
 </svg>
 {% endmacro %}
 
-{% macro play_icon(size=20, color='currentcolor', class='') %}
-<svg xmlns="http://www.w3.org/2000/svg" width="{{ size }}" height="{{ size }}" fill="{{ color }}" class="bi bi-play-fill {{ class }}" viewBox="0 0 16 16">
-  <path d="m11.596 8.697-6.363 3.692c-.54.313-1.233-.066-1.233-.697V4.308c0-.63.692-1.01 1.233-.696l6.363 3.692a.802.802 0 0 1 0 1.393z"/>
-</svg>
-{% endmacro %}
-
 {% macro star_icon(rated, size=20) %}
 {% if rated %}
 <svg class="bi bi-star-fill" fill="orange" height="{{ size }}" viewBox="0 0 16 16" width="{{ size }}" xmlns="http://www.w3.org/2000/svg">
@@ -99,8 +93,6 @@
 {% endmacro %}
 
 {% macro album_options(album) %}
-<a class="link mx-1" href="{{ url_for('album_play', id_=album.id) }}">{{ play_icon() }}</a>
-<a class="link mx-1" onclick="toggleDiv('songCreate' + {{ album.id }})">{{ add_icon() }}</a>
 <a class="link mx-1" onclick="toggleDiv('albumUpdate' + {{ album.id }})">{{ edit_icon() }}</a>
 <a class="link mx-1" onclick="toggleDiv('albumDelete' + {{ album.id }})">{{ delete_icon() }}</a>
 
@@ -117,14 +109,12 @@
   <div class="col text-truncate"><a href="{{ url_for('artist', id_=song.artist) }}" class="link">{{ song.artists.name }}</a></div>
   <div class="col text-truncate"><a href="{{ url_for('album', id_=song.album) }}" class="link fst-italic">{{ song.albums.title }}</a></div>
   <div class="col-1">{{ paragraph(song.albums.release_date.strftime('%Y') if song.albums.release_date else 'None', class='fw-light', size=0.9) }}</div>
-  <div class="col-1">{{ paragraph(song.play_count if song.play_count else 0) }}</div>
   <div class="col">
     {% for i in range(song.rating) %}
     {{ star_icon(true) }}
     {% endfor %}
   </div>
   <div class="col text-center">
-    <a class="link" href="{{ url_for('song_play', id_=song.id) }}">{{ play_icon() }}</a>
     <a class="link" onclick="toggleDiv('songUpdate' + {{ song.id }})">{{ edit_icon() }}</a>
     <a class="link" onclick="toggleDiv('songDelete' + {{ song.id }})">{{ delete_icon() }}</a>
   </div>
@@ -134,7 +124,6 @@
 {% endmacro %}
 
 {% macro song_options(song) %}
-<a class="link" href="{{ url_for('song_play', id_=song.id) }}">{{ play_icon() }}</a>
 <a class="link" onclick="toggleDiv('songUpdate' + {{ song.id }})">{{ edit_icon() }}</a>
 <a class="link" onclick="toggleDiv('songDelete' + {{ song.id }})">{{ delete_icon() }}</a>
 
@@ -240,6 +229,5 @@
   {% if order_by != 'artists.name' %}<a href="{{ url_for('songs', order_by='artists.name') }}" class="badge badge-custom link">Artist</a>{% endif %}
   {% if order_by != 'albums.title' %}<a href="{{ url_for('songs', order_by='albums.title') }}" class="badge badge-custom link">Album</a>{% endif %}
   {% if order_by != 'albums.release_date desc' %}<a href="{{ url_for('songs', order_by='albums.release_date desc') }}" class="badge badge-custom link">Release Date</a>{% endif %}
-  {% if order_by != 'play_count desc' %}<a href="{{ url_for('songs', order_by='play_count desc') }}" class="badge badge-custom link">Plays</a>{% endif %}
 </div>
 {% endmacro %}

@@ -159,17 +159,3 @@ def song_delete():
     _: Song = database.get(Song, request.args.get("id_"))
     database.delete(_)
     return redirect(request.referrer)
-
-
-@app.route("/song_play")
-def song_play():
-    _: Song = database.get(Song, request.args.get("id_"))
-    _.play()
-    return redirect(request.referrer)
-
-
-@app.route("/album_play")
-def album_play():
-    _: Album = database.get(Album, request.args.get("id_"))
-    _.play()
-    return redirect(request.referrer)
