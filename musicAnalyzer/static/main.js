@@ -52,7 +52,7 @@ function updateArtist(artistId) {
     $.post('artist_update', {
         id_ : artistId,
         name : $('#artistName' + artistId).val(),
-        genius_url : $('#artistGenius' + artistId).val()
+        genius_id : $('#artistGenius' + artistId).val()
     },
     function(data) {
         refreshDiv('allArtists');
@@ -68,14 +68,16 @@ function deleteArtist(artistId) {
     });
 }
 
-function createAlbum(artistId) {
+function createAlbum(artistId, albumId) {
     $.post('album_create', {
         id_ : artistId,
-        title : $('#albumName').val()
+        title : $('#albumName' + albumId).val(),
+        genius_id : $('#albumGeniusId' + albumId).val(),
+        cover_url : $('#albumCoverUrl' + albumId).val(),
+        release_date : $('#albumReleaseDate' + albumId).val()
     },
     function(data) {
         refreshDiv('allAlbums');
-        $('#albumName').val('');
     });
 }
 

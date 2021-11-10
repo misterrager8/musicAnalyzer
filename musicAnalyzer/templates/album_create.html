@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% import "macros.html" as macros with context %}
+
+{% block body %}
+<title>Albums</title>
+<div class="row" id="allAlbums">
+  {{ macros.album_search_results(artist) }}
+</div>
+{% endblock %}

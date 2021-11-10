@@ -1,3 +1,4 @@
+from lyricsgenius import Genius
 from sqlalchemy import Integer, Column, Text, ForeignKey, Date
 from sqlalchemy.orm import relationship
 
@@ -17,6 +18,9 @@ class Artist(db.Model):
     def __init__(self, **kwargs):
         super(Artist, self).__init__(**kwargs)
 
+    def get_albums(self):
+        return Genius().artist_albums(self.genius_id)["albums"]
+
 
 class Album(db.Model):
     __tablename__ = "albums"
@@ -24,7 +28,7 @@ class Album(db.Model):
     id = Column(Integer, primary_key=True)
     title = Column(Text)
     release_date = Column(Date)
-    genius_url = Column(Text)
+    genius_id = Column(Text)
     genre = Column(Text)
     cover_url = Column(Text)
     release_type = Column(Text)
@@ -33,6 +37,9 @@ class Album(db.Model):
 
     def __init__(self, **kwargs):
         super(Album, self).__init__(**kwargs)
+
+    def get_songs(self):
+        return Genius().album_tracks(self.genius_id)["tracks"]
 
     def get_release_type(self):
         if self.release_type == "Album":

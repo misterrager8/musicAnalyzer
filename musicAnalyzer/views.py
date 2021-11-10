@@ -1,4 +1,7 @@
-from flask import render_template, request
+from datetime import datetime
+
+from flask import render_template, request, url_for
+from lyricsgenius import Genius
 from werkzeug.utils import redirect
 
 from musicAnalyzer import app, db
@@ -6,6 +9,7 @@ from musicAnalyzer.ctrla import Database
 from musicAnalyzer.models import Artist, Album, Song
 
 database = Database()
+genius = Genius()
 
 
 @app.route("/")
@@ -28,10 +32,12 @@ def artist():
 
 @app.route("/artist_create", methods=["POST"])
 def artist_create():
-    name = request.form["name"].title()
-    database.add(Artist(name=name))
+    name = request.form["name"]
+    genius_id = request.form["genius_id"] or None
+    pic_url = request.form["pic_url"] or None
+    database.add(Artist(name=name, genius_id=genius_id, pic_url=pic_url))
 
-    return redirect(request.referrer)
+    return redirect(url_for("artists"))
 
 
 @app.route("/artist_update", methods=["POST"])
@@ -39,7 +45,7 @@ def artist_update():
     _: Artist = database.get(Artist, int(request.form["id_"]))
 
     _.name = request.form["name"]
-    _.genius_url = request.form["genius_url"] or None
+    _.genius_id = request.form["genius_id"] or None
     db.session.commit()
 
     return redirect(request.referrer)
@@ -65,14 +71,29 @@ def album():
     return render_template("album.html", album=_)
 
 
-@app.route("/album_create", methods=["POST"])
+@app.route("/album_create", methods=["POST", "GET"])
 def album_create():
-    _: Artist = database.get(Artist, int(request.form["id_"]))
+    if request.method == "POST":
+        _: Artist = database.get(Artist, int(request.form["id_"]))
 
-    title = request.form["title"].title()
-    database.add(Album(title=title, artist=_.id))
+        title = request.form["title"]
+        genius_id = request.form["genius_id"]
+        cover_url = request.form["cover_url"]
+        release_date = datetime.strptime(request.form["release_date"], "{'year': %Y, 'month': %m, 'day': %d}")
 
-    return redirect(request.referrer)
+        album_ = Album(title=title, genius_id=genius_id, cover_url=cover_url, release_date=release_date, artist=_.id)
+        database.add(album_)
+
+        for idx, i in enumerate(album_.get_songs()):
+            album_.songs.append(
+                Song(title=i["song"]["title"], genius_url=i["song"]["id"], track_num=idx + 1, artist=_.id,
+                     album=album_.id))
+
+        db.session.commit()
+        return redirect(request.referrer)
+    else:
+        _: Artist = database.get(Artist, int(request.args.get("id_")))
+        return render_template("album_create.html", artist=_)
 
 
 @app.route("/album_update", methods=["POST"])
