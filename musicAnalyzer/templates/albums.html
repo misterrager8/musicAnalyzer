@@ -5,11 +5,13 @@
 <title>Albums</title>
 
 <div class="row">{{ macros.album_sorter() }}</div>
-<p class="badge bg-dark">{{ '%s Albums' % albums.count() }}</p>
-<div class="row" id="allAlbums">
-  {% for i in albums %}
-  {{ macros.album_card(i) }}
-  {% endfor %}
+<div id="allAlbums">
+  <p class="badge bg-dark">{{ '%s Albums' % albums.count() }}</p>
+  <div class="row">
+    {% for i in albums %}
+    {{ macros.album_card(i) }}
+    {% endfor %}
+  </div>
 </div>
 
 {% endblock %}
