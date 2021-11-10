@@ -3,7 +3,8 @@
 
 {% block body %}
 <title>{{ artist.name }}</title>
-<div class="text-center mb-3">
+<div class="text-center my-3">
+  <img class="card-img-top rounded-circle shadow" style="width:250px; height:250px" src="{% if not artist.pic_url %}https://via.placeholder.com/250{% else %}{{ artist.pic_url }}{% endif %}" alt="Card image cap">
   {{ macros.paragraph(artist.name, size=2) }}
   {{ macros.artist_options(artist) }}
 </div>
