@@ -1,9 +1,11 @@
 from datetime import datetime
 
+import praw
 from flask import render_template, request, url_for, current_app
 from lyricsgenius import Genius
 from werkzeug.utils import redirect
 
+from config import *
 from musicAnalyzer import db
 from musicAnalyzer.ctrla import Database
 from musicAnalyzer.models import Artist, Album, Song
@@ -11,10 +13,22 @@ from musicAnalyzer.models import Artist, Album, Song
 database = Database()
 genius = Genius()
 
+reddit = praw.Reddit(
+    client_id=praw_client_id,
+    client_secret=praw_client_secret,
+    username=praw_username,
+    password=praw_password,
+    user_agent=praw_user_agent)
+
+
+@current_app.template_filter()
+def get_utc_time(time: float):
+    return datetime.fromtimestamp(time).strftime("%m-%d-%y %I:%M %p")
+
 
 @current_app.route("/")
 def index():
-    return render_template("index.html")
+    return render_template("index.html", posts=list(reddit.subreddit("HipHopHeads").hot(limit=25)))
 
 
 @current_app.route("/artists", methods=["GET", "POST"])

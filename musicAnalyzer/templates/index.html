@@ -5,5 +5,33 @@
 <title>Home</title>
 <div class="row">
   {{ macros.artist_search_results(results) }}
+  <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
+    <div class="carousel-inner">
+      <a target="_blank" href="{{ posts[0].url }}" class="carousel-item bg-secondary active link p-5" style="height: 300px">
+        <span class="fw-bold h3 d-block">{{ posts[0].title }}</span>
+        <span class="d-block fst-italic">{{ posts[0].created_utc | get_utc_time }}</span>
+      </a>
+      {% for i in posts[1:5] %}
+      <a target="_blank" href="{{ i.url }}" class="carousel-item bg-secondary link p-5" style="height: 300px">
+        <span class="fw-bold h3 d-block">{{ i.title }}</span>
+        <span class="d-block fst-italic">{{ i.created_utc | get_utc_time }}</span>
+      </a>
+      {% endfor %}
+    </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Next</span>
+    </button>
+  </div>
 </div>
+{% for i in posts[6:] %}
+<a href="{{ i.url }}" target="_blank" class="link m-5">
+  <span class="d-block fw-bold h3">{{ i.title }}</span>
+  <span class="d-block text-muted fst-italic">{{ i.created_utc | get_utc_time }}</span>
+</a>
+{% endfor %}
 {% endblock %}

@@ -4,11 +4,13 @@ import dotenv
 
 dotenv.load_dotenv()
 
-host = os.getenv("host")
-user = os.getenv("user")
-password = os.getenv("password")
-db_name = os.getenv("db_name")
 GENIUS_ACCESS_TOKEN = os.getenv("GENIUS_ACCESS_TOKEN")
-
-SQLALCHEMY_DATABASE_URI = f"mysql://{user}:{password}@{host}/{db_name}"
+SQLALCHEMY_DATABASE_URI = os.getenv("db_url")
 SQLALCHEMY_TRACK_MODIFICATIONS = False
+DEBUG = True
+
+praw_client_id = os.getenv("client_id")
+praw_client_secret = os.getenv("client_secret")
+praw_username = os.getenv("username")
+praw_password = os.getenv("password_")
+praw_user_agent = os.getenv("user_agent")
