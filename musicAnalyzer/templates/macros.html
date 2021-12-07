@@ -231,3 +231,11 @@
   {% if order_by != 'albums.release_date desc' %}<a href="{{ url_for('songs', order_by='albums.release_date desc') }}" class="badge badge-custom link">Release Date</a>{% endif %}
 </div>
 {% endmacro %}
+
+{% macro rating_panel(rating) %}
+<div class="p-1">
+  {% for i in range(rating) %}
+  {{ star_icon(true) }}
+  {% endfor %}
+</div>
+{% endmacro %}
