@@ -1,10 +1,10 @@
 from datetime import datetime
 
-from flask import render_template, request, url_for
+from flask import render_template, request, url_for, current_app
 from lyricsgenius import Genius
 from werkzeug.utils import redirect
 
-from musicAnalyzer import app, db
+from musicAnalyzer import db
 from musicAnalyzer.ctrla import Database
 from musicAnalyzer.models import Artist, Album, Song
 
@@ -12,12 +12,12 @@ database = Database()
 genius = Genius()
 
 
-@app.route("/")
+@current_app.route("/")
 def index():
     return render_template("index.html")
 
 
-@app.route("/artists", methods=["GET", "POST"])
+@current_app.route("/artists", methods=["GET", "POST"])
 def artists():
     if request.method == "GET":
         order_by = request.args.get("order_by", default="id desc")
@@ -28,13 +28,13 @@ def artists():
         return render_template("index.html", results=genius.search_artists(term)["sections"][0]["hits"])
 
 
-@app.route("/artist")
+@current_app.route("/artist")
 def artist():
     _ = database.get(Artist, request.args.get("id_"))
     return render_template("artist.html", artist=_)
 
 
-@app.route("/artist_create", methods=["POST"])
+@current_app.route("/artist_create", methods=["POST"])
 def artist_create():
     name = request.form["name"]
     genius_id = request.form["genius_id"] or None
@@ -44,7 +44,7 @@ def artist_create():
     return redirect(url_for("artists"))
 
 
-@app.route("/artist_update", methods=["POST"])
+@current_app.route("/artist_update", methods=["POST"])
 def artist_update():
     _: Artist = database.get(Artist, int(request.form["id_"]))
 
@@ -55,27 +55,27 @@ def artist_update():
     return redirect(request.referrer)
 
 
-@app.route("/artist_delete")
+@current_app.route("/artist_delete")
 def artist_delete():
     _: Artist = database.get(Artist, request.args.get("id_"))
     database.delete(_)
     return redirect(request.referrer)
 
 
-@app.route("/albums")
+@current_app.route("/albums")
 def albums():
     order_by = request.args.get("order_by", default="albums.title")
     _ = database.search(Album, order_by=order_by).join(Artist)
     return render_template("albums.html", albums=_, order_by=order_by)
 
 
-@app.route("/album")
+@current_app.route("/album")
 def album():
     _ = database.get(Album, request.args.get("id_"))
     return render_template("album.html", album=_)
 
 
-@app.route("/album_create", methods=["POST", "GET"])
+@current_app.route("/album_create", methods=["POST", "GET"])
 def album_create():
     if request.method == "POST":
         _: Artist = database.get(Artist, int(request.form["id_"]))
@@ -100,7 +100,7 @@ def album_create():
         return render_template("album_create.html", artist=_)
 
 
-@app.route("/album_update", methods=["POST"])
+@current_app.route("/album_update", methods=["POST"])
 def album_update():
     _: Album = database.get(Album, int(request.form["id_"]))
 
@@ -112,27 +112,27 @@ def album_update():
     return redirect(request.referrer)
 
 
-@app.route("/album_delete")
+@current_app.route("/album_delete")
 def album_delete():
     _: Album = database.get(Album, request.args.get("id_"))
     database.delete(_)
     return redirect(request.referrer)
 
 
-@app.route("/songs")
+@current_app.route("/songs")
 def songs():
     order_by = request.args.get("order_by", default="songs.title")
     _ = database.search(Song, order_by=order_by).join(Artist, Album)
     return render_template("songs.html", songs=_, order_by=order_by)
 
 
-@app.route("/song")
+@current_app.route("/song")
 def song():
     _ = database.get(Song, request.args.get("id_"))
     return render_template("song.html", song=_)
 
 
-@app.route("/song_create", methods=["POST"])
+@current_app.route("/song_create", methods=["POST"])
 def song_create():
     _: Album = database.get(Album, int(request.form["id_"]))
     title = request.form["title"]
@@ -142,7 +142,7 @@ def song_create():
     return redirect(request.referrer)
 
 
-@app.route("/song_update", methods=["POST"])
+@current_app.route("/song_update", methods=["POST"])
 def song_update():
     _: Song = database.get(Song, int(request.form["id_"]))
 
@@ -154,7 +154,7 @@ def song_update():
     return redirect(request.referrer)
 
 
-@app.route("/song_delete")
+@current_app.route("/song_delete")
 def song_delete():
     _: Song = database.get(Song, request.args.get("id_"))
     database.delete(_)
