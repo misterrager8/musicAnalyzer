@@ -7,4 +7,5 @@
   {{ macros.paragraph(song.title, size=2) }}
   {{ macros.song_options(song) }}
 </div>
+{{ song.get_lyrics() }}
 {% endblock %}

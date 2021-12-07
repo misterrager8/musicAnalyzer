@@ -68,5 +68,8 @@ class Song(db.Model):
     def __init__(self, **kwargs):
         super(Song, self).__init__(**kwargs)
 
+    def get_lyrics(self):
+        return Genius().lyrics(self.genius_url)
+
 
 db.create_all()
