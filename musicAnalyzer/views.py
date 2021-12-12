@@ -48,6 +48,12 @@ def artist():
     return render_template("artist.html", artist=_)
 
 
+@current_app.route("/artist_search", methods=["POST"])
+def artist_search():
+    term = request.form["term"]
+    return render_template("artist_search.html", results=genius.search_artists(term)["sections"][0]["hits"])
+
+
 @current_app.route("/artist_create", methods=["POST"])
 def artist_create():
     name = request.form["name"]

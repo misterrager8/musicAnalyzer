@@ -132,7 +132,7 @@
 {% endmacro %}
 
 {% macro artist_search_form(class='') %}
-<form class="input-group {{ class }}" method="POST" action="{{ url_for('artists') }}">
+<form class="input-group {{ class }}" method="POST" action="{{ url_for('artist_search') }}">
   <input autocomplete="off" class="form-control" type="text" name="term">
   <button type="submit" class="btn btn-secondary">{{ search_icon(size=15) }}</button>
 </form>
