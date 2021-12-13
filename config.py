@@ -14,3 +14,4 @@ praw_client_secret = os.getenv("client_secret")
 praw_username = os.getenv("username")
 praw_password = os.getenv("password_")
 praw_user_agent = os.getenv("user_agent")
+SQLALCHEMY_ENGINE_OPTIONS = {"pool_recycle": 60}
