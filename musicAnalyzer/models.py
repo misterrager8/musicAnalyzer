@@ -70,6 +70,3 @@ class Song(db.Model):
 
     def get_lyrics(self):
         return Genius().lyrics(self.genius_url)
-
-
-db.create_all()

@@ -1,19 +1,22 @@
 :root {
-    --primary-bg-color: #000000;
-    --secondary-bg-color: #545454;
+    --navbar-bg: #0B3954;
+    --navbar-txt: #BFD7EA;
+    --body-bg: #BFD7EA;
+    --body-txt: #0B3954;
 }
 
-.navbar {
-    background-color: var(--primary-bg-color);
+.navbar, .btn-custom, .badge-custom {
+    background-color: var(--navbar-bg) !important;
+    color: var(--navbar-txt) !important;
 }
 
-.btn-custom {
-    background-color: var(--secondary-bg-color);
-    color: white;
+.nav-link, .navbar-brand {
+    color: var(--navbar-txt) !important;
 }
 
-.badge-custom {
-    background-color: var(--secondary-bg-color);
+body, .card {
+    background-color: var(--body-bg) !important;
+    color: var(--body-txt) !important;
 }
 
 .link, .link:hover {
@@ -23,4 +26,12 @@
 
 a:hover {
     cursor: pointer;
+}
+
+.bg-danger, .bg-success {
+    color:white;
+}
+
+.badge {
+    border-radius: 10px;
 }

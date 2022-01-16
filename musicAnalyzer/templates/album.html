@@ -5,7 +5,7 @@
 <title>{{ album.title }}</title>
 <div class="text-center my-3">
   <img class="card-img-top rounded shadow" style="width:250px; height:250px" src="{% if not album.cover_url %}https://via.placeholder.com/250{% else %}{{ album.cover_url }}{% endif %}" alt="Card image cap">
-  {{ macros.paragraph(album.title, size=2) }}
+  <p class="h3">{{ album.title }}</p>
   {{ macros.album_options(album) }}
 </div>
 

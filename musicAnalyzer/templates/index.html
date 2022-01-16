@@ -4,8 +4,7 @@
 {% block body %}
 <title>Home</title>
 <div class="row">
-  {{ macros.artist_search_results(results) }}
-  <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
+  <div id="mainCarousel" class="carousel slide" data-bs-ride="carousel">
     <div class="carousel-inner">
       <a target="_blank" href="{{ posts[0].url }}" class="carousel-item bg-secondary active link p-5" style="height: 300px">
         <span class="fw-bold h3 d-block">{{ posts[0].title }}</span>
@@ -18,11 +17,11 @@
       </a>
       {% endfor %}
     </div>
-    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+    <button class="carousel-control-prev" type="button" data-bs-target="#mainCarousel" data-bs-slide="prev">
       <span class="carousel-control-prev-icon" aria-hidden="true"></span>
       <span class="visually-hidden">Previous</span>
     </button>
-    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
+    <button class="carousel-control-next" type="button" data-bs-target="#mainCarousel" data-bs-slide="next">
       <span class="carousel-control-next-icon" aria-hidden="true"></span>
       <span class="visually-hidden">Next</span>
     </button>

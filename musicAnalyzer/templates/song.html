@@ -4,7 +4,7 @@
 {% block body %}
 <title>{{ song.title }}</title>
 <div class="text-center mb-3">
-  {{ macros.paragraph(song.title, size=2) }}
+  <p class="h3">{{ song.title }}</p>
   {{ macros.song_options(song) }}
 </div>
 {{ song.get_lyrics() }}

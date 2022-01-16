@@ -64,17 +64,6 @@ def artist_create():
     return redirect(url_for("artists"))
 
 
-@current_app.route("/artist_update", methods=["POST"])
-def artist_update():
-    _: Artist = database.get(Artist, int(request.form["id_"]))
-
-    _.name = request.form["name"]
-    _.genius_id = request.form["genius_id"] or None
-    db.session.commit()
-
-    return redirect(request.referrer)
-
-
 @current_app.route("/artist_delete")
 def artist_delete():
     _: Artist = database.get(Artist, request.args.get("id_"))
@@ -120,18 +109,6 @@ def album_create():
         return render_template("album_create.html", artist=_)
 
 
-@current_app.route("/album_update", methods=["POST"])
-def album_update():
-    _: Album = database.get(Album, int(request.form["id_"]))
-
-    _.title = request.form["title"]
-    _.release_date = request.form["release_date"] or None
-    _.release_type = request.form["release_type"]
-    db.session.commit()
-
-    return redirect(request.referrer)
-
-
 @current_app.route("/album_delete")
 def album_delete():
     _: Album = database.get(Album, request.args.get("id_"))
@@ -158,18 +135,6 @@ def song_create():
     title = request.form["title"]
 
     database.add(Song(title=title, album=_.id, artist=_.artist))
-
-    return redirect(request.referrer)
-
-
-@current_app.route("/song_update", methods=["POST"])
-def song_update():
-    _: Song = database.get(Song, int(request.form["id_"]))
-
-    _.title = request.form["title"]
-    _.rating = int(request.form["rating"])
-    _.track_num = int(request.form["track_num"] or 0)
-    db.session.commit()
 
     return redirect(request.referrer)
 

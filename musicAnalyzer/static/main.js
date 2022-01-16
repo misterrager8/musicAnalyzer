@@ -17,18 +17,6 @@ function createSong(albumId) {
     });
 }
 
-function updateSong(songId) {
-    $.post('song_update', {
-        id_ : songId,
-        title : $('#songTitle' + songId).val(),
-        rating : $('#songRating' + songId).val(),
-        track_num : $('#songTrackNum' + songId).val()
-    },
-    function(data) {
-        refreshDiv('allSongs');
-    });
-}
-
 function deleteSong(songId) {
     $.get('song_delete', {
         id_ : songId
@@ -48,17 +36,6 @@ function createArtist() {
     });
 }
 
-function updateArtist(artistId) {
-    $.post('artist_update', {
-        id_ : artistId,
-        name : $('#artistName' + artistId).val(),
-        genius_id : $('#artistGenius' + artistId).val()
-    },
-    function(data) {
-        refreshDiv('allArtists');
-    });
-}
-
 function deleteArtist(artistId) {
     $.get('artist_delete', {
         id_ : artistId
@@ -69,6 +46,7 @@ function deleteArtist(artistId) {
 }
 
 function createAlbum(artistId, albumId) {
+    $('#loading' + albumId).show()
     $.post('album_create', {
         id_ : artistId,
         title : $('#albumName' + albumId).val(),
@@ -77,19 +55,7 @@ function createAlbum(artistId, albumId) {
         release_date : $('#albumReleaseDate' + albumId).val()
     },
     function(data) {
-        refreshDiv('allAlbums');
-    });
-}
-
-function updateAlbum(albumId) {
-    $.post('album_update', {
-        id_ : albumId,
-        title : $('#albumTitle' + albumId).val(),
-        release_date : $('#albumDate' + albumId).val(),
-        release_type : $('#albumReleaseType' + albumId).val()
-    },
-    function(data) {
-        refreshDiv('allAlbums');
+        $('#loading' + albumId).hide()
     });
 }
 
