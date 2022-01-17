@@ -17,6 +17,10 @@ class Database:
         return db.session.query(type_).get(id_)
 
     @staticmethod
+    def update():
+        db.session.commit()
+
+    @staticmethod
     def delete(object_):
         db.session.delete(object_)
         db.session.commit()

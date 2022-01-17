@@ -3,16 +3,21 @@
 
 {% block body %}
 <title>{{ album.title }}</title>
-<div class="text-center my-3">
-  <img class="card-img-top rounded shadow" style="width:250px; height:250px" src="{% if not album.cover_url %}https://via.placeholder.com/250{% else %}{{ album.cover_url }}{% endif %}" alt="Card image cap">
-  <p class="h3">{{ album.title }}</p>
-  {{ macros.album_options(album) }}
-</div>
-
 <div id="allSongs">
+  <div class="row pb-5">
+    <div class="text-center col-6">
+      <img class="card-img-top rounded shadow" style="width:250px; height:250px" src="{% if not album.cover_url %}https://via.placeholder.com/250{% else %}{{ album.cover_url }}{% endif %}" alt="Card image cap">
+    </div>
+    <div class="col-6">
+      <p class="h3">{{ album.title }}</p>
+      <p class="h4">{{ album.artists.name }}</p>
+      <p class="h5">{{ 'Released %s' % album.release_date.strftime('%B %d, %Y') }}</p>
+      <p class="h6">{{ album.get_avg_rating() }}</p>
+      {{ macros.album_options(album) }}
+    </div>
+  </div>
   {% for i in album.songs.order_by('track_num') %}
   {{ macros.song_card(i) }}
   {% endfor %}
 </div>
-
 {% endblock %}

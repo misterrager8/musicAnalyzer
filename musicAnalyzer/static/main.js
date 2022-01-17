@@ -17,6 +17,16 @@ function createSong(albumId) {
     });
 }
 
+function rateSong(songId, rating) {
+    $.get('song_rate', {
+        id_ : songId,
+        rating : rating
+    },
+    function(data) {
+        refreshDiv('allSongs');
+    });
+}
+
 function deleteSong(songId) {
     $.get('song_delete', {
         id_ : songId

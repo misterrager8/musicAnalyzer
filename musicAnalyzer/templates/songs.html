@@ -5,8 +5,8 @@
 <title>Songs</title>
 
 {{ macros.song_sorter() }}
-<p class="badge badge-custom">{{ '%s Songs' % count }}</p>
 <div id="allSongs">
+  <p class="badge badge-custom">{{ '%s Songs' % songs.count() }}</p>
   {% for i in songs %}
   {{ macros.song_card(i) }}
   {% endfor %}

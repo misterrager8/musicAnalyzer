@@ -65,7 +65,7 @@
 {% macro artist_options(artist) %}
 <a class="badge bg-success link" href="{{ url_for('album_create', id_=artist.id) }}">+ Add Albums</a><br>
 <a class="badge bg-danger link" onclick="toggleDiv('artistDelete' + {{ artist.id }})">Delete</a>
-<div class="mt-3" style="display:none;" id="artistDelete{{ artist.id }}"><a class="btn btn-danger w-100" onclick="deleteArtist({{ artist.id }})">Delete</a></div>
+<a style="display:none;" id="artistDelete{{ artist.id }}" class="link badge text-danger" onclick="deleteArtist({{ artist.id }})">Delete?</a>
 {% endmacro %}
 
 {% macro album_card(album, class='') %}
@@ -87,8 +87,7 @@
 
 {% macro album_options(album) %}
 <a class="badge bg-danger link mx-1" onclick="toggleDiv('albumDelete' + {{ album.id }})">Delete</a>
-
-<div class="mt-3" style="display:none;" id="albumDelete{{ album.id }}"><a class="btn btn-danger w-100" onclick="deleteAlbum({{ album.id }})">Delete</a></div>
+<a class="link badge text-danger" style="display:none;" id="albumDelete{{ album.id }}" onclick="deleteAlbum({{ album.id }})">Delete?</a>
 {% endmacro %}
 
 {% macro song_card(song, class='') %}
@@ -101,27 +100,24 @@
   <div class="col text-truncate"><a href="{{ url_for('album', id_=song.album) }}" class="link fst-italic">{{ song.albums.title }}</a></div>
   <div class="col-1"><span class="fw-light small">{{ song.albums.release_date.strftime('%Y') if song.albums.release_date else 'None' }}</span></div>
   <div class="col">
-    {% for i in range(song.rating) %}
-    {{ star_icon(true) }}
-    {% endfor %}
+    {{ rating_panel(song) }}
   </div>
   <div class="col text-center">
     <a class="badge bg-danger link" onclick="toggleDiv('songDelete' + {{ song.id }})">Delete</a>
+    <a class="link badge text-danger" style="display:none" id="songDelete{{ song.id }}" onclick="deleteSong({{ song.id }})">Delete?</a>
   </div>
 </div>
-<div class="row" style="display:none" id="songDelete{{ song.id }}"><a class="btn btn-danger" href="{{ url_for('song_delete', id_=song.id) }}">Delete</a></div>
 {% endmacro %}
 
 {% macro song_options(song) %}
 <a class="badge bg-danger link" onclick="toggleDiv('songDelete' + {{ song.id }})">Delete</a>
-
-<div class="row mt-3" style="display:none" id="songDelete{{ song.id }}"><a class="btn btn-danger" href="{{ url_for('song_delete', id_=song.id) }}">Delete</a></div>
+<a class="link badge text-danger" style="display:none" id="songDelete{{ song.id }}" href="{{ url_for('song_delete', id_=song.id) }}">Delete?</a>
 {% endmacro %}
 
 {% macro artist_search_form(class='') %}
 <form class="input-group {{ class }}" method="POST" action="{{ url_for('artist_search') }}">
   <input autocomplete="off" class="form-control" type="text" name="term">
-  <button type="submit" class="btn btn-secondary">{{ search_icon(size=15) }}</button>
+  <button type="submit" class="btn btn-custom">{{ search_icon(size=15) }}</button>
 </form>
 {% endmacro %}
 
@@ -166,14 +162,16 @@
 {% endmacro %}
 
 {% macro artist_sorter() %}
-<div class="list-inline my-3" style="color:white">
+<div>
+  <small class="me-1 fw-bold">Sort By: </small>
   {% if order_by != 'name' %}<a href="{{ url_for('artists', order_by='name') }}" class="badge badge-custom link">Name</a>{% endif %}
   {% if order_by != 'id desc' %}<a href="{{ url_for('artists', order_by='id desc') }}" class="badge badge-custom link">Recently Added</a>{% endif %}
 </div>
 {% endmacro %}
 
 {% macro album_sorter() %}
-<div class="list-inline my-3" style="color:white">
+<div>
+  <small class="me-1 fw-bold">Sort By: </small>
   {% if order_by != 'albums.title' %}<a href="{{ url_for('albums', order_by='albums.title') }}" class="badge badge-custom link">Title</a>{% endif %}
   {% if order_by != 'artists.name' %}<a href="{{ url_for('albums', order_by='artists.name') }}" class="badge badge-custom link">Artist</a>{% endif %}
   {% if order_by != 'release_date desc' %}<a href="{{ url_for('albums', order_by='release_date desc') }}" class="badge badge-custom link">Release Date</a>{% endif %}
@@ -181,7 +179,8 @@
 {% endmacro %}
 
 {% macro song_sorter() %}
-<div class="list-inline my-3" style="color:white">
+<div>
+  <small class="me-1 fw-bold">Sort By: </small>
   {% if order_by != 'songs.title' %}<a href="{{ url_for('songs', order_by='songs.title') }}" class="badge badge-custom link">Title</a>{% endif %}
   {% if order_by != 'artists.name' %}<a href="{{ url_for('songs', order_by='artists.name') }}" class="badge badge-custom link">Artist</a>{% endif %}
   {% if order_by != 'albums.title' %}<a href="{{ url_for('songs', order_by='albums.title') }}" class="badge badge-custom link">Album</a>{% endif %}
@@ -189,10 +188,13 @@
 </div>
 {% endmacro %}
 
-{% macro rating_panel(rating) %}
-<div class="p-1">
-  {% for i in range(rating) %}
-  {{ star_icon(true) }}
+{% macro rating_panel(song) %}
+<div>
+  <input name="rating{{ song.id }}" id="{{ song.id }}star0" type="radio" value="0" style="display:none" onclick="rateSong({{ song.id }}, 0)">
+  <label for="{{ song.id }}star0">--</label>
+  {% for i in range(5) %}
+  <input name="rating{{ song.id }}" id="{{ song.id }}star{{ loop.index }}" type="radio" value="{{ loop.index }}" style="display:none" onclick="rateSong({{ song.id }}, {{ loop.index }})">
+  <label for="{{ song.id }}star{{ loop.index }}">{{ star_icon(true if loop.index <= song.rating else false) }}</label>
   {% endfor %}
 </div>
 {% endmacro %}

@@ -59,14 +59,19 @@ def artist_create():
     name = request.form["name"]
     genius_id = request.form["genius_id"] or None
     pic_url = request.form["pic_url"] or None
-    database.add(Artist(name=name, genius_id=genius_id, pic_url=pic_url))
+    _ = Artist(name=name, genius_id=genius_id, pic_url=pic_url)
+    database.add(_)
 
-    return redirect(url_for("artists"))
+    return redirect(url_for("artist", id_=_.id))
 
 
 @current_app.route("/artist_delete")
 def artist_delete():
     _: Artist = database.get(Artist, request.args.get("id_"))
+    for i in _.albums:
+        for j in i.songs:
+            database.delete(j)
+        database.delete(i)
     database.delete(_)
     return redirect(request.referrer)
 
@@ -112,6 +117,7 @@ def album_create():
 @current_app.route("/album_delete")
 def album_delete():
     _: Album = database.get(Album, request.args.get("id_"))
+    for i in _.songs: database.delete(i)
     database.delete(_)
     return redirect(request.referrer)
 
@@ -119,7 +125,7 @@ def album_delete():
 @current_app.route("/songs")
 def songs():
     order_by = request.args.get("order_by", default="songs.title")
-    _ = database.search(Song, order_by=order_by).join(Artist, Album)
+    _ = database.search(Song, order_by=order_by).distinct().join(Artist, Album)
     return render_template("songs.html", songs=_, order_by=order_by)
 
 
@@ -136,6 +142,15 @@ def song_create():
 
     database.add(Song(title=title, album=_.id, artist=_.artist))
 
+    return redirect(request.referrer)
+
+
+@current_app.route("/song_rate")
+def song_rate():
+    _: Song = database.get(Song, int(request.args.get("id_")))
+
+    _.rating = request.args.get("rating")
+    database.update()
     return redirect(request.referrer)
 
 
