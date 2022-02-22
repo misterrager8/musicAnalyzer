@@ -3,12 +3,10 @@
 
 {% block body %}
 <title>Songs</title>
-
 {{ macros.song_sorter() }}
-<div id="allSongs">
-  <p class="badge badge-custom">{{ '%s Songs' % songs.count() }}</p>
-  {% for i in songs %}
-  {{ macros.song_card(i) }}
+<div class="row">
+  {% for i in current_user.get_songs(order_by=order_by) %}
+  {{ macros.song_box(i) }}
   {% endfor %}
 </div>
 {% endblock %}

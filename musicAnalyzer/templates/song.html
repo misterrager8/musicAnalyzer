@@ -2,10 +2,10 @@
 {% import "macros.html" as macros with context %}
 
 {% block body %}
-<title>{{ song.title }}</title>
-<div class="text-center mb-3">
-  <p class="h3">{{ song.title }}</p>
-  {{ macros.song_options(song) }}
+<title>{{ song.name }}</title>
+<div class="text-center">
+  <p class="h1">{{ song.name }}</p>
+  <a class="link h3" href="{{ url_for('artists.artist', id_=song.artist_id) }}">{{ song.artists.name }}</a><br>
+  <a class="link h5" href="{{ url_for('albums.album', id_=song.album_id) }}">{{ song.albums.title }}</a>
 </div>
-{{ song.get_lyrics() }}
 {% endblock %}

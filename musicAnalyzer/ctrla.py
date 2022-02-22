@@ -13,6 +13,11 @@ class Database:
         db.session.commit()
 
     @staticmethod
+    def add_multiple(objects: list):
+        for i in objects: db.session.add(i)
+        db.session.commit()
+
+    @staticmethod
     def get(type_, id_: int):
         return db.session.query(type_).get(id_)
 
@@ -26,7 +31,12 @@ class Database:
         db.session.commit()
 
     @staticmethod
-    def search(type_, order_by: str = "", filter_: str = ""):
+    def delete_multiple(objects: list):
+        for i in objects: db.session.delete(i)
+        db.session.commit()
+
+    @staticmethod
+    def search(type_, filter_: str = "", order_by: str = ""):
         return db.session.query(type_).filter(text(filter_)).order_by(text(order_by))
 
     @staticmethod

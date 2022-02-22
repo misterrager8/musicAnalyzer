@@ -4,21 +4,18 @@
 {% block body %}
 <title>{{ artist.name }}</title>
 <div class="text-center">
-  <img class="card-img-top rounded-circle shadow" style="width:250px; height:250px" src="{% if not artist.pic_url %}https://via.placeholder.com/250{% else %}{{ artist.pic_url }}{% endif %}" alt="Card image cap">
-  <p class="h3">{{ artist.name }}</p>
-  {{ macros.artist_options(artist) }}
+  <p class="h1">{{ artist.name }}</p>
+  <span>{{ '%s album(s), %s song(s)' % (artist.get_albums().count(), artist.get_songs().count()) }}</span><br>
 </div>
-
-<div class="row mb-3" id="allAlbums">
-  {% for i in artist.albums %}
-  {{ macros.album_card(i) }}
+{{ macros.album_add_form(artist) }}
+<div class="row">
+  {% for i in artist.get_albums() %}
+  {{ macros.album_box(i) }}
   {% endfor %}
 </div>
-
-<div id="allSongs">
-  {% for i in artist.songs.order_by('title') %}
-  {{ macros.song_card(i) }}
+<div class="row">
+  {% for i in artist.get_songs() %}
+  {{ macros.song_box(i) }}
   {% endfor %}
 </div>
-
 {% endblock %}

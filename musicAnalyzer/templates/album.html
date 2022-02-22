@@ -3,21 +3,30 @@
 
 {% block body %}
 <title>{{ album.title }}</title>
-<div id="allSongs">
-  <div class="row pb-5">
-    <div class="text-center col-6">
-      <img class="card-img-top rounded shadow" style="width:250px; height:250px" src="{% if not album.cover_url %}https://via.placeholder.com/250{% else %}{{ album.cover_url }}{% endif %}" alt="Card image cap">
-    </div>
-    <div class="col-6">
-      <p class="h3">{{ album.title }}</p>
-      <p class="h4">{{ album.artists.name }}</p>
-      <p class="h5">{{ 'Released %s' % album.release_date.strftime('%B %d, %Y') }}</p>
-      <p class="h6">{{ album.get_avg_rating() }}</p>
-      {{ macros.album_options(album) }}
-    </div>
-  </div>
-  {% for i in album.songs.order_by('track_num') %}
-  {{ macros.song_card(i) }}
+<div class="text-center">
+  <p class="h1">{{ album.title }}</p>
+  <a class="link h3" href="{{ url_for('artists.artist', id_=album.artist_id) }}">{{ album.artists.name }}</a>
+  {% if album.release_date %}<p class="h5">{{ album.release_date.strftime('%Y') }}</p>{% endif %}
+  <span>{{ '%s song(s)' % album.get_songs().count() }}</span><br>
+  {{ album.get_avg_rating() }}
+</div>
+{{ macros.song_add_form(album) }}
+<div class="row">
+  {% for i in album.get_songs() %}
+  {{ macros.song_box(i) }}
   {% endfor %}
+</div>
+<div class="mt-5">
+  <p class="h3">Tags</p>
+  <div>
+    {% for i in album.get_tags() %}
+    <span class="badge" style="background-color:{{ i.get_tag().color }}">{{ i.get_tag().name }} <a class="ms-5 link" onclick="albumUntag({{ i.id }})">x</a></span>
+    {% endfor %}
+  </div>
+  <div class="mt-5">
+    {% for i in current_user.tags %}
+    <span class="badge" style="background-color:{{ i.color }}">{{ i.name }} <a class="ms-5 link" onclick="albumTag({{ album.id }}, {{ i.id }})">+</a></span>
+    {% endfor %}
+  </div>
 </div>
 {% endblock %}

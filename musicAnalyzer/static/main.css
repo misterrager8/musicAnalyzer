@@ -1,37 +1,55 @@
 :root {
-    --navbar-bg: #0B3954;
-    --navbar-txt: #BFD7EA;
-    --body-bg: #BFD7EA;
-    --body-txt: #0B3954;
+    --navbar-bg: white;
+    --navbar-txt: black;
+    --body-bg: black;
+    --body-txt: white;
 }
 
-.navbar, .btn-custom, .badge-custom {
+.light {
+    --navbar-bg: black;
+    --navbar-txt: white;
+    --body-bg: white;
+    --body-txt: black;
+}
+
+.navbar {
+    background-color: var(--navbar-bg) !important;
+}
+
+.btn-custom, .badge-custom {
     background-color: var(--navbar-bg) !important;
     color: var(--navbar-txt) !important;
 }
 
-.nav-link, .navbar-brand {
-    color: var(--navbar-txt) !important;
-}
-
-body, .card {
+body, .modal-content, .form-control, .card {
     background-color: var(--body-bg) !important;
     color: var(--body-txt) !important;
 }
 
+.card {
+    border: 0;
+}
+
+.card-body {
+    border: 1px solid var(--body-txt);
+    border-radius: 10px;
+    margin-top: 25px;
+}
+
+.list-group-item-action {
+    border-radius: 10px;
+    padding: 5px 20px;
+}
+
 .link, .link:hover {
-    text-decoration:none;
-    color:inherit;
+    color: inherit;
+    text-decoration: none;
 }
 
 a:hover {
     cursor: pointer;
 }
 
-.bg-danger, .bg-success {
-    color:white;
-}
-
-.badge {
-    border-radius: 10px;
+.bg-danger {
+    color: white !important;
 }

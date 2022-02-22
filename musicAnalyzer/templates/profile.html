@@ -2,8 +2,6 @@
 {% import "macros.html" as macros with context %}
 
 {% block body %}
-<title>Artists</title>
-<div class="row">
-  {{ macros.artist_search_results(results) }}
-</div>
+<title>{{ current_user.username }}</title>
+{{ macros.user_edit_form() }}
 {% endblock %}

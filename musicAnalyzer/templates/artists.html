@@ -3,16 +3,11 @@
 
 {% block body %}
 <title>Artists</title>
-<a onclick="toggleDiv('artistCreate')" class="link badge bg-success">+ Add Artist</a>
-<div id="artistCreate" class="mt-3 col-6 offset-3" style="display:none">{{ macros.artist_search_form() }}</div>
-
-<div class="row">{{ macros.artist_sorter() }}</div>
-<div id="allArtists">
-  <p class="badge badge-custom">{{ '%s Artists' % artists.count() }}</p>
-  <div class="row">
-    {% for i in artists %}
-    {{ macros.artist_card(i) }}
-    {% endfor %}
-  </div>
+{{ macros.artist_add_form() }}
+{{ macros.artist_sorter() }}
+<div class="row">
+  {% for i in current_user.get_artists(order_by=order_by) %}
+  {{ macros.artist_box(i) }}
+  {% endfor %}
 </div>
 {% endblock %}

@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% import "macros.html" as macros with context %}
+
+{% block body %}
+<title>Tags</title>
+<h1 class="text-center">Tags</h1>
+{{ macros.tag_add_form() }}
+{% for i in current_user.tags %}
+{{ macros.tag_box(i) }}
+{% endfor %}
+{% endblock %}

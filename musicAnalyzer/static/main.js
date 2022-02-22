@@ -1,19 +1,126 @@
+$(document).ready(function() {
+    if (localStorage.getItem('music-theme') != 'default') {
+        $('body').addClass('light');
+        $('nav').removeClass('navbar-light');
+        $('nav').addClass('navbar-dark');
+    }
+});
+
+function setTheme() {
+    if (localStorage.getItem('music-theme') == 'default') {
+        $('body').addClass('light');
+        $('nav').removeClass('navbar-light');
+        $('nav').addClass('navbar-dark');
+        localStorage.setItem('music-theme', 'light');
+    } else {
+        $('body').removeClass('light');
+        $('nav').addClass('navbar-light');
+        $('nav').removeClass('navbar-dark');
+        localStorage.setItem('music-theme', 'default');
+    }
+}
+
+function refreshPage() {
+    $('#pageContent').load(location.href + ' #pageContent');
+    $('#navContent').load(location.href + ' #navContent');
+}
+
 function toggleDiv(divId) {
     $('#' + divId).toggle();
 }
 
-function refreshDiv(divId) {
-    $('#' + divId).load(location.href + ' #' + divId);
+function userEdit() {
+    $.post('user_edit', {
+        username: $('#username').val(),
+        password: $('#password').val()
+    }, function(data) {
+        refreshPage();
+    });
 }
 
-function createSong(albumId) {
-    $.post('song_create', {
-        id_ : albumId,
-        title : $('#songName').val()
-    },
-    function(data) {
-        refreshDiv('allSongs');
-        $('#songName').val('');
+function artistAdd() {
+    $.post('artist_add', {
+        name: $('#name').val()
+    }, function(data) {
+        refreshPage();
+    });
+}
+
+function artistEdit(artistId) {
+    $.post('artist_edit', {
+        id_: artistId,
+        name: $('#name' + artistId).val()
+    }, function(data) {
+        refreshPage();
+    });
+}
+
+function artistDelete(artistId) {
+    $.get('artist_delete', {
+        id_: artistId
+    }, function(data) {
+        refreshPage();
+    });
+}
+
+function albumAdd(artistId) {
+    $.post('album_add', {
+        id_: artistId,
+        title: $('#title').val()
+    }, function(data) {
+        refreshPage();
+    });
+}
+
+function albumEdit(albumId) {
+    $.post('album_edit', {
+        id_: albumId,
+        title: $('#title' + albumId).val(),
+        release_date: $('#releaseDate' + albumId).val()
+    }, function(data) {
+        refreshPage();
+    });
+}
+
+function albumDelete(albumId) {
+    $.get('album_delete', {
+        id_: albumId
+    }, function(data) {
+        refreshPage();
+    });
+}
+
+function albumTag(albumId, tagId) {
+    $.get('album_tag', {
+        album_id: albumId,
+        tag_id: tagId
+    }, function(data) {
+        refreshPage();
+    });
+}
+
+function albumUntag(albumtagId) {
+    $.get('album_untag', {
+        id_: albumtagId
+    }, function(data) {
+        refreshPage();
+    });
+}
+
+function songAdd(albumId) {
+    $.post('song_add', {
+        id_: albumId,
+        name: $('#name').val()
+    }, function(data) {
+        refreshPage();
+    });
+}
+
+function songDelete(songId) {
+    $.get('song_delete', {
+        id_: songId
+    }, function(data) {
+        refreshPage();
     });
 }
 
@@ -23,57 +130,22 @@ function rateSong(songId, rating) {
         rating : rating
     },
     function(data) {
-        refreshDiv('allSongs');
+        refreshPage();
     });
 }
 
-function deleteSong(songId) {
-    $.get('song_delete', {
-        id_ : songId
-    },
-    function(data) {
-        refreshDiv('allSongs');
+function tagDelete(tagId) {
+    $.get('tag_delete', {
+        id_: tagId
+    }, function(data) {
+        refreshPage();
     });
 }
 
-function createArtist() {
-    $.post('artist_create', {
-        name : $('#artistName').val()
-    },
-    function(data) {
-        refreshDiv('allArtists');
-        $('#artistName').val('');
-    });
-}
-
-function deleteArtist(artistId) {
-    $.get('artist_delete', {
-        id_ : artistId
-    },
-    function(data) {
-        refreshDiv('allArtists');
-    });
-}
-
-function createAlbum(artistId, albumId) {
-    $('#loading' + albumId).show()
-    $.post('album_create', {
-        id_ : artistId,
-        title : $('#albumName' + albumId).val(),
-        genius_id : $('#albumGeniusId' + albumId).val(),
-        cover_url : $('#albumCoverUrl' + albumId).val(),
-        release_date : $('#albumReleaseDate' + albumId).val()
-    },
-    function(data) {
-        $('#loading' + albumId).hide()
-    });
-}
-
-function deleteAlbum(albumId) {
-    $.get('album_delete', {
-        id_ : albumId
-    },
-    function(data) {
-        refreshDiv('allAlbums');
+function tagAdd() {
+    $.post('tag_add', {
+        name: $('#name').val()
+    }, function(data) {
+        refreshPage();
     });
 }

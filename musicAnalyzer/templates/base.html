@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+{% import "macros.html" as macros with context %}
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -8,25 +9,71 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
   <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
 </head>
-<nav class="navbar navbar-expand-lg navbar-dark">
+<nav class="navbar navbar-expand-lg navbar-light">
   <div class="container-fluid">
-    <a href="{{ url_for('index') }}" class="navbar-brand">{{ macros.navbar_icon(size=30) }}</a>
-    <button class="navbar-toggler" type="button" data-bs-target="#navContent" data-bs-toggle="collapse">
+    <a class="navbar-brand border-end pe-3" href="{{ url_for('index') }}">{{ macros.logo(size=25) }}</a>
+    <button class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navContent">
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navContent">
       <ul class="navbar-nav me-auto">
-        <li class="nav-item"><a href="{{ url_for('artists') }}" class="nav-link">Artists</a></li>
-        <li class="nav-item"><a href="{{ url_for('albums') }}" class="nav-link">Albums</a></li>
-        <li class="nav-item"><a href="{{ url_for('songs') }}" class="nav-link">Songs</a></li>
+        {% if not current_user.is_anonymous %}
+        <li class="nav-item">
+          <a class="nav-link" href="{{ url_for('artists.artists_') }}">Artists <span class="badge badge-custom">{{ current_user.get_artists().count() }}</span> </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{{ url_for('albums.albums_') }}">Albums <span class="badge badge-custom">{{ current_user.get_albums().count() }}</span> </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{{ url_for('songs.songs_') }}">Songs <span class="badge badge-custom">{{ current_user.get_songs().count() }}</span> </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{{ url_for('tags.tags_') }}">Tags</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{{ url_for('shuffle') }}">{{ macros.shuffle_icon() }}</a>
+        </li>
+        {% endif %}
       </ul>
       <ul class="navbar-nav ms-auto">
-        <li class="nav-item"><a href="#" class="nav-link dropdown-toggle">{{ macros.user_icon() }}</a></li>
+        <li class="nav-item"><a class="nav-link" onclick="setTheme()">{{ macros.circle_icon() }}</a></li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" data-bs-target="#userDD" data-bs-toggle="dropdown">
+            {% if not current_user.is_anonymous %}<span class="me-2">{{ current_user.username }}</span>{% endif %}
+            {{ macros.user_icon() }}
+          </a>
+          <div id="userDD" class="dropdown-menu dropdown-menu-end text-center">
+            {% if current_user.is_anonymous %}
+            <a class="dropdown-item" data-bs-target="#loginModal" data-bs-toggle="modal">Log In</a>
+            <a class="dropdown-item" data-bs-target="#signupModal" data-bs-toggle="modal">Sign Up</a>
+            {% else %}
+            <a class="dropdown-item" href="{{ url_for('profile') }}">Profile</a>
+            <a class="dropdown-item" href="{{ url_for('logout') }}">Log Out</a>
+            {% endif %}
+          </div>
+        </li>
       </ul>
     </div>
   </div>
+
+  <div class="modal" id="loginModal">
+    <div class="modal-dialog">
+      <div class="modal-content p-3">
+        {{ macros.login_form() }}
+      </div>
+    </div>
+  </div>
+
+  <div class="modal" id="signupModal">
+    <div class="modal-dialog">
+      <div class="modal-content p-3">
+        {{ macros.signup_form() }}
+      </div>
+    </div>
+  </div>
+
 </nav>
-<div class="container py-5">
+<div class="container my-5" id="pageContent">
   {% block body %}
   {% endblock %}
   <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
