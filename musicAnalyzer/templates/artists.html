@@ -3,11 +3,28 @@
 
 {% block body %}
 <title>Artists</title>
-{{ macros.artist_add_form() }}
+<div class="mb-2">{{ macros.artist_search_form() }}</div>
+
+<div class="row">
+  {% for i in results %}
+  <div class="card col-xl-4">
+    <div class="card-body">
+      <form method="POST" action="{{ url_for('artists.artist_add') }}" class="text-truncate">
+        <a onclick="this.parentNode.submit()" class="link fw-bold">+ {{ i['result']['name'] }}</a>
+        <input class="gone" value="{{ i['result']['name'] }}" autocomplete="off" name="name">
+        <input class="gone" value="{{ i['result']['id'] }}" autocomplete="off" name="genius_id">
+      </form>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+
+{% if order_by %}
 {{ macros.artist_sorter() }}
 <div class="row">
   {% for i in current_user.get_artists(order_by=order_by) %}
   {{ macros.artist_box(i) }}
   {% endfor %}
 </div>
+{% endif %}
 {% endblock %}

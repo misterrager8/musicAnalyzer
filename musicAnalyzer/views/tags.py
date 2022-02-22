@@ -27,7 +27,7 @@ def tag_add():
 
 @tags.route("/tag_delete")
 def tag_delete():
-    _: Tag = database.get(Tag, request.args.get("id_"))
+    _: Tag = database.get(Tag, int(request.args.get("id_")))
     database.delete(_)
 
     return redirect(request.referrer)

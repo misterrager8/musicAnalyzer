@@ -3,12 +3,37 @@
 
 {% block body %}
 <title>{{ artist.name }}</title>
-<div class="text-center">
-  <p class="h1">{{ artist.name }}</p>
-  <span>{{ '%s album(s), %s song(s)' % (artist.get_albums().count(), artist.get_songs().count()) }}</span><br>
+<div class="text-center mb-2">
+  <div class="h1" title="{{ artist.name }}">{{ artist.name }}</div>
+  <div>{{ '%s album(s), %s song(s)' % (artist.get_albums().count(), artist.get_songs().count()) }}</div>
 </div>
-{{ macros.album_add_form(artist) }}
+
+<form method="POST" action="{{ url_for('artists.artist', id_=artist.id) }}">
+  <a class="link badge badge-custom" onclick="this.parentNode.submit()">+ New Album</a>
+  <input name="id_" value="{{ artist.id }}" class="gone">
+</form>
 <div class="row">
+  {% for i in results %}
+  <div class="card col-xl-4">
+    <div class="card-body">
+      <form class="text-truncate" onsubmit="event.preventDefault(); albumAdd({{ artist.id }}, {{ loop.index }});">
+        <a class="link fst-italic" onclick="$('#submit' + {{ loop.index }}).click()">+
+          <span class="spinner-border spinner-border-sm" style="display:none" id="spinner{{ loop.index }}"></span>
+          <span>{{ i['name'] }}</span>
+          <span class="float-end">{{ i['release_date_components']['year'] }}</span>
+        </a>
+        <input autocomplete="off" type="text" id="title{{ loop.index }}" value="{{ i['name'] }}" class="gone">
+        <input autocomplete="off" type="text" id="geniusId{{ loop.index }}" value="{{ i['id'] }}" class="gone">
+        <input autocomplete="off" class="gone" id="released{{ loop.index }}" value="{{ i['release_date_components'] }}">
+        <button type="submit" class="gone" id="submit{{ loop.index }}"></button>
+      </form>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+
+{% if get %}
+<div class="row my-2">
   {% for i in artist.get_albums() %}
   {{ macros.album_box(i) }}
   {% endfor %}
@@ -18,4 +43,5 @@
   {{ macros.song_box(i) }}
   {% endfor %}
 </div>
+{% endif %}
 {% endblock %}

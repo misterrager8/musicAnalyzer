@@ -37,12 +37,18 @@
 </svg>
 {% endmacro %}
 
+{% macro search_icon(size=20, color='currentcolor', class='') %}
+<svg xmlns="http://www.w3.org/2000/svg" width="{{ size }}" height="{{ size }}" fill="{{ color }}" class="bi bi-search {{ class }}" viewBox="0 0 16 16">
+  <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+</svg>
+{% endmacro %}
+
 <!--BOXES-->
 {% macro artist_box(artist) %}
 <div class="card col-xl-4">
   <div class="card-body text-center text-truncate">
     <a href="{{ url_for('artists.artist', id_=artist.id) }}" class="link h1" title="{{ artist.name }}">{{ artist.name }}</a><br>
-    <span>{{ '%s album(s), %s song(s)' % (artist.get_albums().count(), artist.get_songs().count()) }}</span><br>
+    <div>{{ '%s album(s), %s song(s)' % (artist.get_albums().count(), artist.get_songs().count()) }}</div>
     <a class="link badge bg-danger" onclick="toggleDiv('deleteArtist' + {{ artist.id }})">Delete</a>
     <a class="link badge badge-custom" onclick="toggleDiv('editArtist' + {{ artist.id }})">Edit</a>
     <a class="badge text-danger link" style="display:none" onclick="artistDelete({{ artist.id }})" id="deleteArtist{{ artist.id }}">Delete?</a>
@@ -56,7 +62,11 @@
   <div class="card-body text-center text-truncate">
     <a href="{{ url_for('albums.album', id_=album.id) }}" class="link h1 fst-italic" title="{{ album.title }}">{{ album.title }}</a><br>
     {% if request.url_rule.endpoint != 'artists.artist' %}<a href="{{ url_for('artists.artist', id_=album.artists.id) }}" class="link h3">{{ album.artists.name }}</a><br>{% endif %}
-    <span>{{ '%s song(s)' % album.get_songs().count() }}</span><br>
+    {% if album.release_date %}
+    <div title="{{ album.release_date.strftime('%B %d, %Y') }}">{{ album.release_date.strftime('%Y') }}</div>
+    {% else %}--{% endif %}
+    <div>{{ '%s song(s)' % album.get_songs().count() }}</div>
+    <div class="mb-2"><span>{{ star_icon(true, size=16) }}</span> {{ album.get_avg_rating() }}</div>
     <a class="link badge bg-danger" onclick="toggleDiv('deleteAlbum' + {{ album.id }})">Delete</a>
     <a class="link badge badge-custom" onclick="toggleDiv('editAlbum' + {{ album.id }})">Edit</a>
     <div>
@@ -157,10 +167,10 @@
 </form>
 {% endmacro %}
 
-{% macro artist_add_form() %}
-<form onsubmit="event.preventDefault(); artistAdd(); this.reset();" class="input-group">
-  <input autocomplete="off" placeholder="+ New Artist, seperated by commas" type="text" id="name" class="form-control">
-  <button type="submit" class="btn btn-custom">Add Artist</button>
+{% macro artist_search_form() %}
+<form method="POST" action="{{ url_for('artists.artists_') }}" class="input-group">
+  <input autocomplete="off" placeholder="Search New Artist" type="text" name="name" class="form-control">
+  <button type="submit" class="btn btn-custom">{{ search_icon() }}</button>
 </form>
 {% endmacro %}
 

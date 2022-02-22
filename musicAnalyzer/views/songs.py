@@ -28,7 +28,7 @@ def song_add():
 
 @songs.route("/song")
 def song():
-    _: Song = database.get(Song, request.args.get("id_"))
+    _: Song = database.get(Song, int(request.args.get("id_")))
     return render_template("song.html", song=_)
 
 
@@ -43,7 +43,7 @@ def song_rate():
 
 @songs.route("/song_delete")
 def song_delete():
-    _: Song = database.get(Song, request.args.get("id_"))
+    _: Song = database.get(Song, int(request.args.get("id_")))
     database.delete(_)
 
     return redirect(request.referrer)

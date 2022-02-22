@@ -63,12 +63,16 @@ function artistDelete(artistId) {
     });
 }
 
-function albumAdd(artistId) {
+function albumAdd(artistId, idx) {
+    $('#spinner' + idx).show();
     $.post('album_add', {
         id_: artistId,
-        title: $('#title').val()
+        title: $('#title' + idx).val(),
+        genius_id: $('#geniusId' + idx).val(),
+        release_date : $('#released' + idx).val()
     }, function(data) {
-        refreshPage();
+        $('#spinner' + idx).hide();
+        $('#navContent').load(location.href + ' #navContent');
     });
 }
 

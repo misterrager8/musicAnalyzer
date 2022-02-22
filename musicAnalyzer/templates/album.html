@@ -3,21 +3,23 @@
 
 {% block body %}
 <title>{{ album.title }}</title>
-<div class="text-center">
-  <p class="h1">{{ album.title }}</p>
-  <a class="link h3" href="{{ url_for('artists.artist', id_=album.artist_id) }}">{{ album.artists.name }}</a>
-  {% if album.release_date %}<p class="h5">{{ album.release_date.strftime('%Y') }}</p>{% endif %}
-  <span>{{ '%s song(s)' % album.get_songs().count() }}</span><br>
-  {{ album.get_avg_rating() }}
+<div class="text-center mb-2">
+  <div class="h1 fst-italic" title="{{ album.title }}">{{ album.title }}</div>
+  {% if request.url_rule.endpoint != 'artists.artist' %}<a href="{{ url_for('artists.artist', id_=album.artists.id) }}" class="link h3">{{ album.artists.name }}</a><br>{% endif %}
+  {% if album.release_date %}
+  <div title="{{ album.release_date.strftime('%B %d, %Y') }}">{{ album.release_date.strftime('%Y') }}</div>
+  {% else %}--{% endif %}
+  <div>{{ '%s song(s)' % album.get_songs().count() }}</div>
+  <div class="mb-2"><span>{{ macros.star_icon(true, size=16) }}</span> {{ album.get_avg_rating() }}</div>
 </div>
-{{ macros.song_add_form(album) }}
+
 <div class="row">
   {% for i in album.get_songs() %}
   {{ macros.song_box(i) }}
   {% endfor %}
 </div>
 <div class="mt-5">
-  <p class="h3">Tags</p>
+  <div class="h3">Tags</div>
   <div>
     {% for i in album.get_tags() %}
     <span class="badge" style="background-color:{{ i.get_tag().color }}">{{ i.get_tag().name }} <a class="ms-5 link" onclick="albumUntag({{ i.id }})">x</a></span>

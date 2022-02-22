@@ -51,6 +51,7 @@ class Artist(db.Model):
 
     id = Column(Integer, primary_key=True)
     name = Column(Text)
+    genius_id = Column(Text)
     albums = relationship("Album", backref="artists", lazy="dynamic")
     songs = relationship("Song", backref="artists", lazy="dynamic")
     user_id = Column(Integer, ForeignKey("users.id"))
@@ -71,8 +72,7 @@ class Album(db.Model):
     id = Column(Integer, primary_key=True)
     title = Column(Text)
     release_date = Column(Date)
-    release_type = Column(Text)
-    genre = Column(Text)
+    genius_id = Column(Text)
     songs = relationship("Song", backref="albums", lazy="dynamic")
     artist_id = Column(Integer, ForeignKey("artists.id"))
     user_id = Column(Integer, ForeignKey("users.id"))
@@ -92,7 +92,7 @@ class Album(db.Model):
 
     def get_avg_rating(self):
         rated_songs = [i.rating for i in self.songs if i.rating > 0]
-        return "%.2f" % float(sum(rated_songs) / len(rated_songs)) if rated_songs else None
+        return "%.2f" % float(sum(rated_songs) / len(rated_songs)) if rated_songs else 0.00
 
 
 class Song(db.Model):
@@ -100,9 +100,9 @@ class Song(db.Model):
 
     id = Column(Integer, primary_key=True)
     name = Column(Text)
+    genius_id = Column(Text)
     rating = Column(Integer, default=0)
     track_num = Column(Integer)
-    plays = Column(Integer, default=0)
     album_id = Column(Integer, ForeignKey("albums.id"))
     artist_id = Column(Integer, ForeignKey("artists.id"))
     user_id = Column(Integer, ForeignKey("users.id"))
