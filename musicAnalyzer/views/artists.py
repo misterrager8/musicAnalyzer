@@ -25,7 +25,7 @@ def artist_add():
 
 @artists.route("/artist")
 def artist():
-    _: Artist = database.get(Artist, request.args.get("id_"))
+    _: Artist = database.get(Artist, int(request.args.get("id_")))
     return render_template("artist.html", artist=_)
 
 
@@ -41,7 +41,7 @@ def artist_edit():
 
 @artists.route("/artist_delete")
 def artist_delete():
-    _: Artist = database.get(Artist, request.args.get("id_"))
+    _: Artist = database.get(Artist, int(request.args.get("id_")))
 
     database.delete_multiple([i for i in _.albums])
     database.delete_multiple([i for i in _.songs])
