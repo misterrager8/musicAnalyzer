@@ -25,7 +25,7 @@
           <a class="nav-link" href="{{ url_for('albums.albums_') }}">Albums <span class="badge badge-custom">{{ current_user.get_albums().count() }}</span> </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="{{ url_for('songs.songs_') }}">Songs <span class="badge badge-custom">{{ current_user.get_songs().count() }}</span> </a>
+          <a class="nav-link" href="{{ url_for('songs.songs_') }}">Songs <span class="badge badge-custom">{{ '{:,}'.format(current_user.get_songs().count()) }}</span> </a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="{{ url_for('tags.tags_') }}">Tags</a>
