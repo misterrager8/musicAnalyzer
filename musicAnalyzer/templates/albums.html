@@ -4,9 +4,10 @@
 {% block body %}
 <title>Albums</title>
 {{ macros.album_sorter() }}
-<div class="row">
-  {% for i in current_user.get_albums(order_by=order_by) %}
+<div class="row my-2">
+  {% for i in albums.items %}
   {{ macros.album_box(i) }}
   {% endfor %}
 </div>
+{{ macros.albums_paginate() }}
 {% endblock %}

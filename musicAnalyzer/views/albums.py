@@ -13,10 +13,13 @@ database = Database()
 genius = Genius()
 
 
+@albums.route("/albums_/<int:page>")
 @albums.route("/albums_")
-def albums_():
+def albums_(page=1):
     order_by = request.args.get("order_by", default="release_date desc")
-    return render_template("albums.html", order_by=order_by)
+    return render_template("albums.html",
+                           order_by=order_by,
+                           albums=current_user.get_albums(order_by=order_by).paginate(page=page, per_page=40))
 
 
 @albums.route("/album_add", methods=["POST"])

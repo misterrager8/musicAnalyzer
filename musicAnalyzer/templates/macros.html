@@ -209,3 +209,31 @@
   <button type="submit" class="btn btn-custom">Add Tag</button>
 </form>
 {% endmacro %}
+
+<!--PAGINATES-->
+
+{% macro albums_paginate() %}
+<nav class="d-flex justify-content-center">
+  <ul class="pagination">
+    <li class="page-item">
+      <a class="page-link {% if not albums.has_prev %}btn disabled{% endif %}" {% if albums.has_prev %} href="{{ url_for('albums.albums_', page=albums.prev_num, order_by=order_by) }}" {% endif %}>Previous</a>
+    </li>
+    <li class="page-item">
+      <a class="page-link {% if not albums.has_next %}btn disabled{% endif %}" {% if albums.has_next %} href="{{ url_for('albums.albums_', page=albums.next_num, order_by=order_by) }}" {% endif %}>Next</a>
+    </li>
+  </ul>
+</nav>
+{% endmacro %}
+
+{% macro songs_paginate() %}
+<nav class="d-flex justify-content-center">
+  <ul class="pagination">
+    <li class="page-item">
+      <a class="page-link {% if not songs.has_prev %}btn disabled{% endif %}" {% if songs.has_prev %} href="{{ url_for('songs.songs_', page=songs.prev_num, order_by=order_by) }}" {% endif %}>Previous</a>
+    </li>
+    <li class="page-item">
+      <a class="page-link {% if not songs.has_next %}btn disabled{% endif %}" {% if songs.has_next %} href="{{ url_for('songs.songs_', page=songs.next_num, order_by=order_by) }}" {% endif %}>Next</a>
+    </li>
+  </ul>
+</nav>
+{% endmacro %}
