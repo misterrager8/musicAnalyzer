@@ -55,3 +55,11 @@ a:hover {
 }
 
 .gone { display: none; }
+
+.news-item:hover {
+    border-bottom: 1px solid var(--body-txt);
+}
+
+.news-item {
+    font-weight: bold;
+}

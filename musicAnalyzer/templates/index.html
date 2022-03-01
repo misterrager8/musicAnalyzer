@@ -3,4 +3,30 @@
 
 {% block body %}
 <title>MusicAnalyzer</title>
+<div>
+  <div class="news-item mb-5 display-6">{{ posts[0].title }}</div>
+  <div class="row">
+    {% for i in posts[1:5] %}
+    <div class="news-item col-xl-3 mb-5">{{ i.title }}</div>
+    {% endfor %}
+  </div>
+</div>
+<div class="row mt-5">
+  <div class="col-xl-6">
+    <p class="display-6">CHARTS</p>
+    {% for i in charts %}
+    <div class="news-item py-3">
+      <a target="_blank" href="{{ i['item']['url'] }}" class="link">{{ i['item']['name'] }}
+        <span class="text-muted ms-2">{{ i['item']['artist']['name'] }}</span>
+      </a>
+    </div>
+    {% endfor %}
+  </div>
+  <div class="col-xl-6">
+    <p class="display-6">FRESH</p>
+    {% for i in fresh %}
+    <div class="news-item py-3 text-truncate">{{ i.title }}</div>
+    {% endfor %}
+  </div>
+</div>
 {% endblock %}
