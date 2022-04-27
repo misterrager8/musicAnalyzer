@@ -30,8 +30,8 @@
 
 {% macro album_box(album) %}
 <div class="card col-xl-3">
-  <div class="card-body text-center">
-    <a href="{{ url_for('albums.album', id_=album.id) }}" class="h1 fst-italic text-truncate" title="{{ album.title }}">{{ album.title }}</a><br>
+  <div class="card-body text-center text-truncate">
+    <a href="{{ url_for('albums.album', id_=album.id) }}" class="h1 fst-italic" title="{{ album.title }}">{{ album.title }}</a><br>
     {% if request.url_rule.endpoint != 'artists.artist' %}<a href="{{ url_for('artists.artist', id_=album.artists.id) }}" class="h3">{{ album.artists.name }}</a><br>{% endif %}
     {% if album.release_date %}
     <div title="{{ album.release_date.strftime('%B %d, %Y') }}">{{ album.release_date.strftime('%Y') }}</div>
