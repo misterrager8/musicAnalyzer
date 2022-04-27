@@ -4,7 +4,7 @@ function refreshPage() {
 }
 
 function toggleDiv(divId) {
-    $('#' + divId).toggle();
+    $('#' + divId).fadeToggle(150);
 }
 
 function userEdit() {

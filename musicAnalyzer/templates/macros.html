@@ -89,25 +89,25 @@
 <!--SORTERS-->
 {% macro artist_sorter() %}
 <div>
-  <span class="small me-2">Sort By: </span>
-  {% if order_by != 'name' %} <a class="badge badge-custom" href="{{ url_for('artists.artists_', order_by='name') }}">Name</a>{% endif %}
-  {% if order_by != 'id desc' %} <a class="badge badge-custom" href="{{ url_for('artists.artists_', order_by='id desc') }}">Recently Added</a>{% endif %}
+  <span class="small font-custom me-2">Sort By: </span>
+  {% if order_by != 'name' %} <a class="badge-custom" href="{{ url_for('artists.artists_', order_by='name') }}">Name</a>{% endif %}
+  {% if order_by != 'id desc' %} <a class="badge-custom" href="{{ url_for('artists.artists_', order_by='id desc') }}">Recently Added</a>{% endif %}
 </div>
 {% endmacro %}
 
 {% macro album_sorter() %}
 <div>
-  <span class="small me-2">Sort By: </span>
-  {% if order_by != 'title' %} <a class="badge badge-custom" href="{{ url_for('albums.albums_', order_by='title') }}">Title</a>{% endif %}
-  {% if order_by != 'release_date desc' %} <a class="badge badge-custom" href="{{ url_for('albums.albums_', order_by='release_date desc') }}">Year</a>{% endif %}
+  <span class="small font-custom me-2">Sort By: </span>
+  {% if order_by != 'title' %} <a class="badge-custom" href="{{ url_for('albums.albums_', order_by='title') }}">Title</a>{% endif %}
+  {% if order_by != 'release_date desc' %} <a class="badge-custom" href="{{ url_for('albums.albums_', order_by='release_date desc') }}">Year</a>{% endif %}
 </div>
 {% endmacro %}
 
 {% macro song_sorter() %}
 <div>
-  <span class="small me-2">Sort By: </span>
-  {% if order_by != 'name' %} <a class="badge badge-custom" href="{{ url_for('songs.songs_', order_by='name') }}">Name</a>{% endif %}
-  {% if order_by != 'id desc' %} <a class="badge badge-custom" href="{{ url_for('songs.songs_', order_by='id desc') }}">Recently Added</a>{% endif %}
+  <span class="small font-custom me-2">Sort By: </span>
+  {% if order_by != 'name' %} <a class="badge-custom" href="{{ url_for('songs.songs_', order_by='name') }}">Name</a>{% endif %}
+  {% if order_by != 'id desc' %} <a class="badge-custom" href="{{ url_for('songs.songs_', order_by='id desc') }}">Recently Added</a>{% endif %}
 </div>
 {% endmacro %}
 

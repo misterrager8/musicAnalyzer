@@ -9,8 +9,8 @@
 </div>
 
 <form method="POST" action="{{ url_for('artists.artist', id_=artist.id) }}">
-  <a class="badge badge-custom" onclick="this.parentNode.submit()">+ New Album</a>
-  <input name="id_" value="{{ artist.id }}" class="gone">
+  <a class="" onclick="this.parentNode.submit()">+ New Album</a>
+  <input name="id_" value="{{ artist.id }}" style="display:none">
 </form>
 <div class="row">
   {% for i in results %}
@@ -22,10 +22,10 @@
           <span>{{ i['name'] }}</span>
           <span class="float-end">{{ i['release_date_components']['year'] }}</span>
         </a>
-        <input autocomplete="off" type="text" id="title{{ loop.index }}" value="{{ i['name'] }}" class="gone">
-        <input autocomplete="off" type="text" id="geniusId{{ loop.index }}" value="{{ i['id'] }}" class="gone">
-        <input autocomplete="off" class="gone" id="released{{ loop.index }}" value="{{ i['release_date_components'] }}">
-        <button type="submit" class="gone" id="submit{{ loop.index }}"></button>
+        <input autocomplete="off" type="text" id="title{{ loop.index }}" value="{{ i['name'] }}" style="display:none">
+        <input autocomplete="off" type="text" id="geniusId{{ loop.index }}" value="{{ i['id'] }}" style="display:none">
+        <input autocomplete="off" style="display:none" id="released{{ loop.index }}" value="{{ i['release_date_components'] }}">
+        <button type="submit" style="display:none" id="submit{{ loop.index }}"></button>
       </form>
     </div>
   </div>

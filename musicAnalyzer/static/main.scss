@@ -15,7 +15,9 @@ $body-txt: white;
 }
 
 .font-custom { @include font-custom; }
-.border-custom { @include border-custom; }
+.border-custom, .card-body { @include border-custom; }
+
+.card { border: 0;}
 
 a, a:hover {
     color: inherit;
@@ -43,4 +45,11 @@ body, .card, .input-custom, .btn-custom:hover, .modal-content {
 .input-custom {
     @include border-custom;
     padding: 5px 10px;
+}
+
+.badge-custom {
+    @include border-custom;
+    @include font-custom;
+    font-size: 0.8em;
+    padding: 3px 15px;
 }
