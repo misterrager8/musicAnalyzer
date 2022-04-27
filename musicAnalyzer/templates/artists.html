@@ -21,7 +21,7 @@
 
 {% if order_by %}
 {{ macros.artist_sorter() }}
-<div class="row">
+<div class="row my-2">
   {% for i in current_user.get_artists(order_by=order_by) %}
   {{ macros.artist_box(i) }}
   {% endfor %}

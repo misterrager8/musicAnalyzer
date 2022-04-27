@@ -14,10 +14,11 @@ $body-txt: white;
     border-radius: 5px;
 }
 
-.font-custom { @include font-custom; }
+.font-custom, .dropdown-item { @include font-custom; }
 .border-custom, .card-body { @include border-custom; }
 
 .card { border: 0;}
+.card-body { margin-bottom: 25px;}
 
 a, a:hover {
     color: inherit;
@@ -25,12 +26,12 @@ a, a:hover {
     cursor: pointer;
 }
 
-body, .card, .input-custom, .btn-custom:hover, .modal-content {
+body, .card, .input-custom, .btn-custom:hover, .modal-content, .badge-custom {
     background-color: $body-bg;
     color: $body-txt;
 }
 
-.navbar, .btn-custom {
+.navbar, .btn-custom, .badge-custom:hover {
     background-color: $navbar-bg;
     color: $navbar-txt;
 }
@@ -52,4 +53,5 @@ body, .card, .input-custom, .btn-custom:hover, .modal-content {
     @include font-custom;
     font-size: 0.8em;
     padding: 3px 15px;
+    transition: background-color .5s, color .5s;
 }

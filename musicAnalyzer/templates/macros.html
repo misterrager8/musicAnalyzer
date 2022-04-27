@@ -18,10 +18,12 @@
   <div class="card-body text-center text-truncate">
     <a href="{{ url_for('artists.artist', id_=artist.id) }}" class="h1" title="{{ artist.name }}">{{ artist.name }}</a><br>
     <div>{{ '%s album(s), %s song(s)' % (artist.get_albums().count(), artist.get_songs().count()) }}</div>
+    <a class="me-2" onclick="toggleDiv('editArtist' + {{ artist.id }})"><i class="bi bi-pen"></i></a>
     <a class="text-danger" onclick="toggleDiv('deleteArtist' + {{ artist.id }})"><i class="bi bi-trash2"></i></a>
-    <a class="" onclick="toggleDiv('editArtist' + {{ artist.id }})"><i class="bi bi-pen"></i></a>
-    <a class="font-custom text-danger" style="display:none" onclick="artistDelete({{ artist.id }})" id="deleteArtist{{ artist.id }}">Delete?</a>
-    <div class="mt-3" style="display:none" id="editArtist{{ artist.id }}">{{ artist_edit_form(artist) }}</div>
+    <div>
+      <a class="font-custom text-danger" style="display:none" onclick="artistDelete({{ artist.id }})" id="deleteArtist{{ artist.id }}">Delete?</a>
+      <div class="mt-3" style="display:none" id="editArtist{{ artist.id }}">{{ artist_edit_form(artist) }}</div>
+    </div>
   </div>
 </div>
 {% endmacro %}
@@ -36,8 +38,8 @@
     {% else %}--{% endif %}
     <div>{{ '%s song(s)' % album.get_songs().count() }}</div>
     <div class="mb-2"><span>{{ star_icon(true, size=16) }}</span> {{ album.get_avg_rating() }}</div>
+    <a class="me-2" onclick="toggleDiv('editAlbum' + {{ album.id }})"><i class="bi bi-pen"></i></a>
     <a class="text-danger" onclick="toggleDiv('deleteAlbum' + {{ album.id }})"><i class="bi bi-trash2"></i></a>
-    <a class="" onclick="toggleDiv('editAlbum' + {{ album.id }})"><i class="bi bi-pen"></i></a>
     <div>
       <a class="font-custom text-danger" style="display:none" onclick="albumDelete({{ album.id }})" id="deleteAlbum{{ album.id }}">Delete?</a>
       <div class="mt-3" style="display:none" id="editAlbum{{ album.id }}">{{ album_edit_form(album) }}</div>
