@@ -28,6 +28,7 @@ def tag_add():
 @tags.route("/tag_delete")
 def tag_delete():
     _: Tag = database.get(Tag, int(request.args.get("id_")))
+    database.delete_multiple([i for i in _.get_album_tags()])
     database.delete(_)
 
     return redirect(request.referrer)

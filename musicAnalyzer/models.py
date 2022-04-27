@@ -128,3 +128,10 @@ class Tag(db.Model):
             _: Album = db.session.query(Album).get(i.album_id)
             results.append(_)
         return results
+
+    def get_album_tags(self):
+        results = []
+        for i in AlbumTag.query.filter(AlbumTag.tag_id == self.id):
+            _: AlbumTag = AlbumTag.query.get(i.id)
+            results.append(_)
+        return results

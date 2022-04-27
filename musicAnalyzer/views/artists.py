@@ -55,6 +55,7 @@ def artist_edit():
 def artist_delete():
     _: Artist = database.get(Artist, int(request.args.get("id_")))
 
+    for i in _.albums: database.delete_multiple([j for j in i.get_tags()])
     database.delete_multiple([i for i in _.albums])
     database.delete_multiple([i for i in _.songs])
     database.delete(_)

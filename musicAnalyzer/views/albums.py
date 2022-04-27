@@ -91,6 +91,7 @@ def album_delete():
     _: Album = database.get(Album, int(request.args.get("id_")))
 
     database.delete_multiple([i for i in _.songs])
+    database.delete_multiple([i for i in _.get_tags()])
     database.delete(_)
 
     return redirect(request.referrer)
