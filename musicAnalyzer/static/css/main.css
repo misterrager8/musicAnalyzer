@@ -18,11 +18,12 @@
           text-decoration: none;
           cursor: pointer; }
 
-          body, .card, .input-custom, .btn-custom:hover, .modal-content, .badge-custom {
+          body, .card, .input-custom, .btn-custom:hover, .modal-content, .badge-custom,
+          .page-link {
             background-color: #1a1a1a;
             color: white; }
 
-            .navbar, .btn-custom, .badge-custom:hover {
+            .navbar, .btn-custom, .badge-custom:hover, .page-link:hover {
               background-color: white;
               color: #1a1a1a; }
 

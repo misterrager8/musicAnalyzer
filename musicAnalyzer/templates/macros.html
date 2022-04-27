@@ -187,10 +187,10 @@
 <nav class="d-flex justify-content-center">
   <ul class="pagination">
     <li class="page-item">
-      <a class="page-link {% if not albums.has_prev %}btn disabled{% endif %}" {% if albums.has_prev %} href="{{ url_for('albums.albums_', page=albums.prev_num, order_by=order_by) }}" {% endif %}>Previous</a>
+      <a class="badge-custom {% if not albums.has_prev %}d-none{% endif %}" {% if albums.has_prev %} href="{{ url_for('albums.albums_', page=albums.prev_num, order_by=order_by) }}" {% endif %}>Previous</a>
     </li>
     <li class="page-item">
-      <a class="page-link {% if not albums.has_next %}btn disabled{% endif %}" {% if albums.has_next %} href="{{ url_for('albums.albums_', page=albums.next_num, order_by=order_by) }}" {% endif %}>Next</a>
+      <a class="badge-custom {% if not albums.has_next %}d-none{% endif %}" {% if albums.has_next %} href="{{ url_for('albums.albums_', page=albums.next_num, order_by=order_by) }}" {% endif %}>Next</a>
     </li>
   </ul>
 </nav>
@@ -200,10 +200,10 @@
 <nav class="d-flex justify-content-center">
   <ul class="pagination">
     <li class="page-item">
-      <a class="page-link {% if not songs.has_prev %}btn disabled{% endif %}" {% if songs.has_prev %} href="{{ url_for('songs.songs_', page=songs.prev_num, order_by=order_by) }}" {% endif %}>Previous</a>
+      <a class="badge-custom {% if not songs.has_prev %}d-none{% endif %}" {% if songs.has_prev %} href="{{ url_for('songs.songs_', page=songs.prev_num, order_by=order_by) }}" {% endif %}>Previous</a>
     </li>
     <li class="page-item">
-      <a class="page-link {% if not songs.has_next %}btn disabled{% endif %}" {% if songs.has_next %} href="{{ url_for('songs.songs_', page=songs.next_num, order_by=order_by) }}" {% endif %}>Next</a>
+      <a class="badge-custom {% if not songs.has_next %}d-none{% endif %}" {% if songs.has_next %} href="{{ url_for('songs.songs_', page=songs.next_num, order_by=order_by) }}" {% endif %}>Next</a>
     </li>
   </ul>
 </nav>

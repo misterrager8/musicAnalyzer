@@ -26,12 +26,12 @@ a, a:hover {
     cursor: pointer;
 }
 
-body, .card, .input-custom, .btn-custom:hover, .modal-content, .badge-custom {
+body, .card, .input-custom, .btn-custom:hover, .modal-content, .badge-custom, .page-link {
     background-color: $body-bg;
     color: $body-txt;
 }
 
-.navbar, .btn-custom, .badge-custom:hover {
+.navbar, .btn-custom, .badge-custom:hover, .page-link:hover {
     background-color: $navbar-bg;
     color: $navbar-txt;
 }
