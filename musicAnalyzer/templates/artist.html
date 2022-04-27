@@ -19,7 +19,6 @@
       <form class="text-truncate" onsubmit="event.preventDefault(); albumAdd({{ artist.id }}, {{ loop.index }});">
         <a class="fst-italic" onclick="$('#submit' + {{ loop.index }}).click()">
           <i class="bi bi-plus-lg"></i>
-          <span class="spinner-border spinner-border-sm" style="display:none" id="spinner{{ loop.index }}"></span>
           <span>{{ i['name'] }}</span>
           <span class="float-end">{{ i['release_date_components']['year'] }}</span>
         </a>

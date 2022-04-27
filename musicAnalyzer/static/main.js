@@ -25,6 +25,7 @@ function artistAdd() {
 }
 
 function artistEdit(artistId) {
+    $('#spinner').show();
     $.post('artist_edit', {
         id_: artistId,
         name: $('#name' + artistId).val()
@@ -34,6 +35,7 @@ function artistEdit(artistId) {
 }
 
 function artistDelete(artistId) {
+    $('#spinner').show();
     $.get('artist_delete', {
         id_: artistId
     }, function(data) {
@@ -42,19 +44,19 @@ function artistDelete(artistId) {
 }
 
 function albumAdd(artistId, idx) {
-    $('#spinner' + idx).show();
+    $('#spinner').show();
     $.post('album_add', {
         id_: artistId,
         title: $('#title' + idx).val(),
         genius_id: $('#geniusId' + idx).val(),
         release_date : $('#released' + idx).val()
     }, function(data) {
-        $('#spinner' + idx).hide();
-        $('#navContent').load(location.href + ' #navContent');
+        refreshPage();
     });
 }
 
 function albumEdit(albumId) {
+    $('#spinner').show();
     $.post('album_edit', {
         id_: albumId,
         title: $('#title' + albumId).val(),
@@ -65,6 +67,7 @@ function albumEdit(albumId) {
 }
 
 function albumDelete(albumId) {
+    $('#spinner').show();
     $.get('album_delete', {
         id_: albumId
     }, function(data) {
@@ -73,6 +76,7 @@ function albumDelete(albumId) {
 }
 
 function albumTag(albumId, tagId) {
+    $('#spinner').show();
     $.get('album_tag', {
         album_id: albumId,
         tag_id: tagId
@@ -82,6 +86,7 @@ function albumTag(albumId, tagId) {
 }
 
 function albumUntag(albumtagId) {
+    $('#spinner').show();
     $.get('album_untag', {
         id_: albumtagId
     }, function(data) {
@@ -99,6 +104,7 @@ function songAdd(albumId) {
 }
 
 function songDelete(songId) {
+    $('#spinner').show();
     $.get('song_delete', {
         id_: songId
     }, function(data) {
@@ -117,6 +123,7 @@ function rateSong(songId, rating) {
 }
 
 function tagDelete(tagId) {
+    $('#spinner').show();
     $.get('tag_delete', {
         id_: tagId
     }, function(data) {
@@ -125,6 +132,7 @@ function tagDelete(tagId) {
 }
 
 function tagAdd() {
+    $('#spinner').show();
     $.post('tag_add', {
         name: $('#name').val()
     }, function(data) {
