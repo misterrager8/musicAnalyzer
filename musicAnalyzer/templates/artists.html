@@ -9,10 +9,10 @@
   {% for i in results %}
   <div class="card col-xl-4">
     <div class="card-body">
-      <form method="POST" action="{{ url_for('artists.artist_add') }}" class="text-truncate">
-        <a onclick="this.parentNode.submit()" class="link fw-bold">+ {{ i['result']['name'] }}</a>
-        <input class="gone" value="{{ i['result']['name'] }}" autocomplete="off" name="name">
-        <input class="gone" value="{{ i['result']['id'] }}" autocomplete="off" name="genius_id">
+      <form method="POST" action="{{ url_for('artists.artist_add') }}" class="">
+        <a onclick="this.parentNode.submit()" class="fw-bold"><i class="bi bi-plus-lg"></i> {{ i['result']['name'] }}</a>
+        <input style="display:none" value="{{ i['result']['name'] }}" autocomplete="off" name="name">
+        <input style="display:none" value="{{ i['result']['id'] }}" autocomplete="off" name="genius_id">
       </form>
     </div>
   </div>

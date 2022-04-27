@@ -5,7 +5,7 @@
 <title>{{ album.title }}</title>
 <div class="text-center mb-2">
   <div class="h1 fst-italic" title="{{ album.title }}">{{ album.title }}</div>
-  {% if request.url_rule.endpoint != 'artists.artist' %}<a href="{{ url_for('artists.artist', id_=album.artists.id) }}" class="link h3">{{ album.artists.name }}</a><br>{% endif %}
+  {% if request.url_rule.endpoint != 'artists.artist' %}<a href="{{ url_for('artists.artist', id_=album.artists.id) }}" class="h3">{{ album.artists.name }}</a><br>{% endif %}
   {% if album.release_date %}
   <div title="{{ album.release_date.strftime('%B %d, %Y') }}">{{ album.release_date.strftime('%Y') }}</div>
   {% else %}--{% endif %}

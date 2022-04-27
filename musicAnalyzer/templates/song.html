@@ -5,7 +5,7 @@
 <title>{{ song.name }}</title>
 <div class="text-center">
   <div class="h1">{{ song.name }}</div>
-  <a class="link h3" href="{{ url_for('artists.artist', id_=song.artist_id) }}">{{ song.artists.name }}</a><br>
-  <a class="link h5" href="{{ url_for('albums.album', id_=song.album_id) }}">{{ song.albums.title }}</a>
+  <a class="h3" href="{{ url_for('artists.artist', id_=song.artist_id) }}">{{ song.artists.name }}</a><br>
+  <a class="h5" href="{{ url_for('albums.album', id_=song.album_id) }}">{{ song.albums.title }}</a>
 </div>
 {% endblock %}

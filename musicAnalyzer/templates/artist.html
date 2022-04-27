@@ -9,7 +9,7 @@
 </div>
 
 <form method="POST" action="{{ url_for('artists.artist', id_=artist.id) }}">
-  <a class="link badge badge-custom" onclick="this.parentNode.submit()">+ New Album</a>
+  <a class="badge badge-custom" onclick="this.parentNode.submit()">+ New Album</a>
   <input name="id_" value="{{ artist.id }}" class="gone">
 </form>
 <div class="row">
@@ -17,7 +17,7 @@
   <div class="card col-xl-4">
     <div class="card-body">
       <form class="text-truncate" onsubmit="event.preventDefault(); albumAdd({{ artist.id }}, {{ loop.index }});">
-        <a class="link fst-italic" onclick="$('#submit' + {{ loop.index }}).click()">+
+        <a class="fst-italic" onclick="$('#submit' + {{ loop.index }}).click()">+
           <span class="spinner-border spinner-border-sm" style="display:none" id="spinner{{ loop.index }}"></span>
           <span>{{ i['name'] }}</span>
           <span class="float-end">{{ i['release_date_components']['year'] }}</span>
