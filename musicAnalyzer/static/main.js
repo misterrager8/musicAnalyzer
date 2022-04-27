@@ -1,25 +1,3 @@
-$(document).ready(function() {
-    if (localStorage.getItem('music-theme') != 'default') {
-        $('body').addClass('light');
-        $('nav').removeClass('navbar-light');
-        $('nav').addClass('navbar-dark');
-    }
-});
-
-function setTheme() {
-    if (localStorage.getItem('music-theme') == 'default') {
-        $('body').addClass('light');
-        $('nav').removeClass('navbar-light');
-        $('nav').addClass('navbar-dark');
-        localStorage.setItem('music-theme', 'light');
-    } else {
-        $('body').removeClass('light');
-        $('nav').addClass('navbar-light');
-        $('nav').removeClass('navbar-dark');
-        localStorage.setItem('music-theme', 'default');
-    }
-}
-
 function refreshPage() {
     $('#pageContent').load(location.href + ' #pageContent');
     $('#navContent').load(location.href + ' #navContent');
