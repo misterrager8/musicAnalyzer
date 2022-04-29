@@ -39,10 +39,10 @@ class User(UserMixin, db.Model):
     def get_artists(self, filter_: str = "", order_by: str = "id desc"):
         return self.artists.filter(text(filter_)).order_by(text(order_by))
 
-    def get_albums(self, filter_: str = "", order_by: str = "release_date desc"):
+    def get_albums(self, filter_: str = "", order_by: str = "id desc"):
         return self.albums.filter(text(filter_)).order_by(text(order_by))
 
-    def get_songs(self, filter_: str = "", order_by: str = "name"):
+    def get_songs(self, filter_: str = "", order_by: str = "id desc"):
         return self.songs.filter(text(filter_)).order_by(text(order_by))
 
 
