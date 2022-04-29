@@ -10,7 +10,7 @@
   <div title="{{ album.release_date.strftime('%B %d, %Y') }}">{{ album.release_date.strftime('%Y') }}</div>
   {% else %}--{% endif %}
   <div>{{ '%s song(s)' % album.get_songs().count() }}</div>
-  <div class="mb-2"><span>{{ macros.star_icon(true, size=16) }}</span> {{ album.get_avg_rating() }}</div>
+  <div class="mb-2"><i class="bi bi-star-fill text-warning"></i> {{ album.get_avg_rating() }}</div>
 </div>
 
 <div class="row">

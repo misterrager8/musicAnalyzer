@@ -50,3 +50,6 @@
                     font-size: 0.8em;
                     padding: 3px 15px;
                     transition: background-color 0.5s, color 0.5s; }
+
+                    label {
+                      cursor: pointer; }
