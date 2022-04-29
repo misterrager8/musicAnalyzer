@@ -113,6 +113,7 @@ function songDelete(songId) {
 }
 
 function rateSong(songId, rating) {
+    $('#spinner').show();
     $.get('song_rate', {
         id_ : songId,
         rating : rating
