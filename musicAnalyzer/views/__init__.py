@@ -26,10 +26,7 @@ def load_user(id_: int):
 
 @current_app.route("/")
 def index():
-    return render_template("index.html",
-                           charts=genius.get_charts()[:10],
-                           posts=reddit.get_hot()[:10],
-                           fresh=reddit.get_fresh()[:10])
+    return render_template("index.html")
 
 
 @current_app.route("/login", methods=["POST"])

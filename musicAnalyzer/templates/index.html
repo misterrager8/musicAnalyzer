@@ -3,30 +3,29 @@
 
 {% block body %}
 <title>MusicAnalyzer</title>
-<div>
-  <div class="news-item mb-5 display-6">{{ posts[0].title }}</div>
-  <div class="row">
-    {% for i in posts[1:5] %}
-    <div class="news-item col-xl-3 mb-5">{{ i.title }}</div>
-    {% endfor %}
-  </div>
+{% if not current_user.is_anonymous %}
+<p class="font-custom">recently added artists <a href="{{ url_for('artists.artists_') }}" class="bi bi-three-dots"></a></p>
+<div class="row">
+  {% for i in current_user.get_artists()[:5] %}
+  {{ macros.artist_box(i) }}
+  {% endfor %}
 </div>
-<div class="row mt-5">
-  <div class="col-xl-6">
-    <p class="display-6">CHARTS</p>
-    {% for i in charts %}
-    <div class="news-item py-3">
-      <a target="_blank" href="{{ i['item']['url'] }}" class="link">{{ i['item']['name'] }}
-        <span class="text-muted ms-2">{{ i['item']['artist']['name'] }}</span>
-      </a>
-    </div>
-    {% endfor %}
-  </div>
-  <div class="col-xl-6">
-    <p class="display-6">FRESH</p>
-    {% for i in fresh %}
-    <div class="news-item py-3 text-truncate">{{ i.title }}</div>
-    {% endfor %}
-  </div>
+<p class="font-custom">recently added albums <a href="{{ url_for('albums.albums_') }}" class="bi bi-three-dots"></a></p>
+<div class="row">
+  {% for i in current_user.get_albums()[:5] %}
+  {{ macros.album_box(i) }}
+  {% endfor %}
 </div>
+<p class="font-custom">recently added songs <a href="{{ url_for('songs.songs_') }}" class="bi bi-three-dots"></a></p>
+<div class="row">
+  {% for i in current_user.get_songs()[:5] %}
+  {{ macros.song_box(i) }}
+  {% endfor %}
+</div>
+{% else %}
+<div class="text-center">
+  <a class="font-custom text-decoration-underline" data-bs-target="#loginModal" data-bs-toggle="modal">log in</a> or
+  <a class="font-custom text-decoration-underline" data-bs-target="#signupModal" data-bs-toggle="modal">sign up</a>
+</div>
+{% endif %}
 {% endblock %}
