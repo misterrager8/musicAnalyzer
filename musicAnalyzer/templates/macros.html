@@ -116,16 +116,16 @@
 <!--FORMS-->
 {% macro login_form() %}
 <form method="POST" action="{{ url_for('login') }}">
-  <input name="username" class="input-custom mb-2" autocomplete="off" placeholder="Username" type="text">
-  <input name="password" class="input-custom mb-2" autocomplete="off" placeholder="Password" type="password">
+  <input name="username" class="input-custom w-100 mb-2" autocomplete="off" placeholder="Username" type="text">
+  <input name="password" class="input-custom w-100 mb-2" autocomplete="off" placeholder="Password" type="password">
   <button type="submit" class="btn btn-custom w-100">Log In</button>
 </form>
 {% endmacro %}
 
 {% macro signup_form() %}
 <form method="POST" action="{{ url_for('signup') }}">
-  <input name="username" class="input-custom mb-2" autocomplete="off" placeholder="Username" type="text">
-  <input name="password" class="input-custom mb-2" autocomplete="off" placeholder="Password" type="password">
+  <input name="username" class="input-custom w-100 mb-2" autocomplete="off" placeholder="Username" type="text">
+  <input name="password" class="input-custom w-100 mb-2" autocomplete="off" placeholder="Password" type="password">
   <button type="submit" class="btn btn-custom w-100">Sign Up</button>
 </form>
 {% endmacro %}
@@ -161,8 +161,8 @@
 
 {% macro album_edit_form(album) %}
 <form onsubmit="event.preventDefault(); albumEdit({{ album.id }});" class="form-group">
-  <input autocomplete="off" placeholder="Title" type="text" id="title{{ album.id }}" class="input-custom w-100 mb-2" value="{{ album.title }}">
-  <input autocomplete="off" type="date" id="releaseDate{{ album.id }}" class="input-custom w-100 mb-2" value="{{ album.release_date }}">
+  <input autocomplete="off" placeholder="Title" type="text" id="title{{ album.id }}" class="input-custom w-100 mb-2" value="{{ album.title }}"><br>
+  <input autocomplete="off" type="date" id="releaseDate{{ album.id }}" class="input-custom w-100 mb-2" value="{{ album.release_date }}"><br>
   <button type="submit" class="btn btn-custom w-100"><i class="bi bi-pen"></i></button>
 </form>
 {% endmacro %}
