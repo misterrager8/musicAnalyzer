@@ -18,14 +18,18 @@ def artists_():
         return render_template("artists.html", order_by=order_by)
     else:
         term = request.form["name"]
-        return render_template("artists.html", results=genius.search_artists(term)["sections"][0]["hits"])
+        return render_template(
+            "artists.html", results=genius.search_artists(term)["sections"][0]["hits"]
+        )
 
 
 @artists.route("/artist_add", methods=["POST"])
 def artist_add():
-    _ = Artist(name=request.form["name"],
-               genius_id=request.form["genius_id"],
-               user_id=current_user.id)
+    _ = Artist(
+        name=request.form["name"],
+        genius_id=request.form["genius_id"],
+        user_id=current_user.id,
+    )
     database.add(_)
 
     return render_template("artist.html", artist=_, get=True)
@@ -38,7 +42,9 @@ def artist():
         return render_template("artist.html", artist=_, get=True)
     else:
         _: Artist = database.get(Artist, int(request.form["id_"]))
-        return render_template("artist.html", artist=_, results=genius.artist_albums(_.genius_id)["albums"])
+        return render_template(
+            "artist.html", artist=_, results=genius.artist_albums(_.genius_id)["albums"]
+        )
 
 
 @artists.route("/artist_edit", methods=["POST"])
@@ -55,7 +61,8 @@ def artist_edit():
 def artist_delete():
     _: Artist = database.get(Artist, int(request.args.get("id_")))
 
-    for i in _.albums: database.delete_multiple([j for j in i.get_tags()])
+    for i in _.albums:
+        database.delete_multiple([j for j in i.get_tags()])
     database.delete_multiple([i for i in _.albums])
     database.delete_multiple([i for i in _.songs])
     database.delete(_)

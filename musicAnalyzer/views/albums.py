@@ -17,9 +17,13 @@ genius = Genius()
 @albums.route("/albums_")
 def albums_(page=1):
     order_by = request.args.get("order_by", default="release_date desc")
-    return render_template("albums.html",
-                           order_by=order_by,
-                           albums=current_user.get_albums(order_by=order_by).paginate(page=page, per_page=40))
+    return render_template(
+        "albums.html",
+        order_by=order_by,
+        albums=current_user.get_albums(order_by=order_by).paginate(
+            page=page, per_page=40
+        ),
+    )
 
 
 @albums.route("/album_add", methods=["POST"])
@@ -28,23 +32,30 @@ def album_add():
 
     title = request.form["title"]
     genius_id = request.form["genius_id"]
-    release_date = datetime.strptime(request.form["release_date"], "{'year': %Y, 'month': %m, 'day': %d}")
+    release_date = datetime.strptime(
+        request.form["release_date"], "{'year': %Y, 'month': %m, 'day': %d}"
+    )
 
-    album_ = Album(title=title,
-                   artist_id=_.id,
-                   genius_id=genius_id,
-                   release_date=release_date,
-                   user_id=current_user.id)
+    album_ = Album(
+        title=title,
+        artist_id=_.id,
+        genius_id=genius_id,
+        release_date=release_date,
+        user_id=current_user.id,
+    )
     database.add(album_)
 
     for idx, i in enumerate(genius.album_tracks(album_.genius_id)["tracks"]):
         album_.songs.append(
-            Song(name=i["song"]["title"],
-                 genius_id=i["song"]["id"],
-                 track_num=idx + 1,
-                 artist_id=_.id,
-                 album_id=album_.id,
-                 user_id=current_user.id))
+            Song(
+                name=i["song"]["title"],
+                genius_id=i["song"]["id"],
+                track_num=idx + 1,
+                artist_id=_.id,
+                album_id=album_.id,
+                user_id=current_user.id,
+            )
+        )
 
     database.update()
     return redirect(request.referrer)

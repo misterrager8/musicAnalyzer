@@ -16,7 +16,8 @@ reddit = RedditWrapper(
     client_secret=praw_client_secret,
     username=praw_username,
     password=praw_password,
-    user_agent=praw_user_agent)
+    user_agent=praw_user_agent,
+)
 
 
 @login_manager.user_loader
@@ -51,8 +52,10 @@ def logout():
 
 @current_app.route("/signup", methods=["POST"])
 def signup():
-    user_ = User(username=request.form["username"],
-                 password=generate_password_hash(request.form["password"]))
+    user_ = User(
+        username=request.form["username"],
+        password=generate_password_hash(request.form["password"]),
+    )
 
     database.add(user_)
     login_user(user_)

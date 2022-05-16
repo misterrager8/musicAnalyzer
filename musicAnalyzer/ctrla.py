@@ -16,7 +16,8 @@ class Database:
 
     @staticmethod
     def add_multiple(objects: list):
-        for i in objects: db.session.add(i)
+        for i in objects:
+            db.session.add(i)
         db.session.commit()
 
     @staticmethod
@@ -34,7 +35,8 @@ class Database:
 
     @staticmethod
     def delete_multiple(objects: list):
-        for i in objects: db.session.delete(i)
+        for i in objects:
+            db.session.delete(i)
         db.session.commit()
 
     @staticmethod
@@ -54,15 +56,16 @@ class GeniusWrapper(Genius):
     def get_news(self, per_page: int = 10) -> list:
         return self.latest_articles(per_page=per_page)["editorial_placements"]
 
-    def get_charts(self,
-                   time_period: str = "week",
-                   genre: str = "all",
-                   per_page: int = 10,
-                   type_: str = "albums"):
-        return self.charts(time_period=time_period,
-                           chart_genre=genre,
-                           per_page=per_page,
-                           type_=type_)["chart_items"]
+    def get_charts(
+        self,
+        time_period: str = "week",
+        genre: str = "all",
+        per_page: int = 10,
+        type_: str = "albums",
+    ):
+        return self.charts(
+            time_period=time_period, chart_genre=genre, per_page=per_page, type_=type_
+        )["chart_items"]
 
 
 class RedditWrapper(Reddit):
@@ -70,7 +73,11 @@ class RedditWrapper(Reddit):
         super(RedditWrapper, self).__init__(**kwargs)
 
     def get_hot(self) -> list:
-        return [i for i in self.subreddit("HipHopHeads").hot(limit=50) if not i.stickied]
+        return [
+            i for i in self.subreddit("HipHopHeads").hot(limit=50) if not i.stickied
+        ]
 
     def get_fresh(self) -> list:
-        return [i for i in self.subreddit("HipHopHeads").hot(limit=50) if "FRESH" in i.title]
+        return [
+            i for i in self.subreddit("HipHopHeads").hot(limit=50) if "FRESH" in i.title
+        ]

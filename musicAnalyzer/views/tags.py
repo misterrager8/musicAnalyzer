@@ -18,9 +18,16 @@ def tags_():
 
 @tags.route("/tag_add", methods=["POST"])
 def tag_add():
-    database.add_multiple([Tag(name=i,
-                               color="#{:06x}".format(random.randint(0, 0xFFFFFF)),
-                               user_id=current_user.id) for i in request.form["name"].split(", ")])
+    database.add_multiple(
+        [
+            Tag(
+                name=i,
+                color="#{:06x}".format(random.randint(0, 0xFFFFFF)),
+                user_id=current_user.id,
+            )
+            for i in request.form["name"].split(", ")
+        ]
+    )
 
     return redirect(request.referrer)
 
