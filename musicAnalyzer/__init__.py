@@ -25,14 +25,17 @@ def create_app(config):
         from musicAnalyzer.views.artists import artists
         from musicAnalyzer.views.albums import albums
         from musicAnalyzer.views.tags import tags
-        from musicAnalyzer.models import User
+        from musicAnalyzer.views.posts import posts
+        from musicAnalyzer.models import User, Post
 
         app.register_blueprint(songs)
         app.register_blueprint(albums)
         app.register_blueprint(artists)
         app.register_blueprint(tags)
+        app.register_blueprint(posts)
 
         admin.add_view(ModelView(User, db.session))
+        admin.add_view(ModelView(Post, db.session))
 
         # db.drop_all()
         db.create_all()

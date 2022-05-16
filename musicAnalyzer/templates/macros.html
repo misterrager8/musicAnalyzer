@@ -66,6 +66,14 @@
 </div>
 {% endmacro %}
 
+{% macro post_box(post) %}
+<div class="card col-xl-3">
+  <div class="card-body text-truncate">
+    <a href="{{ post.url }}" target="blank_">{{ post.title }}</a>
+  </div>
+</div>
+{% endmacro %}
+
 {% macro rating_panel(song) %}
 <input name="rating{{ song.id }}" id="{{ song.id }}star0" type="radio" value="0" style="display:none" onclick="rateSong({{ song.id }}, 0)">
 <label for="{{ song.id }}star0"><i class="bi bi-dash-lg"></i></label>
@@ -167,6 +175,14 @@
 <form onsubmit="event.preventDefault(); tagAdd(); this.reset();" class="input-group">
   <input autocomplete="off" placeholder="+ New Tag, seperated by commas" type="text" id="name" class="input-custom">
   <button type="submit" class="btn btn-custom"><i class="bi bi-plus-lg"></i></button>
+</form>
+{% endmacro %}
+
+{% macro post_add_form() %}
+<form onsubmit="event.preventDefault(); postAdd();" class="input-group">
+  <input autocomplete="off" placeholder="Title" type="text" id="title" class="input-custom">
+  <input autocomplete="off" placeholder="URL" type="text" id="url" class="input-custom">
+  <button type="submit" class="btn btn-custom">post</button>
 </form>
 {% endmacro %}
 

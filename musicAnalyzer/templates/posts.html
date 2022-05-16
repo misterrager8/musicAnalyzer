@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% import "macros.html" as macros with context %}
+
+{% block body %}
+<title>Posts</title>
+{{ macros.post_add_form() }}
+<div class="row">
+    {% for i in all_posts %}
+    {{ macros.post_box(i) }}
+    {% endfor %}
+</div>
+{% endblock %}
+

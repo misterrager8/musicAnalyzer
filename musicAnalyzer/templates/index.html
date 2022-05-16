@@ -3,22 +3,36 @@
 
 {% block body %}
 <title>MusicAnalyzer</title>
+
+<div class="container-fluid p-5 border-custom">
+    <a class="h2" href="{{ recent_posts[1].url }}" target="blank_">{{ recent_posts[0].title }}</a>
+</div>
+<div class="row my-4">
+    <div class="col-xl-3">
+        <div class="border-custom p-5">
+            <a class="h4" href="{{ recent_posts[1].url }}" target="blank_">{{ recent_posts[1].title }}</a>
+        </div>
+    </div>
+    <div class="col-xl-3">
+        <div class="border-custom p-5">
+            <a class="h4" href="{{ recent_posts[2].url }}" target="blank_">{{ recent_posts[2].title }}</a>
+        </div>
+    </div>
+    <div class="col-xl-3">
+        <div class="border-custom p-5">
+            <a class="h4" href="{{ recent_posts[3].url }}" target="blank_">{{ recent_posts[3].title }}</a>
+        </div>
+    </div>
+    <div class="col-xl-3">
+        <div class="border-custom p-5">
+            <a class="h4" href="{{ recent_posts[4].url }}" target="blank_">{{ recent_posts[4].title }}</a>
+        </div>
+    </div>
+</div>
 {% if not current_user.is_anonymous %}
-<p class="font-custom">recently added artists <a href="{{ url_for('artists.artists_') }}" class="bi bi-three-dots"></a></p>
-<div class="row">
-  {% for i in current_user.get_artists()[:5] %}
-  {{ macros.artist_box(i) }}
-  {% endfor %}
-</div>
-<p class="font-custom">recently added albums <a href="{{ url_for('albums.albums_') }}" class="bi bi-three-dots"></a></p>
-<div class="row">
-  {% for i in current_user.get_albums()[:5] %}
-  {{ macros.album_box(i) }}
-  {% endfor %}
-</div>
 <p class="font-custom">recently added songs <a href="{{ url_for('songs.songs_') }}" class="bi bi-three-dots"></a></p>
 <div class="row">
-  {% for i in current_user.get_songs()[:5] %}
+  {% for i in current_user.get_songs()[:25] %}
   {{ macros.song_box(i) }}
   {% endfor %}
 </div>

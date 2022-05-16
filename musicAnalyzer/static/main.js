@@ -149,3 +149,21 @@ function tagAdd() {
         refreshPage();
     });
 }
+
+function postAdd() {
+    $.post('post_add', {
+        title: $('#title').val(),
+        url: $('#url').val()
+    }, function(data) {
+        refreshPage();
+    });
+}
+
+function postDelete(postId) {
+    $('#spinner').show();
+    $.get('post_delete', {
+        id_: postId
+    }, function(data) {
+        refreshPage();
+    });
+}

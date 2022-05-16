@@ -137,3 +137,15 @@ class Tag(db.Model):
             _: AlbumTag = AlbumTag.query.get(i.id)
             results.append(_)
         return results
+
+
+class Post(db.Model):
+    __tablename__ = "posts"
+
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.Text)
+    url = db.Column(db.Text)
+    date_posted = db.Column(db.DateTime)
+
+    def __init__(self, **kwargs):
+        super(Post, self).__init__(**kwargs)

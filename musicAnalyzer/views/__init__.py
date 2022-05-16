@@ -2,22 +2,23 @@ from flask import current_app, render_template, url_for, request
 from flask_login import logout_user, login_user, current_user
 from werkzeug.security import check_password_hash, generate_password_hash
 from werkzeug.utils import redirect
+from sqlalchemy import text
 
 from config import *
 from musicAnalyzer import login_manager
 from musicAnalyzer.ctrla import Database, GeniusWrapper, RedditWrapper
-from musicAnalyzer.models import User
+from musicAnalyzer.models import User, Post
 
 database = Database()
 genius = GeniusWrapper()
 
-reddit = RedditWrapper(
-    client_id=praw_client_id,
-    client_secret=praw_client_secret,
-    username=praw_username,
-    password=praw_password,
-    user_agent=praw_user_agent,
-)
+# reddit = RedditWrapper(
+#     client_id=praw_client_id,
+#     client_secret=praw_client_secret,
+#     username=praw_username,
+#     password=praw_password,
+#     user_agent=praw_user_agent,
+# )
 
 
 @login_manager.user_loader
@@ -27,7 +28,8 @@ def load_user(id_: int):
 
 @current_app.route("/")
 def index():
-    return render_template("index.html")
+    recent_posts = Post.query.order_by(text("date_posted desc"))[:10]
+    return render_template("index.html", recent_posts=recent_posts)
 
 
 @current_app.route("/login", methods=["POST"])
