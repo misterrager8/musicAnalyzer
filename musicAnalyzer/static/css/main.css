@@ -1,55 +1,99 @@
-.font-custom, .dropdown-item {
-  letter-spacing: 3px;
-  text-transform: uppercase;
-  font-weight: bold; }
+:root, html[data-theme="theme1"] {
+    --navbar-bg: white;
+    --navbar-txt: #1a1a1a;
+    --body-bg: #1a1a1a;
+    --body-txt: white;
+}
 
-  .border-custom, .card-body {
-    border: 1px solid white;
-    border-radius: 5px; }
+html[data-theme="theme2"] {
+    --navbar-bg: #1a1a1a;
+    --navbar-txt: white;
+    --body-bg: white;
+    --body-txt: #1a1a1a;
+}
 
-    .card {
-      border: 0; }
+html[data-theme="theme3"] {
+    --navbar-bg: #243E36;
+    --navbar-txt: #E0EEC6;
+    --body-bg: #E0EEC6;
+    --body-txt: #243E36;
+}
 
-      .card-body {
-        margin-bottom: 25px; }
+html[data-theme="theme4"] {
+    --navbar-bg: #5D2E46;
+    --navbar-txt: #E8D6CB;
+    --body-bg: #E8D6CB;
+    --body-txt: #5D2E46;
+}
 
-        a, a:hover {
-          color: inherit;
-          text-decoration: none;
-          cursor: pointer; }
+html[data-theme="theme5"] {
+    --navbar-bg: #A63D40;
+    --navbar-txt: #E9B872;
+    --body-bg: #E9B872;
+    --body-txt: #A63D40;
+}
 
-          body, .card, .input-custom, .btn-custom:hover, .modal-content, .badge-custom,
-          .page-link {
-            background-color: #1a1a1a;
-            color: white; }
+html[data-theme="theme6"] {
+    --navbar-bg: #6A381F;
+    --navbar-txt: #DCAB6B;
+    --body-bg: #DCAB6B;
+    --body-txt: #6A381F;
+}
 
-            .navbar, .btn-custom, .badge-custom:hover, .page-link:hover {
-              background-color: white;
-              color: #1a1a1a; }
+html[data-theme="theme7"] {
+    --navbar-bg: #495867;
+    --navbar-txt: #BDD5EA;
+    --body-bg: #BDD5EA;
+    --body-txt: #495867;
+}
 
-              .btn-custom {
-                border: 1px solid white;
-                border-radius: 5px;
-                letter-spacing: 3px;
-                text-transform: uppercase;
-                font-weight: bold;
-                padding: 5px 10px;
-                transition: background-color 0.5s, color 0.5s; }
+.font-custom, .dropdown-item, .btn-custom, .badge-custom, ::placeholder {
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    font-weight: bold;
+}
 
-                .input-custom {
-                  border: 1px solid white;
-                  border-radius: 5px;
-                  padding: 5px 10px; }
+.border-custom, .btn-custom, .input-custom, .badge-custom, .card-body {
+    border: 1px solid var(--body-txt);
+    border-radius: 5px;
+}
 
-                  .badge-custom {
-                    border: 1px solid white;
-                    border-radius: 5px;
-                    letter-spacing: 3px;
-                    text-transform: uppercase;
-                    font-weight: bold;
-                    font-size: 0.8em;
-                    padding: 3px 15px;
-                    transition: background-color 0.5s, color 0.5s; }
+.card { border: 0;}
+.card-body { margin-bottom: 25px;}
 
-                    label {
-                      cursor: pointer; }
+a, a:hover {
+    color: inherit !important;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+body, .card, .input-custom, .btn-custom:hover, .modal-content, .badge-custom, .page-link, .dropdown-menu {
+    background-color: var(--body-bg);
+    color: var(--body-txt);
+}
+
+.navbar, .btn-custom, .badge-custom:hover, .page-link:hover, .dropdown-item:hover, .list-group-item-action:hover {
+    background-color: var(--navbar-bg);
+    color: var(--navbar-txt) !important;
+}
+
+.btn-custom {
+    padding: 5px 10px;
+    transition: background-color .5s, color .5s;
+}
+
+.input-custom {
+    padding: 5px 10px;
+}
+
+.dropdown-item, .list-group-item-action {
+    transition: background-color .5s, color .5s;
+}
+
+.badge-custom {
+    font-size: 0.8em;
+    padding: 3px 15px;
+    transition: background-color .5s, color .5s;
+}
+
+label { cursor: pointer; }
