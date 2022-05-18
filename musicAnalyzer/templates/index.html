@@ -5,7 +5,7 @@
 <title>MusicAnalyzer</title>
 {% if recent_posts | length > 4 %}
 <div class="container-fluid p-5 border-custom">
-    <a class="h2" href="{{ recent_posts[1].url }}" target="blank_">{{ recent_posts[0].title }}</a>
+    <a class="h2" href="{{ recent_posts[0].url }}" target="blank_">{{ recent_posts[0].title }}</a>
 </div>
 <div class="row my-4">
     {% for i in range(1, 5) %}
