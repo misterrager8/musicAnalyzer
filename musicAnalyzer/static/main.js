@@ -151,9 +151,21 @@ function tagAdd() {
 }
 
 function postAdd() {
+    $('#spinner').show();
     $.post('post_add', {
         title: $('#title').val(),
         url: $('#url').val()
+    }, function(data) {
+        refreshPage();
+    });
+}
+
+function postEdit(postId) {
+    $('#spinner').show();
+    $.post('post_edit', {
+        id_: postId,
+        title: $('#title' + postId).val(),
+        url: $('#url' + postId).val()
     }, function(data) {
         refreshPage();
     });
@@ -166,4 +178,8 @@ function postDelete(postId) {
     }, function(data) {
         refreshPage();
     });
+}
+
+function getTitle() {
+    $.post("get_title", { url : $('#url').val() }, function(data) { $('#title').val(data); });
 }

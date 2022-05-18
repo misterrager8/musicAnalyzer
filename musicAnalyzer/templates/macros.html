@@ -68,8 +68,17 @@
 
 {% macro post_box(post) %}
 <div class="card col-xl-3">
-  <div class="card-body text-truncate">
+  <div class="card-body">
     <a href="{{ post.url }}" target="blank_">{{ post.title }}</a>
+    <div class="text-muted small fst-italic">{{ post.date_posted.strftime('%F %T') }}</div>
+    {% if current_user._role == "ADMIN" %}
+    <div>
+        <a onclick="toggleDiv('editPost' + {{ post.id }})" class="bi bi-pen"></a>
+        <a onclick="toggleDiv('deletePost' + {{ post.id }})" class="bi bi-trash2 text-danger"></a>
+        <a onclick="postDelete({{ post.id }})" class="font-custom text-danger" style="display:none" id="deletePost{{ post.id }}">delete?</a>
+        <div id="editPost{{ post.id }}" style="display:none">{{ post_edit_form(post) }}</div>
+    </div>
+    {% endif %}
   </div>
 </div>
 {% endmacro %}
@@ -179,10 +188,18 @@
 {% endmacro %}
 
 {% macro post_add_form() %}
-<form onsubmit="event.preventDefault(); postAdd();" class="input-group">
-  <input autocomplete="off" placeholder="Title" type="text" id="title" class="input-custom">
-  <input autocomplete="off" placeholder="URL" type="text" id="url" class="input-custom">
-  <button type="submit" class="btn btn-custom">post</button>
+<form onsubmit="event.preventDefault(); postAdd();">
+  <input autocomplete="off" onchange="getTitle()" placeholder="URL" type="text" id="url" class="input-custom w-100 mb-3">
+  <input autocomplete="off" placeholder="Title" type="text" id="title" class="input-custom w-100 mb-3">
+  <button type="submit" class="btn btn-custom w-100">post</button>
+</form>
+{% endmacro %}
+
+{% macro post_edit_form(post) %}
+<form onsubmit="event.preventDefault(); postEdit({{ post.id }});">
+  <input autocomplete="off" placeholder="URL" type="text" id="url{{ post.id }}" class="input-custom w-100 mb-3" value="{{ post.url }}">
+  <input autocomplete="off" placeholder="Title" type="text" id="title{{ post.id }}" class="input-custom w-100 mb-3" value="{{ post.title }}">
+  <button type="submit" class="btn btn-custom w-100"><i class="bi bi-pen"></i></button>
 </form>
 {% endmacro %}
 

@@ -28,6 +28,7 @@ class User(UserMixin, db.Model):
     id = Column(Integer, primary_key=True)
     username = Column(Text)
     password = Column(Text)
+    _role = Column(Text, default="USER")
     tags = relationship("Tag", backref="users", lazy="dynamic")
     artists = relationship("Artist", backref="users", lazy="dynamic")
     albums = relationship("Album", backref="users", lazy="dynamic")

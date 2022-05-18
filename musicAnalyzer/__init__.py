@@ -1,7 +1,6 @@
 import pymysql
 from flask_admin.contrib.sqla import ModelView
 from flask import Flask
-from flask_admin import Admin
 from flask_login import LoginManager
 from flask_sqlalchemy import SQLAlchemy
 
@@ -9,7 +8,6 @@ pymysql.install_as_MySQLdb()
 
 db = SQLAlchemy()
 login_manager = LoginManager()
-admin = Admin()
 
 
 def create_app(config):
@@ -18,7 +16,6 @@ def create_app(config):
 
     db.init_app(app)
     login_manager.init_app(app)
-    admin.init_app(app)
 
     with app.app_context():
         from musicAnalyzer.views.songs import songs
@@ -33,9 +30,6 @@ def create_app(config):
         app.register_blueprint(artists)
         app.register_blueprint(tags)
         app.register_blueprint(posts)
-
-        admin.add_view(ModelView(User, db.session))
-        admin.add_view(ModelView(Post, db.session))
 
         # db.drop_all()
         db.create_all()

@@ -8,26 +8,13 @@
     <a class="h2" href="{{ recent_posts[1].url }}" target="blank_">{{ recent_posts[0].title }}</a>
 </div>
 <div class="row my-4">
+    {% for i in range(1, 5) %}
     <div class="col-xl-3">
-        <div class="border-custom p-5">
-            <a class="h4" href="{{ recent_posts[1].url }}" target="blank_">{{ recent_posts[1].title }}</a>
+        <div class="border-custom p-5" style="overflow:hidden">
+            <a class="h6" href="{{ recent_posts[i].url }}" target="blank_">{{ recent_posts[i].title }}</a>
         </div>
     </div>
-    <div class="col-xl-3">
-        <div class="border-custom p-5">
-            <a class="h4" href="{{ recent_posts[2].url }}" target="blank_">{{ recent_posts[2].title }}</a>
-        </div>
-    </div>
-    <div class="col-xl-3">
-        <div class="border-custom p-5">
-            <a class="h4" href="{{ recent_posts[3].url }}" target="blank_">{{ recent_posts[3].title }}</a>
-        </div>
-    </div>
-    <div class="col-xl-3">
-        <div class="border-custom p-5">
-            <a class="h4" href="{{ recent_posts[4].url }}" target="blank_">{{ recent_posts[4].title }}</a>
-        </div>
-    </div>
+    {% endfor %}
 </div>
 {% if not current_user.is_anonymous %}
 <p class="font-custom">recently added songs <a href="{{ url_for('songs.songs_') }}" class="bi bi-three-dots"></a></p>
