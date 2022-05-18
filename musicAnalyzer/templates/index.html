@@ -3,7 +3,7 @@
 
 {% block body %}
 <title>MusicAnalyzer</title>
-{% if recent_posts.count() > 4 %}
+{% if recent_posts | length > 4 %}
 <div class="container-fluid p-5 border-custom">
     <a class="h2" href="{{ recent_posts[1].url }}" target="blank_">{{ recent_posts[0].title }}</a>
 </div>
