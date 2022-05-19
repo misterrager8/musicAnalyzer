@@ -36,7 +36,7 @@
 {% endmacro %}
 
 {% macro song_box(song) %}
-<div class="list-group-item-action row">
+<div class="list-group-item-action row text-reset">
   <a href="{{ url_for('songs.song', id_=song.id) }}" class="fw-bold col-sm text-truncate">{{ song.name }}</a>
   {% if request.url_rule.endpoint != 'albums.album' %}
   <a href="{{ url_for('artists.artist', id_=song.artists.id) }}" class="col-sm text-truncate">{{ song.artists.name }}</a>
@@ -70,7 +70,7 @@
 <div class="card col-xl-3">
   <div class="card-body">
     <a href="{{ post.url }}" target="blank_">{{ post.title }}</a>
-    <div class="text-muted small fst-italic">{{ post.date_posted.strftime('%F %T') }}</div>
+    <div class="opacity-50 small fst-italic">{{ post.date_posted.strftime('%F %T') }}</div>
     {% if current_user._role == "ADMIN" %}
     <div>
         <a onclick="toggleDiv('editPost' + {{ post.id }})" class="bi bi-pen"></a>
