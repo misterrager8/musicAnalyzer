@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% import "macros.html" as macros with context %}
+{% block body %}
+<title>Admin</title>
+{{ macros.add_news_form() }}
+
+{% for i in links_ %}
+<div class="mb-3">
+    <a class="btn-custom bg-success me-3" onclick="addNewsFromScraper({{ loop.index }})">
+        <span style="display: none" id="spinner{{ loop.index }}" class="spinner-border spinner-border-sm"></span>
+        <i class="bi bi-newspaper"></i>
+        <i class="bi bi-plus-lg"></i>
+    </a>
+    <span class="badge-custom {{ i.domain_name }}">{{ i.domain_name }}</span>
+    <span>{{ i.title }}</span>
+    <div style="display: none">
+        <input onchange="suggestTitle()" autocomplete="off" placeholder="URL" class="input-custom" id="url{{ loop.index }}" value="{{ i.url }}">
+        <input autocomplete="off" placeholder="Headline" class="input-custom flex-grow-1" id="headline{{ loop.index }}" value="{{ i.title }}">
+    </div>
+</div>
+{% endfor %}
+{% endblock %}

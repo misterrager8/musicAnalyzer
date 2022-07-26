@@ -1,30 +1,20 @@
 {% extends "base.html" %}
 {% import "macros.html" as macros with context %}
-
 {% block body %}
 <title>Artists</title>
-<div class="mb-2">{{ macros.artist_search_form() }}</div>
+<form method="POST" action="{{ url_for('artists.artists_') }}">
+    <input autocomplete="off" name="name" placeholder="Search" class="input-custom">
+    <button type="submit" class="btn-custom">Search</button>
+</form>
 
 <div class="row">
-  {% for i in results %}
-  <div class="card col-xl-4">
-    <div class="card-body">
-      <form method="POST" action="{{ url_for('artists.artist_add') }}" class="">
-        <a onclick="this.parentNode.submit()" class="fw-bold"><i class="bi bi-plus-lg"></i> {{ i['result']['name'] }}</a>
-        <input style="display:none" value="{{ i['result']['name'] }}" autocomplete="off" name="name">
-        <input style="display:none" value="{{ i['result']['id'] }}" autocomplete="off" name="genius_id">
-      </form>
+    {% for i in results %}
+    <div class="card col-xl-4 border-0">
+        <div class="card-body mb-3">
+            {{ i['result']['name'] }}
+        </div>
     </div>
-  </div>
-  {% endfor %}
+    {% endfor %}
 </div>
 
-{% if order_by %}
-{{ macros.artist_sorter() }}
-<div class="row my-2">
-  {% for i in current_user.get_artists(order_by=order_by) %}
-  {{ macros.artist_box(i) }}
-  {% endfor %}
-</div>
-{% endif %}
 {% endblock %}

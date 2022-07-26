@@ -1,232 +1,85 @@
-<!--suppress ALL-->
-<!--BOXES-->
-{% macro artist_box(artist) %}
-<div class="card col-xl-4">
-  <div class="card-body text-center text-truncate">
-    <a href="{{ url_for('artists.artist', id_=artist.id) }}" class="h1" title="{{ artist.name }}">{{ artist.name }}</a><br>
-    <div>{{ '%s album(s), %s song(s)' % (artist.get_albums().count(), artist.get_songs().count()) }}</div>
-    <a class="me-2" onclick="toggleDiv('editArtist' + {{ artist.id }})"><i class="bi bi-pen"></i></a>
-    <a class="text-danger" onclick="toggleDiv('deleteArtist' + {{ artist.id }})"><i class="bi bi-trash2"></i></a>
-    <div>
-      <a class="font-custom text-danger" style="display:none" onclick="artistDelete({{ artist.id }})" id="deleteArtist{{ artist.id }}">Delete?</a>
-      <div class="mt-3" style="display:none" id="editArtist{{ artist.id }}">{{ artist_edit_form(artist) }}</div>
+{% macro news_card(news) %}
+<div class="card col-xl-4 border-0">
+    <div class="card-body mb-4">
+        <a class="font-custom" href="{{ news.url }}" target="_blank">{{ news.headline }}</a>
+        <div class="small opacity-50 fst-italic">{{ news.timestamp.strftime('%b %d, %Y %I:%M %p') }}</div>
+        {% if current_user.role == 'admin' %}
+        <div class="mt-2">
+            <a class="me-2" onclick="toggleDiv('editNews' + {{ news.id }})"><i class="bi bi-pen"></i></a>
+            <a class="text-danger" onclick="toggleDiv('deleteNews' + {{ news.id }})"><i class="bi bi-trash3"></i></a>
+            <a class="font-custom text-danger" onclick="deleteNews({{ news.id }})" id="deleteNews{{ news.id }}" style="display: none">Delete?</a>
+        </div>
+        <div class="mt-2" id="editNews{{ news.id }}" style="display: none">
+            {{ edit_news_form(news) }}
+        </div>
+        {% endif %}
     </div>
-  </div>
 </div>
 {% endmacro %}
 
-{% macro album_box(album) %}
-<div class="card col-xl-3">
-  <div class="card-body text-center text-truncate">
-    <a href="{{ url_for('albums.album', id_=album.id) }}" class="h1 fst-italic" title="{{ album.title }}">{{ album.title }}</a><br>
-    {% if request.url_rule.endpoint != 'artists.artist' %}<a href="{{ url_for('artists.artist', id_=album.artists.id) }}" class="h3">{{ album.artists.name }}</a><br>{% endif %}
-    {% if album.release_date %}
-    <div title="{{ album.release_date.strftime('%B %d, %Y') }}">{{ album.release_date.strftime('%Y') }}</div>
-    {% else %}--{% endif %}
-    <div>{{ '%s song(s)' % album.get_songs().count() }}</div>
-    <div class="mb-2"><i class="bi bi-star-fill text-warning"></i> {{ album.get_avg_rating() }}</div>
-    <a class="me-2" onclick="toggleDiv('editAlbum' + {{ album.id }})"><i class="bi bi-pen"></i></a>
-    <a class="text-danger" onclick="toggleDiv('deleteAlbum' + {{ album.id }})"><i class="bi bi-trash2"></i></a>
-    <div>
-      <a class="font-custom text-danger" style="display:none" onclick="albumDelete({{ album.id }})" id="deleteAlbum{{ album.id }}">Delete?</a>
-      <div class="mt-3" style="display:none" id="editAlbum{{ album.id }}">{{ album_edit_form(album) }}</div>
+{% macro blog_card(blog) %}
+<div class="card col-xl-4 border-0">
+    <div class="card-body mb-4">
+        <a class="font-custom" href="{{ url_for('blogs.blog', id_=blog.id) }}">{{ blog.title }}</a>
+
+        <p class="small fst-italic opacity-50 mt-2">
+            <span><i class="bi bi-person-fill"></i> {{ blog.users.email }}</span><br>
+            <span><i class="bi bi-clock"></i> {{ blog.timestamp.strftime('%B %d, %Y') }}</span>
+        </p>
+        
+        {% if blog.user_id == current_user.id or current_user.role == 'admin' %}
+        <div class="mt-2">
+            <a class="me-2" href="{{ url_for('blogs.editor', id_=blog.id) }}"><i class="bi bi-pen"></i></a>
+            <a class="text-danger" onclick="toggleDiv('deleteBlog' + {{ blog.id }})"><i class="bi bi-trash3"></i></a>
+            <a class="text-danger font-custom" id="deleteBlog{{ blog.id }}" style="display: none" onclick="deleteBlog({{ blog.id }})">Delete?</a>
+        </div>
+        {% endif %}
     </div>
-  </div>
 </div>
 {% endmacro %}
 
-{% macro song_box(song) %}
-<div class="list-group-item-action row text-reset">
-  <a href="{{ url_for('songs.song', id_=song.id) }}" class="fw-bold col-sm text-truncate">{{ song.name }}</a>
-  {% if request.url_rule.endpoint != 'albums.album' %}
-  <a href="{{ url_for('artists.artist', id_=song.artists.id) }}" class="col-sm text-truncate">{{ song.artists.name }}</a>
-  <a href="{{ url_for('albums.album', id_=song.albums.id) }}" class="fst-italic col d-none d-sm-block text-truncate">{{ song.albums.title }}</a>
-  {% endif %}
-  <div class="col d-none d-sm-block">{{ rating_panel(song) }}</div>
-  <div class="col-sm">
-    <a class="float-end text-danger" onclick="toggleDiv('deleteSong' + {{ song.id }})"><i class="bi bi-trash2"></i></a>
-    <a class="float-end text-danger font-custom" style="display:none" onclick="songDelete({{ song.id }})" id="deleteSong{{ song.id }}">Delete?</a>
-  </div>
+{% macro chart_card(entry) %}
+<div class="border-bottom pb-2 mb-2">
+    <div class="fst-italic fw-bold">{{ entry.title }}</div>
+    <div>{{ entry.artist }}</div>
 </div>
 {% endmacro %}
 
-{% macro tag_box(tag) %}
-<span class="badge" style="background-color:{{ tag.color }}">
-  <a data-bs-target="#tag{{ tag.id }}" data-bs-toggle="modal">{{ tag.name }}</a>
-  <a class="ms-5" onclick="tagDelete({{ tag.id }})">x</a>
-</span>
-<div class="modal" id="tag{{ tag.id }}">
-  <div class="modal-dialog">
-    <div class="modal-content p-3">
-      {% for i in tag.get_albums() %}
-      <a>{{ i.title }}</a>
-      {% endfor %}
-    </div>
-  </div>
-</div>
-{% endmacro %}
-
-{% macro post_box(post) %}
-<div class="card col-xl-3">
-  <div class="card-body">
-    <a href="{{ post.url }}" target="blank_">{{ post.title }}</a>
-    <div class="opacity-50 small fst-italic">{{ post.date_posted.strftime('%F %T') }}</div>
-    {% if current_user._role == "ADMIN" %}
-    <div>
-        <a onclick="toggleDiv('editPost' + {{ post.id }})" class="bi bi-pen"></a>
-        <a onclick="toggleDiv('deletePost' + {{ post.id }})" class="bi bi-trash2 text-danger"></a>
-        <a onclick="postDelete({{ post.id }})" class="font-custom text-danger" style="display:none" id="deletePost{{ post.id }}">delete?</a>
-        <div id="editPost{{ post.id }}" style="display:none">{{ post_edit_form(post) }}</div>
-    </div>
-    {% endif %}
-  </div>
-</div>
-{% endmacro %}
-
-{% macro rating_panel(song) %}
-<input name="rating{{ song.id }}" id="{{ song.id }}star0" type="radio" value="0" style="display:none" onclick="rateSong({{ song.id }}, 0)">
-<label for="{{ song.id }}star0"><i class="bi bi-dash-lg"></i></label>
-{% for i in range(5) %}
-<input name="rating{{ song.id }}" id="{{ song.id }}star{{ loop.index }}" type="radio" value="{{ loop.index }}" style="display:none" onclick="rateSong({{ song.id }}, {{ loop.index }})">
-<label for="{{ song.id }}star{{ loop.index }}"
-       class="bi {% if loop.index <= song.rating %}bi-star-fill text-warning{% else %}bi-dot{% endif %}">
-</label>
-{% endfor %}
-{% endmacro %}
-
-<!--SORTERS-->
-{% macro artist_sorter() %}
-<div>
-  <span class="small font-custom me-2">Sort By: </span>
-  {% if order_by != 'name' %} <a class="badge-custom" href="{{ url_for('artists.artists_', order_by='name') }}">Name</a>{% endif %}
-  {% if order_by != 'id desc' %} <a class="badge-custom" href="{{ url_for('artists.artists_', order_by='id desc') }}">Recently Added</a>{% endif %}
-</div>
-{% endmacro %}
-
-{% macro album_sorter() %}
-<div>
-  <span class="small font-custom me-2">Sort By: </span>
-  {% if order_by != 'title' %} <a class="badge-custom" href="{{ url_for('albums.albums_', order_by='title') }}">Title</a>{% endif %}
-  {% if order_by != 'release_date desc' %} <a class="badge-custom" href="{{ url_for('albums.albums_', order_by='release_date desc') }}">Year</a>{% endif %}
-</div>
-{% endmacro %}
-
-{% macro song_sorter() %}
-<div>
-  <span class="small font-custom me-2">Sort By: </span>
-  {% if order_by != 'name' %} <a class="badge-custom" href="{{ url_for('songs.songs_', order_by='name') }}">Name</a>{% endif %}
-  {% if order_by != 'id desc' %} <a class="badge-custom" href="{{ url_for('songs.songs_', order_by='id desc') }}">Recently Added</a>{% endif %}
-</div>
-{% endmacro %}
-
-<!--FORMS-->
 {% macro login_form() %}
 <form method="POST" action="{{ url_for('login') }}">
-  <input name="username" class="input-custom w-100 mb-2" autocomplete="off" placeholder="Username" type="text">
-  <input name="password" class="input-custom w-100 mb-2" autocomplete="off" placeholder="Password" type="password">
-  <button type="submit" class="btn btn-custom w-100">Log In</button>
+    <input autocomplete="off" placeholder="email" class="input-custom w-100 mb-2" name="email">
+    <input autocomplete="off" placeholder="Password" class="input-custom w-100 mb-2" name="password" type="password">
+    <button class="btn-custom w-100" type="submit">Log In</button>
 </form>
 {% endmacro %}
 
 {% macro signup_form() %}
 <form method="POST" action="{{ url_for('signup') }}">
-  <input name="username" class="input-custom w-100 mb-2" autocomplete="off" placeholder="Username" type="text">
-  <input name="password" class="input-custom w-100 mb-2" autocomplete="off" placeholder="Password" type="password">
-  <button type="submit" class="btn btn-custom w-100">Sign Up</button>
+    <input autocomplete="off" placeholder="email" class="input-custom w-100 mb-2" name="email">
+    <input autocomplete="off" placeholder="Password" class="input-custom w-100 mb-2" name="password" type="password">
+    <button class="btn-custom w-100" type="submit">Sign Up</button>
 </form>
 {% endmacro %}
 
-{% macro user_edit_form() %}
-<form onsubmit="event.preventDefault(); userEdit();" class="input-group">
-  <input id="username" class="input-custom mb-2" autocomplete="off" placeholder="Username" type="text" value="{{ current_user.username }}">
-  <input id="password" class="input-custom mb-2" autocomplete="off" placeholder="Password" type="password">
-  <button type="submit" class="btn btn-custom w-100">Edit Profile</button>
+{% macro add_blog_form() %}
+<form action="{{ url_for('blogs.add_blog') }}" method="POST" class="input-group">
+    <input onchange="suggestTitle()" autocomplete="off" placeholder="Title" class="input-custom" name="title">
+    <button class="btn-custom" type="submit"><i class="bi bi-pen"></i> Create Blog</button>
 </form>
 {% endmacro %}
 
-{% macro artist_search_form() %}
-<form method="POST" action="{{ url_for('artists.artists_') }}" class="input-group">
-  <input autocomplete="off" placeholder="Search New Artist" type="text" name="name" class="input-custom">
-  <button type="submit" class="btn btn-custom"><i class="bi bi-search"></i></button>
+{% macro add_news_form() %}
+<form onsubmit="event.preventDefault(); addNews();" class="input-group">
+    <input onchange="suggestTitle()" autocomplete="off" placeholder="URL" class="input-custom" id="url">
+    <input autocomplete="off" placeholder="Headline" class="input-custom flex-grow-1" id="headline">
+    <button class="btn-custom" type="submit"><i class="bi bi-newspaper"></i> Add News</button>
 </form>
 {% endmacro %}
 
-{% macro artist_edit_form(artist) %}
-<form onsubmit="event.preventDefault(); artistEdit({{ artist.id }}); this.reset();" class="input-group">
-  <input autocomplete="off" placeholder="Name" type="text" id="name{{ artist.id }}" class="input-custom" value="{{ artist.name }}">
-  <button type="submit" class="btn btn-custom"><i class="bi bi-pen"></i></button>
+{% macro edit_news_form(news) %}
+<form onsubmit="event.preventDefault(); editNews({{ news.id }});">
+    <input value="{{ news.url }}" autocomplete="off" placeholder="URL" class="input-custom w-100 mb-2" id="url{{ news.id }}">
+    <input value="{{ news.headline }}" autocomplete="off" placeholder="Headline" class="input-custom w-100 mb-2" id="headline{{ news.id }}">
+    <button class="btn-custom w-100" type="submit"><i class="bi bi-pen"></i> Edit News</button>
 </form>
-{% endmacro %}
-
-{% macro album_add_form(artist) %}
-<form onsubmit="event.preventDefault(); albumAdd({{ artist.id }}); this.reset();" class="input-group">
-  <input autocomplete="off" placeholder="+ New Album, seperated by commas" type="text" id="title" class="form-control">
-  <button type="submit" class="btn btn-custom">Add Album</button>
-</form>
-{% endmacro %}
-
-{% macro album_edit_form(album) %}
-<form onsubmit="event.preventDefault(); albumEdit({{ album.id }});" class="form-group">
-  <input autocomplete="off" placeholder="Title" type="text" id="title{{ album.id }}" class="input-custom w-100 mb-2" value="{{ album.title }}"><br>
-  <input autocomplete="off" type="date" id="releaseDate{{ album.id }}" class="input-custom w-100 mb-2" value="{{ album.release_date }}"><br>
-  <button type="submit" class="btn btn-custom w-100"><i class="bi bi-pen"></i></button>
-</form>
-{% endmacro %}
-
-{% macro song_add_form(album) %}
-<form onsubmit="event.preventDefault(); songAdd({{ album.id }}); this.reset();" class="input-group">
-  <input autocomplete="off" placeholder="+ New Song, seperated by commas" type="text" id="name" class="input-custom">
-  <button type="submit" class="btn btn-custom">Add Song</button>
-</form>
-{% endmacro %}
-
-{% macro tag_add_form() %}
-<form onsubmit="event.preventDefault(); tagAdd(); this.reset();" class="input-group">
-  <input autocomplete="off" placeholder="+ New Tag, seperated by commas" type="text" id="name" class="input-custom">
-  <button type="submit" class="btn btn-custom"><i class="bi bi-plus-lg"></i></button>
-</form>
-{% endmacro %}
-
-{% macro post_add_form() %}
-<form onsubmit="event.preventDefault(); postAdd();">
-  <input autocomplete="off" onchange="getTitle()" placeholder="URL" type="text" id="url" class="input-custom w-100 mb-3">
-  <input autocomplete="off" placeholder="Title" type="text" id="title" class="input-custom w-100 mb-3">
-  <button type="submit" class="btn btn-custom w-100">post</button>
-</form>
-{% endmacro %}
-
-{% macro post_edit_form(post) %}
-<form onsubmit="event.preventDefault(); postEdit({{ post.id }});">
-  <input autocomplete="off" placeholder="URL" type="text" id="url{{ post.id }}" class="input-custom w-100 mb-3" value="{{ post.url }}">
-  <input autocomplete="off" placeholder="Title" type="text" id="title{{ post.id }}" class="input-custom w-100 mb-3" value="{{ post.title }}">
-  <button type="submit" class="btn btn-custom w-100"><i class="bi bi-pen"></i></button>
-</form>
-{% endmacro %}
-
-<!--PAGINATES-->
-
-{% macro albums_paginate() %}
-<nav class="d-flex justify-content-center">
-  <ul class="pagination">
-    <li class="page-item">
-      <a class="badge-custom {% if not albums.has_prev %}d-none{% endif %}" {% if albums.has_prev %} href="{{ url_for('albums.albums_', page=albums.prev_num, order_by=order_by) }}" {% endif %}>Previous</a>
-    </li>
-    <li class="page-item">
-      <a class="badge-custom {% if not albums.has_next %}d-none{% endif %}" {% if albums.has_next %} href="{{ url_for('albums.albums_', page=albums.next_num, order_by=order_by) }}" {% endif %}>Next</a>
-    </li>
-  </ul>
-</nav>
-{% endmacro %}
-
-{% macro songs_paginate() %}
-<nav class="d-flex justify-content-center">
-  <ul class="pagination">
-    <li class="page-item">
-      <a class="badge-custom {% if not songs.has_prev %}d-none{% endif %}" {% if songs.has_prev %} href="{{ url_for('songs.songs_', page=songs.prev_num, order_by=order_by) }}" {% endif %}>Previous</a>
-    </li>
-    <li class="page-item">
-      <a class="badge-custom {% if not songs.has_next %}d-none{% endif %}" {% if songs.has_next %} href="{{ url_for('songs.songs_', page=songs.next_num, order_by=order_by) }}" {% endif %}>Next</a>
-    </li>
-  </ul>
-</nav>
 {% endmacro %}

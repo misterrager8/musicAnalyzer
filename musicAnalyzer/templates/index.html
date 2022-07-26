@@ -1,33 +1,40 @@
 {% extends "base.html" %}
 {% import "macros.html" as macros with context %}
-
 {% block body %}
-<title>MusicAnalyzer</title>
-{% if recent_posts | length > 4 %}
-<div class="container-fluid p-5 border-custom">
-    <a class="h2" href="{{ recent_posts[0].url }}" target="blank_">{{ recent_posts[0].title }}</a>
-</div>
-<div class="row my-4">
-    {% for i in range(1, 5) %}
-    <div class="col-xl-3">
-        <div class="border-custom p-5" style="overflow:hidden">
-            <a class="h6" href="{{ recent_posts[i].url }}" target="blank_">{{ recent_posts[i].title }}</a>
-        </div>
+<title>musicAnalyzer</title>
+{% if news | length > 0 %}
+<div class="w-100" style="font-size: 1.1em">
+    <div class="w-100 border-custom p-3" style="height: 250px">
+        <a href="{{ news[0].url }}" target="_blank" class="font-custom"><i class="bi bi-link-45deg"></i> {{ news[0].headline }}</a>
     </div>
-    {% endfor %}
+    <div class="row my-3">
+        {% for i in range(1, 5) %}
+        <div class="col-xl-3">
+            <div class="m-1 border-custom p-3 overflow-hidden" style="height: 150px">
+                <a href="{{ news[i].url }}" target="_blank" class="font-custom"><i class="bi bi-link-45deg"></i> {{ news[i].headline }}</a>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
 </div>
 {% endif %}
-{% if not current_user.is_anonymous %}
-<p class="font-custom">recently added songs <a href="{{ url_for('songs.songs_') }}" class="bi bi-three-dots"></a></p>
+
 <div class="row">
-  {% for i in current_user.get_songs()[:25] %}
-  {{ macros.song_box(i) }}
-  {% endfor %}
+    <div class="col-xl-6">
+        <p class="text-center font-custom">TOP {{ chart | length }}</p>
+        <hr>
+        {% for i in chart %}
+        {{ macros.chart_card(i) }}
+        {% endfor %}
+    </div>
+    <div class="col-xl-6">
+        <p class="text-center font-custom">NEW & HOT</p>
+        <hr>
+        {% for i in fresh[:10] %}
+        <div class="border-bottom pb-3 mb-3">
+            <div class="fst-italic fw-bold">{{ i.title }}</div>
+        </div>
+        {% endfor %}
+    </div>
 </div>
-{% else %}
-<div class="text-center">
-  <a class="font-custom text-decoration-underline" data-bs-target="#loginModal" data-bs-toggle="modal">log in</a> or
-  <a class="font-custom text-decoration-underline" data-bs-target="#signupModal" data-bs-toggle="modal">sign up</a>
-</div>
-{% endif %}
 {% endblock %}

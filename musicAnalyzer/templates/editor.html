@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% import "macros.html" as macros with context %}
+{% block body %}
+
+<form method="POST" action="{{ url_for('blogs.editor', id_=blog_.id) }}">
+    <input value="{{ blog_.title }}" name="title" class="input-custom mb-3 w-100" required autocomplete="off">
+    <textarea rows="20" class="input-custom mb-3 w-100" placeholder="Content" name="content">{{ blog_.content or '' }}</textarea>
+    <button type="submit" class="btn-custom w-100">Save</button>
+</form>
+
+{% endblock %}

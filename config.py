@@ -1,19 +1,17 @@
-import os
-
 import dotenv
+import os
 
 dotenv.load_dotenv()
 
 ENV = os.getenv("env")
-SECRET_KEY = os.getenv("secret_key")
-SQLALCHEMY_DATABASE_URI = os.getenv("db_url")
 DEBUG = os.getenv("debug")
-SQLALCHEMY_TRACK_MODIFICATIONS = False
-SQLALCHEMY_ENGINE_OPTIONS = {"pool_recycle": 60}
+SQLALCHEMY_DATABASE_URI = os.getenv("sqlalchemy_database_uri")
+SECRET_KEY = os.getenv("secret_key")
 GENIUS_ACCESS_TOKEN = os.getenv("GENIUS_ACCESS_TOKEN")
+SQLALCHEMY_TRACK_MODIFICATIONS = False
 
-praw_client_id = os.getenv("client_id")
-praw_client_secret = os.getenv("client_secret")
-praw_username = os.getenv("username")
-praw_password = os.getenv("password_")
-praw_user_agent = os.getenv("user_agent")
+PRAW_CLIENT_ID = os.getenv("client_id")
+PRAW_CLIENT_SECRET = os.getenv("client_secret")
+PRAW_USERNAME = os.getenv("username")
+PRAW_PASSWORD = os.getenv("password_")
+PRAW_USER_AGENT = os.getenv("user_agent")
