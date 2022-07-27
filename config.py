@@ -7,6 +7,7 @@ ENV = os.getenv("env")
 DEBUG = os.getenv("debug")
 SQLALCHEMY_DATABASE_URI = os.getenv("sqlalchemy_database_uri")
 SECRET_KEY = os.getenv("secret_key")
+SQLALCHEMY_ENGINE_OPTIONS = {"pool_recycle": 60}
 GENIUS_ACCESS_TOKEN = os.getenv("GENIUS_ACCESS_TOKEN")
 SQLALCHEMY_TRACK_MODIFICATIONS = False
 
