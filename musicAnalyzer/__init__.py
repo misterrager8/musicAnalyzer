@@ -2,10 +2,9 @@ from flask import Flask
 import pymysql
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
-from praw import Reddit
+import os
 
 pymysql.install_as_MySQLdb()
-reddit_ = Reddit()
 
 
 db = SQLAlchemy()

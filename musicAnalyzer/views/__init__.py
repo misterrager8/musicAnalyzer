@@ -1,11 +1,19 @@
 from flask import render_template, current_app, redirect, request, url_for
-from musicAnalyzer import db, login_manager, reddit_
+from musicAnalyzer import db, login_manager, scraper
 from musicAnalyzer.models import User, NewsItem
-from musicAnalyzer import scraper
 from flask_login import login_user, logout_user
 from werkzeug.security import generate_password_hash, check_password_hash
 import billboard
 from datetime import datetime
+from praw import Reddit
+
+reddit_ = Reddit(
+    client_id=current_app.config["CLIENT_ID"],
+    client_secret=current_app.config["CLIENT_SECRET"],
+    username=current_app.config["USERNAME"],
+    password_=current_app.config["PASSWORD_"],
+    user_agent=current_app.config["USER_AGENT"],
+)
 
 
 @current_app.context_processor
