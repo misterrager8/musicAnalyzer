@@ -2,6 +2,7 @@
 {% import "macros.html" as macros with context %}
 {% block body %}
 <title>musicAnalyzer</title>
+{% if news_ | length >= 5 %}
 <div>
     <div class="col-xl-12">
         <div class="h-50 border-bottom m-3 p-3">
@@ -18,6 +19,7 @@
         {% endfor %}
     </div>
 </div>
+{% endif %}
 <div class="row">
     <div class="col-xl-6">
         <p class="text-center fs-5 m-0 fst-italic text-danger mt-5">TOP 10</p>
