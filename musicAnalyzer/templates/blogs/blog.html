@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% import "macros.html" as macros with context %}
+{% block body %}
+<title>{{ blog_.title }}</title>
+<p class="m-0 fs-3 fst-italic">{{ blog_.title }}</p><br>
+<a>{{ blog_.users.username }}</a><br>
+<span class="text-muted">{{ blog_.date_published.strftime('%-m/%-d/%y %-I:%M %p') }}</span>
+<p style="white-space: pre-wrap">{{ blog_.get_markdown() | safe }}</p>
+{% endblock %}

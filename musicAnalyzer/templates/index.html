@@ -2,37 +2,42 @@
 {% import "macros.html" as macros with context %}
 {% block body %}
 <title>musicAnalyzer</title>
-{% if news | length > 0 %}
-<div class="w-100" style="font-size: 1.1em">
-    <div class="w-100 border-custom p-3" style="height: 250px">
-        <a href="{{ news[0].url }}" target="_blank" class="font-custom"><i class="bi bi-link-45deg"></i> {{ news[0].headline }}</a>
+<div>
+    <div class="col-xl-12">
+        <div class="h-50 border-bottom m-3 p-3">
+            <a target="blank_" href="{{ news_[0].url }}" class="fs-3">{{ news_[0].headline }}</a>
+        </div>
     </div>
-    <div class="row my-3">
-        {% for i in range(1, 5) %}
+    <div class="row">
+        {% for i in news_[1:5] %}
         <div class="col-xl-3">
-            <div class="m-1 border-custom p-3 overflow-hidden" style="height: 150px">
-                <a href="{{ news[i].url }}" target="_blank" class="font-custom"><i class="bi bi-link-45deg"></i> {{ news[i].headline }}</a>
+            <div class="border-bottom m-3 p-3" style="height: 150px">
+                <a target="blank_" href="{{ i.url }}" class="fs-5">{{ i.headline }}</a>
             </div>
         </div>
         {% endfor %}
     </div>
 </div>
-{% endif %}
-
 <div class="row">
     <div class="col-xl-6">
-        <p class="text-center font-custom">TOP {{ chart | length }}</p>
-        <hr>
-        {% for i in chart %}
-        {{ macros.chart_card(i) }}
+        <p class="text-center fs-5 m-0 fst-italic text-danger mt-5">TOP 10</p>
+        {% for i in charts[:10] %}
+        <div class="col-12">
+            <div class="p-4 border-bottom">
+                <p class="fst-italic fs-5 m-0">{{ i.title }}</p>
+                <span class="fw-light text-muted">{{ i.artist }}</span>
+            </div>
+        </div>
         {% endfor %}
     </div>
     <div class="col-xl-6">
-        <p class="text-center font-custom">NEW & HOT</p>
-        <hr>
-        {% for i in fresh[:10] %}
-        <div class="border-bottom pb-3 mb-3">
-            <div class="fst-italic fw-bold">{{ i.title }}</div>
+        <p class="text-center fs-5 m-0 fst-italic text-danger mt-5">HOT & FRESH</p>
+        {% for i in hot[:10] %}
+        <div class="col-12">
+            <div class="p-4 border-bottom">
+                <p class="fst-italic fs-5 m-0">{{ i.title }}</p>
+                <span class="fw-light text-muted">{{ utc_to_time(i.created_utc).strftime('%-m/%-d/%y %-I:%M %p') }}</span>
+            </div>
         </div>
         {% endfor %}
     </div>

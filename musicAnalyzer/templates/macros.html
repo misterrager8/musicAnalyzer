@@ -1,85 +1,84 @@
-{% macro news_card(news) %}
-<div class="card col-xl-4 border-0">
-    <div class="card-body mb-4">
-        <a class="font-custom" href="{{ news.url }}" target="_blank">{{ news.headline }}</a>
-        <div class="small opacity-50 fst-italic">{{ news.timestamp.strftime('%b %d, %Y %I:%M %p') }}</div>
-        {% if current_user.role == 'admin' %}
-        <div class="mt-2">
-            <a class="me-2" onclick="toggleDiv('editNews' + {{ news.id }})"><i class="bi bi-pen"></i></a>
-            <a class="text-danger" onclick="toggleDiv('deleteNews' + {{ news.id }})"><i class="bi bi-trash3"></i></a>
-            <a class="font-custom text-danger" onclick="deleteNews({{ news.id }})" id="deleteNews{{ news.id }}" style="display: none">Delete?</a>
-        </div>
-        <div class="mt-2" id="editNews{{ news.id }}" style="display: none">
-            {{ edit_news_form(news) }}
+{% macro blog_card(blog_) %}
+<div class="col-xl-4">
+    <div class="p-4 border-bottom">
+        <a class="fs-5" href="{{ url_for('blogs.blog', id_=blog_.id) }}">{{ blog_.title }}</a><br>
+        <a>{{ blog_.users.username }}</a><br>
+        <span class="text-muted">{{ blog_.date_published.strftime('%-m/%-d/%y %-I:%M %p') }}</span>
+        {% if current_user.id == blog_.user_id %}
+        <div class="mt-3">
+            <a class="me-2" href="{{ url_for('blogs.editor', id_=blog_.id) }}"><i class="bi bi-pen"></i></a>
+            <a class="text-danger" onclick="toggleDiv('deleteBlog' + {{ blog_.id }})"><i class="bi bi-trash3"></i></a>
+            <a style="display: none" id="deleteBlog{{ blog_.id }}" class="text-danger" href="{{ url_for('blogs.delete_blog', id_=blog_.id) }}">Delete?</a>
         </div>
         {% endif %}
     </div>
-</div>
-{% endmacro %}
-
-{% macro blog_card(blog) %}
-<div class="card col-xl-4 border-0">
-    <div class="card-body mb-4">
-        <a class="font-custom" href="{{ url_for('blogs.blog', id_=blog.id) }}">{{ blog.title }}</a>
-
-        <p class="small fst-italic opacity-50 mt-2">
-            <span><i class="bi bi-person-fill"></i> {{ blog.users.email }}</span><br>
-            <span><i class="bi bi-clock"></i> {{ blog.timestamp.strftime('%B %d, %Y') }}</span>
-        </p>
-        
-        {% if blog.user_id == current_user.id or current_user.role == 'admin' %}
-        <div class="mt-2">
-            <a class="me-2" href="{{ url_for('blogs.editor', id_=blog.id) }}"><i class="bi bi-pen"></i></a>
-            <a class="text-danger" onclick="toggleDiv('deleteBlog' + {{ blog.id }})"><i class="bi bi-trash3"></i></a>
-            <a class="text-danger font-custom" id="deleteBlog{{ blog.id }}" style="display: none" onclick="deleteBlog({{ blog.id }})">Delete?</a>
-        </div>
-        {% endif %}
-    </div>
-</div>
-{% endmacro %}
-
-{% macro chart_card(entry) %}
-<div class="border-bottom pb-2 mb-2">
-    <div class="fst-italic fw-bold">{{ entry.title }}</div>
-    <div>{{ entry.artist }}</div>
 </div>
 {% endmacro %}
 
 {% macro login_form() %}
 <form method="POST" action="{{ url_for('login') }}">
-    <input autocomplete="off" placeholder="email" class="input-custom w-100 mb-2" name="email">
-    <input autocomplete="off" placeholder="Password" class="input-custom w-100 mb-2" name="password" type="password">
-    <button class="btn-custom w-100" type="submit">Log In</button>
+    <input class="form-control w-100 mb-3" placeholder="Username" name="username" autocomplete="off">
+    <input class="form-control w-100 mb-3" placeholder="Password" name="password" autocomplete="off" type="password">
+    <button class="btn w-100" type="submit">Log In</button>
 </form>
 {% endmacro %}
 
 {% macro signup_form() %}
 <form method="POST" action="{{ url_for('signup') }}">
-    <input autocomplete="off" placeholder="email" class="input-custom w-100 mb-2" name="email">
-    <input autocomplete="off" placeholder="Password" class="input-custom w-100 mb-2" name="password" type="password">
-    <button class="btn-custom w-100" type="submit">Sign Up</button>
+    <input class="form-control w-100 mb-3" placeholder="Username" name="username" autocomplete="off">
+    <input class="form-control w-100 mb-3" placeholder="Password" name="password" autocomplete="off" type="password">
+    <button class="btn w-100" type="submit">Sign Up</button>
 </form>
 {% endmacro %}
 
-{% macro add_blog_form() %}
-<form action="{{ url_for('blogs.add_blog') }}" method="POST" class="input-group">
-    <input onchange="suggestTitle()" autocomplete="off" placeholder="Title" class="input-custom" name="title">
-    <button class="btn-custom" type="submit"><i class="bi bi-pen"></i> Create Blog</button>
+{% macro search_artist_form() %}
+<form class="input-group" method="POST" action="{{ url_for('artists.index') }}">
+    <input autocomplete="off" placeholder="Search Artists" class="form-control" name="artist">
+    <button class="btn" type="submit"><i class="bi bi-search"></i></button>
 </form>
 {% endmacro %}
 
-{% macro add_news_form() %}
-<form onsubmit="event.preventDefault(); addNews();" class="input-group">
-    <input onchange="suggestTitle()" autocomplete="off" placeholder="URL" class="input-custom" id="url">
-    <input autocomplete="off" placeholder="Headline" class="input-custom flex-grow-1" id="headline">
-    <button class="btn-custom" type="submit"><i class="bi bi-newspaper"></i> Add News</button>
+{% macro search_album_form() %}
+<form class="input-group" method="POST" action="{{ url_for('albums.index') }}">
+    <input autocomplete="off" placeholder="Search Albums" class="form-control" name="album">
+    <button class="btn" type="submit"><i class="bi bi-search"></i></button>
 </form>
 {% endmacro %}
 
-{% macro edit_news_form(news) %}
-<form onsubmit="event.preventDefault(); editNews({{ news.id }});">
-    <input value="{{ news.url }}" autocomplete="off" placeholder="URL" class="input-custom w-100 mb-2" id="url{{ news.id }}">
-    <input value="{{ news.headline }}" autocomplete="off" placeholder="Headline" class="input-custom w-100 mb-2" id="headline{{ news.id }}">
-    <button class="btn-custom w-100" type="submit"><i class="bi bi-pen"></i> Edit News</button>
+{% macro search_song_form() %}
+<form class="input-group" method="POST" action="{{ url_for('songs.index') }}">
+    <input autocomplete="off" placeholder="Search Songs" class="form-control" name="song">
+    <button class="btn" type="submit"><i class="bi bi-search"></i></button>
+</form>
+{% endmacro %}
+
+{% macro post_news_form() %}
+<form method="POST" action="{{ url_for('news.post_news') }}">
+    <input onchange="suggestHeadline()" autocomplete="off" placeholder="URL" class="form-control w-100 mb-3" name="url" id="url">
+    <input autocomplete="off" placeholder="Headline" class="form-control w-100 mb-3" name="headline" id="headline">
+    <button class="btn w-100" type="submit"><i class="bi bi-newspaper"></i> Post News</button>
+</form>
+{% endmacro %}
+
+{% macro edit_news_form(newsitem_) %}
+<form method="POST" action="{{ url_for('news.edit_news', id_=newsitem_.id) }}">
+    <input autocomplete="off" placeholder="URL" class="form-control w-100 mb-3" name="url" value="{{ newsitem_.url }}">
+    <input autocomplete="off" placeholder="Headline" class="form-control w-100 mb-3" name="headline" value="{{ newsitem_.headline }}">
+    <button class="btn w-100" type="submit"><i class="bi bi-newspaper"></i> Edit News</button>
+</form>
+{% endmacro %}
+
+{% macro create_blog_form() %}
+<form method="POST" action="{{ url_for('blogs.create_blog') }}" class="input-group">
+    <input autocomplete="off" placeholder="Title" class="form-control" name="title">
+    <button class="btn" type="submit">Create Blog</button>
+</form>
+{% endmacro %}
+
+{% macro blog_editor(blog_) %}
+<form method="POST" action="{{ url_for('blogs.editor', id_=blog_.id) }}">
+    <input autocomplete="off" placeholder="Title" class="form-control mb-3" name="title" value="{{ blog_.title }}">
+    <textarea rows="25" autocomplete="off" placeholder="Content" class="form-control mb-3" name="content">{{ blog_.content }}</textarea>
+    <button class="btn w-100" type="submit">Save</button>
 </form>
 {% endmacro %}

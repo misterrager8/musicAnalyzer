@@ -1,8 +1,8 @@
 beautifulsoup4==4.11.1
 billboard.py==7.0.0
 Flask==2.1.2
-flask_login
-flask_sqlalchemy
+flask_login==0.6.1
+flask_sqlalchemy==2.5.1
 lyricsgenius==3.0.1
 Markdown==3.3.7
 praw==7.6.0

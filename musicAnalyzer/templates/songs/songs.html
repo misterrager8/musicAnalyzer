@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% import "macros.html" as macros with context %}
+{% block body %}
+<title>Songs</title>
+{{ macros.search_song_form() }}
+<div class="row mt-3">
+    {% for i in results %}
+    <div class="col-xl-12">
+        <div class="p-4 border-bottom">
+            <a href="{{ url_for('songs.song', genius_id=i['result']['id']) }}">{{ i['result']['title_with_featured'] }}</a>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

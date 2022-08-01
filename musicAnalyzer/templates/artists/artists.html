@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% import "macros.html" as macros with context %}
+{% block body %}
+<title>Artists</title>
+{{ macros.search_artist_form() }}
+<div class="row mt-3">
+    {% for i in results %}
+    <div class="col-xl-4">
+        <div class="mb-3 p-4 text-center border-bottom">
+            <a href="{{ url_for('artists.artist', genius_id=i['result']['id']) }}">
+                <img class="rounded-circle mb-3" width="100px" height="100px" src="{{ i['result']['image_url'] }}">
+                <p class="fs-4">{{ i['result']['name'] }}</p>
+            </a>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

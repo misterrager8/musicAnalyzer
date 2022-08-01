@@ -3,21 +3,27 @@ import requests
 
 
 class Link:
-    def __init__(self, url: str, domain_name: str, title: str):
+    def __init__(self, url: str, title: str, source_name: str):
         self.url = url
-        self.domain_name = domain_name
         self.title = title
+        self.source_name = source_name
+
+
+def get_soup(url: str):
+    return BeautifulSoup(requests.get(url).text, "html.parser")
 
 
 def get_links():
     return [
-        Link("https://www.hotnewhiphop.com" + i.get("href"), "HotNewHipHop", i.text)
-        for i in BeautifulSoup(
-            requests.get("https://www.hotnewhiphop.com").content, "html.parser"
-        ).find_all("a", class_="latestNews-title-anchor")
+        Link(
+            "http://www.hotnewhiphop.com" + i.get("href"), i.get_text(), "HotNewHipHop"
+        )
+        for i in get_soup("http://www.hotnewhiphop.com/").find_all(
+            "a", class_="latestNews-title-anchor"
+        )
     ] + [
-        Link(i.get("href"), "AllHipHop", i.find("h2").text)
-        for i in BeautifulSoup(
-            requests.get("https://allhiphop.com/").content, "html.parser"
-        ).find_all("a", class_="entry-box-horizontal")
+        Link(i.find("a").get("href"), i.get_text(), "AllHipHop")
+        for i in get_soup("http://allhiphop.com/news/").find_all(
+            "h2", class_="entry-title"
+        )
     ]

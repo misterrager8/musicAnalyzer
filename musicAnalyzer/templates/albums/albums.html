@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% import "macros.html" as macros with context %}
+{% block body %}
+<title>Albums</title>
+{{ macros.search_album_form() }}
+<div class="row mt-3">
+    {% for i in results %}
+    <div class="col-xl-4">
+        <div class="p-4 border-bottom text-center">
+            <a href="{{ url_for('albums.album', genius_id=i['result']['id']) }}">
+                <img class="rounded mb-3" width="200px" height="200px" src="{{ i['result']['cover_art_url'] }}">
+                <div>
+                    <a class="fs-5 fst-italic" >{{ i['result']['name'] }}</a><br>
+                    <span>{{ i['result']['release_date_components']['year'] }}</span>
+                </div>
+            </a>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}
